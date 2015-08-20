@@ -81,7 +81,7 @@ client.on('chat', function (channel, user, message, self) {
         pastebin.createPasteFromFile('./logs/' + channel.substr(1) + '/' + getNthWord(message, 2) + '.txt', 'logs for ' + getNthWord(message, 2),null,2)
           .then(function (data) {
                 console.log('Pastebin created: ' + data);
-                client.say(channel, '@' + user.username + ', pastebin com/' + data);
+                client.say(channel, '@' + user.username + ', pastebin.com/' + data);
             })
           .fail(function (err) {
                 console.log(err);
