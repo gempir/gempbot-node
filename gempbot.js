@@ -46,16 +46,6 @@ client.on('chat', function (channel, user, message, self) {
    }
 });
 
-// sub notifications
-
-client.on("subscription", function (channel, user) {
-  client.say(channel, '/me | ' + username + ' just subscribed!');
-});
-
-client.on("subanniversary", function (channel, user, months) {
-    client.say(channel, '/me | ' + username + ' just re-subscribed for ' + months + ' months');
-});
-
 // logs
 
 client.on('chat', function (channel, user, message, self) {
