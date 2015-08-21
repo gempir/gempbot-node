@@ -2,10 +2,6 @@
 This is a nodejs twitchbot with a logging functionality that requires no webhosting.
 Right now this bot doesn't do much. If you want a simple log bot then this is perfect. 
 
-# Features
-- Logs
-- Status
-
 # Usage
 
 Type **!status** to find out the current channels the bot is connected to.
