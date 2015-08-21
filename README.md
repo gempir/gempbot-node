@@ -55,6 +55,8 @@ You can find your twitch auth key by going to http://twitchapps.com/tmi
 And finally change "channels" to the channel(s) you want to make the bot connect to.
 Make sure to start with a **#**
 
+Make sure you create a "logs" folder and inside a folder with your channelname so the logs get saved correctly.
+
 # Credits 
 
 This bot is possible because of this genius libary http://www.tmijs.org/
