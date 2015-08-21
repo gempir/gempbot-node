@@ -10,14 +10,14 @@ Type **!logs username** to get a pastebin log of a single user with a timestamp.
 
 
 # Installation
-Install **nodejs** (http://nodejs.org/) on whatever you want the bot to run on.
+Download the node.js binary(.exe) (https://nodejs.org/download/) and place it inside the folder of the bot.
 Open **gempbot.js** with a text editor of your choice
 
 
-    var admins = ['gempir','admin'];
+    var admin = 'user';
     
     
-Here you can setup admins for your bot. 
+Here you set the admin for the bot, otherwise only mods can acess !logs and !status
 
 
     var PastebinAPI = require('pastebin-js'),
@@ -52,6 +52,8 @@ And finally change "channels" to the channel(s) you want to make the bot connect
 Make sure to start with a **#**
 
 Make sure you create a "logs" folder and inside a folder with your channelname so the logs get saved correctly.
+
+To now start the bot just run start.bat or open a nodejs prompt and open gempbot.js
 
 # Credits 
 
