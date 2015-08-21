@@ -1,6 +1,6 @@
-// admin for your bot 
+// admins for your bot
 
-var admin = 'gempir';
+var admins = ['gempir'];
 
 var irc = require('tmi.js'); 
 var moment = require('moment');
@@ -39,7 +39,7 @@ var activein = options.channels.toString();
 // status command
 
 client.on('chat', function (channel, user, message, self) {
-   if (user["username"] === admin || user["user-type"] === "mod" ) {
+   if (user["username"] === admins[0] || user["user-type"] === "mod" ) {
      if (message.toLowerCase() === '!status') {
      client.say(channel, 'Active in: ' + activein);
      }
@@ -61,7 +61,7 @@ client.on('chat', function (channel, user, message, self) {
 });
 
 client.on('chat', function (channel, user, message, self) {
-    if (user.username === admin || user["user-type"] === "mod" ) {
+    if (user.username === admins[0] || user.username === admins[1] || user["user-type"] === "mod" ) {
       if ( message.indexOf("!logs") >= 0 ) {
         var getNthWord = function(string, n){
           var words = string.split(" ");
