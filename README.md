@@ -10,6 +10,8 @@ Type **!logs username** to get a pastebin log of a single user with a timestamp.
 
 
 # Installation
+Download the Bot https://github.com/danielps1/gempbot/archive/master.zip
+
 Download the node.js binary(.exe) (https://nodejs.org/download/) and place it inside the folder of the bot.
 Open **gempbot.js** with a text editor of your choice
 
