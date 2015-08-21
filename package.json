@@ -1,0 +1,30 @@
+{
+  "name": "gempbot",
+  "version": "1.0.0",
+  "description": "twitch bot written in node js",
+  "main": "server.js",
+  "dependencies": {
+    "async": "^1.4.2",
+    "moment": "^2.10.6",
+    "pastebin-js": "^0.3.2",
+    "tmi.js": "^0.0.21"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielps1/gempbot.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "danielps1",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danielps1/gempbot/issues"
+  },
+  "homepage": "https://github.com/danielps1/gempbot#readme"
+}
