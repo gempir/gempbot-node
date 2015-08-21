@@ -4,7 +4,6 @@ Right now this bot doesn't do much. If you want a simple log bot then this is pe
 
 # Features
 - Logs
-- Subscriber notification
 - Status
 
 # Usage
