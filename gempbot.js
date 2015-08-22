@@ -4,7 +4,7 @@ var admin = 'gempir';
 
 var irc = require('tmi.js'); 
 var moment = require('moment');
-fs = require('fs');
+var fs = require('graceful-fs')
 var PastebinAPI = require('pastebin-js'),
     pastebin = new PastebinAPI({
       'api_dev_key' : 'pastebindevkey',
