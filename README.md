@@ -67,4 +67,5 @@ Used modules:
 - https://github.com/moment/moment/
 - https://github.com/caolan/async
 - https://github.com/j3lte/pastebin-js
+- https://github.com/isaacs/node-graceful-fs
 
