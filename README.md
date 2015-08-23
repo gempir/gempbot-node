@@ -1,6 +1,8 @@
 # gempbot
 This is a nodejs twitchbot with a logging functionality that requires no webhosting.
-Right now this bot doesn't do much. If you want a simple log bot then this is perfect. 
+Right now this bot doesn't do much. If you want a simple log bot then this is perfect.
+This bot uses patebin, sadly the free accounts have a 30 pastebin limit so I implemented the feature to delete every pastebin 
+after 5 minutes.  
 
 # Usage
 

@@ -24,7 +24,7 @@ var options = {
         username: 'botaccountname',
         password: 'oauth:twitchauthkey'
     },
-    channels: ['#gempir']
+    channels: ['#gempir','#gempbot']
 };
 var client = new irc.client(options);
 
@@ -59,7 +59,6 @@ client.on('chat', function (channel, user, message, self) {
     fs.appendFile('logs/' + channel.substr(1) + '/' + user.username +'.txt', '[' + 'GMT' + moment().format('Z ') + moment().format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n', function(){});      
 });
 
-
 client.on('chat', function (channel, user, message, self) {
     if (user.username === admin || user["user-type"] === "mod" ) {
       if ( message.toLowerCase().substr(0,5) == '!logs') {
@@ -72,7 +71,7 @@ client.on('chat', function (channel, user, message, self) {
             pastebin.deletePaste(data)
             console.log('Pastebin deleted: ' + data)
         }, 300000);
-                
+            
             })
           .fail(function (err) {
                 client.say(channel, err);
