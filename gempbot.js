@@ -48,16 +48,8 @@ client.on('chat', function (channel, user, message, self) {
 
 // logs
 
-client.on('chat', function (channel, user, message, self) {
-  fs.open('logs/' + channel.substr(1) + '/' + user.username +'.txt','r',function(err,fd){
-    if (err && err.code=='ENOENT') 
-    {
-    fs.writeFile('logs/' + channel.substr(1) + '/' + user.username +'.txt', '[' + 'GMT' + moment().format('Z ') + moment().format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n', function (err) {});
-    } else {
-    fs.appendFile('logs/' + channel.substr(1) + '/' + user.username +'.txt', '[' + 'GMT' + moment().format('Z ') + moment().format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n', function(){});    
-    }
-  });
-  
+client.on('chat', function (channel, user, message, self) {   
+    fs.appendFile('logs/' + channel.substr(1) + '/' + user.username +'.txt', '[' + 'GMT' + moment().format('Z ') + moment().format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n', function(){});      
 });
 
 client.on('chat', function (channel, user, message, self) {
