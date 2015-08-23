@@ -37,6 +37,7 @@ client.connect();
 var activein = options.channels.toString();
 
 // functions
+
 function getNthWord(string, n) {
     var words = string.split(" ");
     return words[n-1];
@@ -58,14 +59,20 @@ client.on('chat', function (channel, user, message, self) {
     fs.appendFile('logs/' + channel.substr(1) + '/' + user.username +'.txt', '[' + 'GMT' + moment().format('Z ') + moment().format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n', function(){});      
 });
 
+
 client.on('chat', function (channel, user, message, self) {
     if (user.username === admin || user["user-type"] === "mod" ) {
-      if ( message.substr(0,5) == '!logs') {
+      if ( message.toLowerCase().substr(0,5) == '!logs') {
 
         pastebin.createPasteFromFile('./logs/' + channel.substr(1) + '/' + getNthWord(message, 2) + '.txt', 'logs for ' + getNthWord(message, 2),null,2)
           .then(function (data) {
                 client.say(channel, '@' + user.username + ', pastebin.com/' + data);
                 console.log('Pastebin created: ' + data);
+                setTimeout(function(){
+            pastebin.deletePaste(data)
+            console.log('Pastebin deleted: ' + data)
+        }, 300000);
+                
             })
           .fail(function (err) {
                 client.say(channel, err);
@@ -74,4 +81,3 @@ client.on('chat', function (channel, user, message, self) {
       }
     } 
 })
-
