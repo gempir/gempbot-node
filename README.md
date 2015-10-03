@@ -54,9 +54,10 @@ You can find your twitch auth key by going to http://twitchapps.com/tmi
 And finally change "channels" to the channel(s) you want to make the bot connect to.
 Make sure to start with a **#**
 
-Make sure you create a "logs" folder and inside a folder with your channelname so the logs get saved correctly.
+Make sure you create a "logs" folder and inside folders with the channels the bot is connected to so the logs get saved correctly. So your structure looks like this: logs/gempir/gempir.txt
+The file gempir.txt now contains everything the user "gempir" wrote inside the channel gempir
 
-To now start the bot just run start.bat or open a nodejs prompt and open gempbot.js
+To now start the bot just run start.bat or open a nodejs prompt and start gempbot.js
 
 # Credits 
 
