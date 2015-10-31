@@ -20,6 +20,7 @@ Type **!countme phrase** to get the number of times you used a specific phrase, 
 Download the Bot https://github.com/danielps1/gempbot/archive/master.zip
 
 Install nodejs from https://nodejs.org/
+
 Open **gempbot.js** with a text editor of your choice
 
 
@@ -60,10 +61,9 @@ You can find your twitch auth key by going to http://twitchapps.com/tmi
 And finally change "channels" to the channel(s) you want to make the bot connect to.
 Make sure to start with a **#**
 
-Make sure you create a "logs" folder and inside folders with the channels the bot is connected to so the logs get saved correctly. So your structure looks like this: logs/gempir/gempir.txt
-The file gempir.txt now contains everything the user "gempir" wrote inside the channel gempir
+Now start the bot by opening a terminal/shell window and type node gempbot.js or nodejs gempbot.js 
 
-To now start the bot just run start.bat or open a nodejs prompt and start gempbot.js
+The bot will create logs folder on it's own.
 
 # Credits 
 
