@@ -115,11 +115,25 @@ client.on('chat', function (channel, user, message, self) {
 // logs
 
 client.on('chat', function (channel, user, message, self) {   
-    fs.appendFile('logs/' + channel.substr(1) + '/' + user.username +'.txt', '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n', function(){});      
+    var file = 'logs/' + channel.substr(1) + '/' + user.username +'.txt';
+    fs.appendFile(file, ' ', function(){});  
+    var data = fs.readFileSync(file); //read existing contents into data
+    var fd = fs.openSync(file, 'w+');
+    var buffer = new Buffer('[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n');
+    fs.writeSync(fd, buffer, 0, buffer.length); //write new data
+    fs.writeSync(fd, data, 0, data.length); //append old data
+    fs.close(fd);
 });
 
 client.on('chat', function (channel, user, message, self) {   
-    fs.appendFile('logs/' + channel.substr(1) +'.txt', '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n', function(){});      
+    var file = 'logs/' + channel.substr(1) +'.txt';
+    fs.appendFile(file, ' ', function(){});  
+    var data = fs.readFileSync(file); //read existing contents into data
+    var fd = fs.openSync(file, 'w+');
+    var buffer = new Buffer('[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n');
+    fs.writeSync(fd, buffer, 0, buffer.length); //write new data
+    fs.writeSync(fd, data, 0, data.length); //append old data
+    fs.close(fd);
 });
 
 client.on('chat', function (channel, user, message, self) {
