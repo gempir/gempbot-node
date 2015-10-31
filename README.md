@@ -3,17 +3,23 @@ This is a nodejs twitchbot with a logging functionality that requires no webhost
 This bot uses pastebin.com to give you the log files, but free accounts have a 30 pastes limit,
 so I build in a feature that deletes every pastebin after 5 minutes after creation.
 
+It also can count phrases used in your chat.
+
 # Usage
 
 Type **!status** to find out the current channels the bot is connected to.
 
 Type **!logs username** to get a pastebin log of a single user with a timestamp.
 
+Type **!count phrase** to get the number of times the chat wrote that phrase, also works with sentences
+
+Type **!countme phrase** to get the number of times you used a specific phrase, this also works with sentences
+
 
 # Installation
 Download the Bot https://github.com/danielps1/gempbot/archive/master.zip
 
-Download the node.js binary(.exe) (https://nodejs.org/download/) and place it inside the folder of the bot.
+Install nodejs from https://nodejs.org/
 Open **gempbot.js** with a text editor of your choice
 
 
