@@ -3,7 +3,9 @@ This is a nodejs twitchbot with a logging functionality that requires no webhost
 This bot uses pastebin.com to give you the log files, but free accounts have a 30 pastes limit,
 so I build in a feature that deletes every pastebin after 5 minutes after creation.
 
-It also can count phrases used in your chat.
+It also can count phrases used in your chat. 
+
+In the logs folder you have .txt files for you account which hold the whole chat history and in the folder for you channel you have history for each user who typed something.
 
 # Usage
 
