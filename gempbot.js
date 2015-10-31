@@ -115,11 +115,11 @@ client.on('chat', function (channel, user, message, self) {
 // logs
 
 client.on('chat', function (channel, user, message, self) {   
-    fs.appendFile('logs/' + channel.substr(1) + '/' + user.username +'.txt', '[' + 'GMT' + moment().format('Z ') + moment().format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n', function(){});      
+    fs.appendFile('logs/' + channel.substr(1) + '/' + user.username +'.txt', '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n', function(){});      
 });
 
 client.on('chat', function (channel, user, message, self) {   
-    fs.appendFile('logs/' + channel.substr(1) +'.txt', '[' + 'GMT' + moment().format('Z ') + moment().format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n', function(){});      
+    fs.appendFile('logs/' + channel.substr(1) +'.txt', '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n', function(){});      
 });
 
 client.on('chat', function (channel, user, message, self) {
@@ -127,7 +127,7 @@ client.on('chat', function (channel, user, message, self) {
       if ( message.substr(0,5) == '!logs') {
         var logsFor = getNthWord(message,2);
         logsFor = logsFor.toLowerCase();
-        pastebin.createPasteFromFile('./logs/' + channel.substr(1) + '/' + logsFor + '.txt', ' ',null,2)
+        pastebin.createPasteFromFile('./logs/' + channel.substr(1) + '/' + logsFor + '.txt', 'logs for ' + logsFor,null,2)
           .then(function (data) {
                 client.say(channel, '@' + user.username + ', pastebin.com/' + data);
                 console.log('Pastebin created: ' + data);
