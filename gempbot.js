@@ -78,7 +78,7 @@ setInterval(function() {
 // check emote count 
 client.on('chat', function(channel, user, message, self) {
   if (message.substr(0,8) === '!countme' && global.time > (new Date).getTime()) {
-      var emote = message.replace('!countme†','');
+      var emote = message.replace('!countme','');
       fs.readFile('logs/' + channel.substr(1) + '/' + user.username +'.txt', function (err, data) {
         var emoteCount = occurrences(data, emote);
         client.say(channel, user.username + ', you used ' + 'the phrase' + ' ' + emoteCount + ' times');
