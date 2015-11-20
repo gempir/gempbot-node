@@ -75,12 +75,14 @@ client.on('chat', function (channel, user, message, self) {
             var logsForLower = logsFor.toLowerCase();
             var logFile = './logs/' + channel.substr(1) + '/' + logsForLower + '.txt';
             var logsShort = null;
+
             fs.readFile(logFile, function (err, data) {
                 if (err) throw err;
-                logsShort = data;
+                logsShort = data.substr(0,5000);
+                console.log(logsShort);
             });
 
-            cfg.pastebin.createPaste(logsShort, 'logs for ' + logsFor,null,2)
+            cfg.pastebin.createPaste('kappa kappa kappa', 'logs for ' + logsFor,null,2)
                 .then(function (data) {
                     client.say(channel, '@' + user.username + ', pastebin.com/' + data);
                     console.log('Pastebin created: ' + data);
