@@ -19,17 +19,18 @@ client.on('chat', function (channel, user, message, self) {
 		var name = fn.getNthWord(message, 3).toLowerCase();
 		console.log(name);
 
-
 		if (name === 'channel') {
-			if ((fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '.txt').toFixed(2) + ' KB') > 1000) {
-				var fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '.txt').toFixed(2) + ' MB';
+			var fileSize = fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '.txt').toFixed(2) + ' KB';
+			if (fileSize > 1000) {
+				fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '.txt').toFixed(2) + ' MB';
 			}
 			client.say(channel, '@' + user['username'] + ', ' + 'log file for channel ' + channel.substr(1) + ' is ' + fileSize);
         	global.cooldown = true;
 		}
 		else {
-			if ((fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(2) + ' KB') > 1000) {
-				var fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(2) + ' MB';
+			var fileSize = fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(2) + ' KB';
+			if (fileSize > 1000) {
+				fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(2) + ' MB';
 			}
 			client.say(channel, '@' + user['username'] + ', ' + 'log file for ' + name + ' is ' + fileSize);
 			global.cooldown = true;
