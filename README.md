@@ -63,6 +63,10 @@ You can find your twitch auth key by going to http://twitchapps.com/tmi
 And finally change "channels" to the channel(s) you want to make the bot connect to.
 Make sure to start with a **#**
 
+Don't forget to install node modules with the node package manger like this:
+  
+    npm install
+    
 Now start the bot by opening a terminal/shell window and type node gempbot.js or nodejs gempbot.js 
 
 The bot will create logs folder on it's own.
