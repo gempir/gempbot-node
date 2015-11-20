@@ -20,7 +20,7 @@ client.on('chat', function (channel, user, message, self) {
 		console.log(name);
 
 		if (name === 'channel') {
-			var fileSize = fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '.txt').toFixed(2) + ' KB';
+			var fileSize = fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '.txt').toFixed(0) + ' KB';
 			if (fileSize > 1000) {
 				fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '.txt').toFixed(2) + ' MB';
 			}
@@ -28,7 +28,7 @@ client.on('chat', function (channel, user, message, self) {
         	global.cooldown = true;
 		}
 		else {
-			var fileSize = fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(2) + ' KB';
+			var fileSize = fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(0) + ' KB';
 			if (fileSize > 1000) {
 				fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(2) + ' MB';
 			}
