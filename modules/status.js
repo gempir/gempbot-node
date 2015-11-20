@@ -23,14 +23,14 @@ client.on('chat', function (channel, user, message, self) {
 
 		if (name === 'channel') {
 			if ((fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '.txt').toFixed(2) + ' KB') > 1000) {
-				fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '.txt').toFixed(2) + ' MB');
+				fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '.txt').toFixed(2) + ' MB';
 			}
 			client.say(channel, '@' + user['username'] + ', ' + 'log file for channel ' + channel.substr(1) + ' is ' + fileSize);
         	global.cooldown = true;
 		}
 		else {
 			if ((fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(2) + ' KB') > 1000) {
-				fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(2) + ' MB');
+				fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(2) + ' MB';
 			}
 			client.say(channel, '@' + user['username'] + ', ' + 'log file for ' + name + ' is ' + fileSize);
 			global.cooldown = true;
