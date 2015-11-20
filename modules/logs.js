@@ -73,28 +73,27 @@ client.on('chat', function (channel, user, message, self) {
             global.cooldown = true;
             var logsFor = fn.getNthWord(message,2);
             var logsForLower = logsFor.toLowerCase();
-            else {
+            var logFile = './logs/' + channel.substr(1) + '/' + logsForLower + '.txt';
+                
+            fs.readFile(logFile, function (err, data) {
+                if (err) throw err;
+                var logsShort = data.substr(0,10000);
+            });
 
-                var logFile = './logs/' + channel.substr(1) + '/' + logsForLower + '.txt';
-                fs.readFile(logFile, function (err, data) {
-                  if (err) throw err;
-                  var logsShort = data.substr(0,10000);
-                });
-
-                cfg.pastebin.createPaste(logsShort, 'logs for ' + logsFor,null,2)
-                  .then(function (data) {
-                        client.say(channel, '@' + user.username + ', pastebin.com/' + data);
-                        console.log('Pastebin created: ' + data);
-                        setTimeout(function(){
+            cfg.pastebin.createPaste(logsShort, 'logs for ' + logsFor,null,2)
+                .then(function (data) {
+                    client.say(channel, '@' + user.username + ', pastebin.com/' + data);
+                    console.log('Pastebin created: ' + data);
+                    setTimeout(function(){
                     cfg.pastebin.deletePaste(data)
                     console.log('Pastebin deleted: ' + data)
                 }, 600000);    
-                })
+            })
                 .fail(function (err) {
                         client.say(channel, err);
                         console.log(err);
                 });
-            }
+            
         }
     }
 })
