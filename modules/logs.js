@@ -74,10 +74,10 @@ client.on('chat', function (channel, user, message, self) {
             var logsFor = fn.getNthWord(message,2);
             var logsForLower = logsFor.toLowerCase();
             var logFile = './logs/' + channel.substr(1) + '/' + logsForLower + '.txt';
-                
+            var logsShort = null;
             fs.readFile(logFile, function (err, data) {
                 if (err) throw err;
-                var logsShort = data.substr(0,10000);
+                logsShort = data;
             });
 
             cfg.pastebin.createPaste(logsShort, 'logs for ' + logsFor,null,2)
