@@ -3,8 +3,8 @@ var fn = require('./functions');
 
 client = twitch.client;
 
-var lastMessage = null;
-var currentMessage = null;
+var lastMessage = '';
+var currentMessage = '';
 var counter = 1;
 
 client.on('chat', function(channel, user, message, self) {
