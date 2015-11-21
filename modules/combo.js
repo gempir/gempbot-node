@@ -11,13 +11,16 @@ client.on('chat', function(channel, user, message, self) {
     var currentMessage = message;
 
 
+    if (currentMessage.toLowerCase() === lastMessage.toLowerCase()) {
+    	counter++;
+    }
     if (currentMessage != lastMessage && counter > 2 && global.cooldown === false) {
     	client.action(channel, counter + 'x ' + lastMessage + ' COMBO');
     	counter = 1;
     	global.cooldown = true;
     }
-    if (currentMessage === lastMessage) {
-    	counter++;
+    else {
+    	lastMessage = message;
     }
-    lastMessage = message;
+    
 });
