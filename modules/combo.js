@@ -10,7 +10,7 @@ var counter = 1;
 client.on('chat', function(channel, user, message, self) {
     var currentMessage = message;
 
-    if (currentMessage != lastMessage && counter > 2 && global.cooldown === false) {
+    if (currentMessage != lastMessage && counter > 3 && global.cooldown === false) {
     	client.action(channel, counter + 'x ' + lastMessage + ' COMBO');
     	counter = 1;
     	global.cooldown = true;
