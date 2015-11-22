@@ -7,11 +7,11 @@ var client = twitch.client;
 client.on('chat', function(channel, user, message, self) {
     if (message.substr(0,8) === '!countme' && global.cooldown === false) {
         global.cooldown = true;
-        var emote = message.replace('!countme','');
+        var searchPhrase = message.replace('!countme','');
         fs.readFile('logs/' + channel.substr(1) + '/' + user.username +'.txt', function (err, data) {
-            var emoteCount = fn.occurrences(data, emote);
+            var emoteCount = fn.occurrences(data, searchPhrase);
 
-            if (emote.indexOf(".") > -1) {
+            if (searchPhrase.indexOf(".") > -1) {
                 var phrase = 'the phrase';
             }
             else {
@@ -27,9 +27,16 @@ client.on('chat', function(channel, user, message, self) {
 client.on('chat', function(channel, user, message, self) {
     if (message.substr(0,6) === '!count' && global.cooldown === false) {
         global.cooldown = true;
-        var searchWord = message.replace('!count','');
+        var searchPhrase = message.replace('!count','');
         fs.readFile('logs/' + channel.substr(1) + '.txt', function (err, data) {
-            var emoteCount = fn.occurrences(data, searchWord);
+            var emoteCount = fn.occurrences(data, searchPhrase);
+            
+            if (searchPhrase.indexOf(".") > -1) {
+                var phrase = 'the phrase';
+            }
+            else {
+                var phrase = emote;
+            }
             client.say(channel, '@' + user.username + ', chat used ' + 'the phrase' + ' ' + emoteCount + ' times');
         });
     }
