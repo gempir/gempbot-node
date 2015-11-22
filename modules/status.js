@@ -4,13 +4,31 @@ var fn = require('./functions');
 
 var client = twitch.client;
 
+
+
+String.prototype.toHHMMSS = function () {
+    var sec_num = parseInt(this, 10); // don't forget the second param
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    var time    = hours+':'+minutes+':'+seconds;
+    return time;
+}
+
 client.on('chat', function (channel, user, message, self) {
    if (user["username"] === cfg.admin || user["user-type"] === "mod" ) {
         if (message.toLowerCase() === '!status') {
-            client.say(channel, '@' + user['username'] + ', ' + 'active in: ' + cfg.options.channels);
+            var time = process.uptime();
+    		var uptime = (time + "").toHHMMSS();
+            client.say(channel, 'bot uptime: ' + uptime);
         }
    }
 });
+
 
 
 client.on('chat', function (channel, user, message, self) {
