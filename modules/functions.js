@@ -24,7 +24,7 @@ function getFilesizeInKilobytes(filepath) {
 }
 
 function fileExists(filePath) {
-    if (fs.existsSync('./../' + filePath)){
+    if (fs.existsSync(filePath)){
         return true;
     }
     return false;
