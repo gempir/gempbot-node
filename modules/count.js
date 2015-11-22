@@ -11,7 +11,7 @@ client.on('chat', function(channel, user, message, self) {
         fs.readFile('logs/' + channel.substr(1) + '/' + user.username +'.txt', function (err, data) {
             var emoteCount = fn.occurrences(data, searchPhrase);
 
-            if (searchPhrase.indexOf(".") > -1 || searchPhraseChannel.length > 20) {
+            if (searchPhrase.indexOf(".") > -1 || searchPhrase.length > 20) {
                 var phrase = 'the phrase';
             }
             else {
