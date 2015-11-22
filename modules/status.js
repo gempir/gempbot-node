@@ -36,7 +36,7 @@ client.on('chat', function (channel, user, message, self) {
 		console.log(name);
 
 		if (!fn.fileExists('logs/' + channel.substr(1) + '/' + name +  '.txt')) {
-        	client.say(channel, user + ', ' + name + ' has no log here');        
+        	client.say(channel, user['username'] + ', ' + name + ' has no log here');        
         }
         else {
 			if (name === 'channel') {

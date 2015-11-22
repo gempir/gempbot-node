@@ -98,7 +98,7 @@ client.on('chat', function (channel, user, message, self) {
                 }
             }
             else {
-                client.say(channel, user + ', ' + logsFor + ' has no log here');
+                client.say(channel, user['username'] + ', ' + logsFor + ' has no log here');
             }
         }
     }
