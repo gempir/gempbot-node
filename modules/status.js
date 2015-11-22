@@ -31,11 +31,14 @@ client.on('chat', function (channel, user, message, self) {
 
 client.on('chat', function (channel, user, message, self) {
 	var messageStart = message.substr(0,12).toLowerCase();
-    if (messageStart === '!status logs' && global.cooldown === false) {
-		var name = fn.getNthWord(message, 3).toLowerCase();
-		console.log(name);
-
+	var name = fn.getNthWord(message, 3);
+    if (messageStart === '!status logs' && name != undefined && global.cooldown === false) {
+		name = name.toLowerCase();
 		if (!fn.fileExists('logs/' + channel.substr(1) + '/' + name +  '.txt')) {
+        	
+			if (fn.stringIsLongerThan(name, 20)) {
+				name = 'the user';
+			}
         	client.say(channel, user['username'] + ', ' + name + ' has no log here');        
         }
         else {

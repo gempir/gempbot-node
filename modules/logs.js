@@ -98,6 +98,9 @@ client.on('chat', function (channel, user, message, self) {
                 }
             }
             else {
+                if (fn.stringIsLongerThan(logsFor, 20)) {
+                    logsFor = 'the user';
+                }
                 client.say(channel, user['username'] + ', ' + logsFor + ' has no log here');
             }
         }
