@@ -27,15 +27,15 @@ client.on('chat', function(channel, user, message, self) {
 client.on('chat', function(channel, user, message, self) {
     if (message.substr(0,6) === '!count' && global.cooldown === false) {
         global.cooldown = true;
-        var searchPhrase = message.replace('!count','');
+        var searchPhraseChannel = message.replace('!count','');
         fs.readFile('logs/' + channel.substr(1) + '.txt', function (err, data) {
-            var emoteCount = fn.occurrences(data, searchPhrase);
+            var emoteCount = fn.occurrences(data, searchPhraseChannel);
             
-            if (searchPhrase.indexOf(".") > -1) {
+            if (searchPhraseChannel.indexOf(".") > -1) {
                 var phrase = 'the phrase';
             }
             else {
-                var phrase = searchPhrase;
+                var phrase = searchPhraseChannel;
             }
             client.say(channel, '@' + user.username + ', chat used ' + 'the phrase' + ' ' + emoteCount + ' times');
         });
