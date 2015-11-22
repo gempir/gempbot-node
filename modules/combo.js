@@ -13,9 +13,9 @@ client.on('chat', function(channel, user, message, self) {
     if (currentMessage != lastMessage) {
     	if ( counter > 2 && global.cooldown === false) {
     		client.action(channel, counter + 'x ' + lastMessage + ' COMBO');
+            global.cooldown = true;
     	}
     	counter = 1;
-    	global.cooldown = true;
     }
     if (currentMessage.toLowerCase() === lastMessage.toLowerCase()) {
     	counter++;
