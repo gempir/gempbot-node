@@ -15,7 +15,7 @@ client.on('chat', function(channel, user, message, self) {
                 var phrase = 'the phrase';
             }
             else {
-                var phrase = emote;
+                var phrase = searchPhrase;
             }
 
             client.say(channel, '@' + user.username + ', you used ' + phrase + ' ' + emoteCount + ' times');
@@ -35,7 +35,7 @@ client.on('chat', function(channel, user, message, self) {
                 var phrase = 'the phrase';
             }
             else {
-                var phrase = emote;
+                var phrase = searchPhrase;
             }
             client.say(channel, '@' + user.username + ', chat used ' + 'the phrase' + ' ' + emoteCount + ' times');
         });
