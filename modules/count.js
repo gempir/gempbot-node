@@ -10,7 +10,15 @@ client.on('chat', function(channel, user, message, self) {
         var emote = message.replace('!countme','');
         fs.readFile('logs/' + channel.substr(1) + '/' + user.username +'.txt', function (err, data) {
             var emoteCount = fn.occurrences(data, emote);
-            client.say(channel, '@' + user.username + ', you used ' + 'the phrase' + ' ' + emoteCount + ' times');
+
+            if (s.indexOf(".") > -1) {
+                var phrase = 'the phrase';
+            }
+            else (
+                var phrase = emote;
+            )
+
+            client.say(channel, '@' + user.username + ', you used ' + phrase + ' ' + emoteCount + ' times');
         });
     }
 });
