@@ -73,27 +73,33 @@ client.on('chat', function (channel, user, message, self) {
            global.cooldown = true;
             var logsFor = fn.getNthWord(message,2);
             var logsForLower = logsFor.toLowerCase();
-            var logFile = './logs/' + channel.substr(1) + '/' + logsForLower + '.txt';
+            var logFile = 'logs/' + channel.substr(1) + '/' + logsForLower + '.txt';
             var logsShort = null;
 
-            if (fn.getFilesizeInKilobytes(logFile) > 500) {
-                client.say(channel, logsFor + ' is one of the high rank spammers, you can\'t see his logs');
-            } 
-            else {   
-                cfg.pastebin.createPasteFromFile(logFile, 'logs for ' + logsFor,null,2)
-                    .then(function (data) {
-                        client.say(channel, '@' + user.username + ', pastebin.com/' + data);
-                        console.log('Pastebin created: ' + data);
-                        setTimeout(function(){
-                        cfg.pastebin.deletePaste(data)
-                        console.log('Pastebin deleted: ' + data)
-                    }, 600000);    
-                })
-                    .fail(function (err) {
-                            client.say(channel, err);
-                            console.log(err);
-                    });
+            
+            if (fn.fileExists(logFile)) {
+                if (fn.getFilesizeInKilobytes(logFile) > 500) {
+                    client.say(channel, logsFor + ' is one of the high rank spammers, you can\'t see his logs');
+                } 
+                else {
+                    cfg.pastebin.createPasteFromFile(logFile, 'logs for ' + logsFor,null,2) 
+                        .then(function (data) {
+                            client.say(channel, '@' + user.username + ', pastebin.com/' + data);
+                            console.log('Pastebin created: ' + data);
+                            setTimeout(function(){
+                                cfg.pastebin.deletePaste(data)
+                                console.log('Pastebin deleted: ' + data)
+                            }, 600000);    
+                        })
+                        .fail(function (err) {
+                                client.say(channel, err);
+                                console.log(err);
+                        });
                 }
+            }
+            else {
+                client.say(channel, user + ', ' + logsFor + ' has no log here');
+            }
         }
     }
 })

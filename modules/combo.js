@@ -21,5 +21,4 @@ client.on('chat', function(channel, user, message, self) {
     	counter++;
     }
     lastMessage = message; 
-    console.log(counter);
 });

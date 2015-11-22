@@ -11,7 +11,7 @@ client.on('chat', function(channel, user, message, self) {
         fs.readFile('logs/' + channel.substr(1) + '/' + user.username +'.txt', function (err, data) {
             var emoteCount = fn.occurrences(data, searchPhrase);
 
-            if (searchPhrase.indexOf(".") > -1 || searchPhrase.length > 20) {
+            if (fn.stringContainsUrl(searchPhrase) || fn.stringIsLongerThan(searchPhrase, 20)) {
                 var phrase = 'the phrase';
             }
             else {
@@ -27,15 +27,15 @@ client.on('chat', function(channel, user, message, self) {
 client.on('chat', function(channel, user, message, self) {
     if (message.substr(0,6) === '!count' && global.cooldown === false) {
         global.cooldown = true;
-        var searchPhraseChannel = message.replace('!count','');
+        var searchPhrase = message.replace('!count','');
         fs.readFile('logs/' + channel.substr(1) + '.txt', function (err, data) {
-            var emoteCount = fn.occurrences(data, searchPhraseChannel);
+            var emoteCount = fn.occurrences(data, searchPhrase);
             
-            if (searchPhraseChannel.indexOf(".") > -1 || searchPhraseChannel.length > 20) {
+            if (fn.stringContainsUrl(searchPhrase) || fn.stringIsLongerThan(searchPhrase, 20)) {
                 var phrase = 'the phrase';
             }
             else {
-                var phrase = searchPhraseChannel;
+                var phrase = searchPhrase;
             }
             client.say(channel, '@' + user.username + ', chat used ' + phrase + ' ' + emoteCount + ' times');
         });

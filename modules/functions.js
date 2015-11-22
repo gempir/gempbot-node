@@ -23,6 +23,33 @@ function getFilesizeInKilobytes(filepath) {
  	return fileSizeInMegabytes;
 }
 
+function fileExists(filePath) {
+    if (fs.existsSync('./../' + filePath)){
+        return true;
+    }
+    return false;
+}
+
+function stringContainsUrl(inputString) {
+    if (inputString.indexOf(".") > -1) {
+        return true;
+    }
+    if (inputString.indexOf("dot com") > -1) {
+        return true;
+    }
+    if (inputString.indexOf(". com ") > -1) {
+        return true;
+    }
+    return false;
+}
+
+function stringIsLongerThan(inputString, lengthToCheck) {
+    if (inputString.length > lengthToCheck) {
+        return true;
+    }
+    return false;
+}
+
 function occurrences(string, subString, allowOverlapping) {
     string += "";
     subString += "";
@@ -42,4 +69,13 @@ function occurrences(string, subString, allowOverlapping) {
     return n;
 }
 
-module.exports = { getNthWord, getFilesizeInKilobytes, getFilesizeInMegabytes, isBroadcaster, occurrences };
+module.exports = { 
+    getNthWord, 
+    getFilesizeInKilobytes,
+    getFilesizeInMegabytes,
+    isBroadcaster,
+    occurrences,
+    stringContainsUrl, 
+    stringIsLongerThan,
+    fileExists
+};

@@ -29,33 +29,36 @@ client.on('chat', function (channel, user, message, self) {
    }
 });
 
-
-
 client.on('chat', function (channel, user, message, self) {
 	var messageStart = message.substr(0,12).toLowerCase();
     if (messageStart === '!status logs' && global.cooldown === false) {
 		var name = fn.getNthWord(message, 3).toLowerCase();
 		console.log(name);
 
-		if (name === 'channel') {
-			var fileSize = fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '.txt').toFixed(0);
-			var extension = ' KB';
-			if (fileSize > 1000) {
-				fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '.txt').toFixed(2);
-				extension = ' MB';
+		if (!fn.fileExists('logs/' + channel.substr(1) + '/' + name +  '.txt')) {
+        	client.say(channel, user + ', ' + name + ' has no log here');        
+        }
+        else {
+			if (name === 'channel') {
+				var fileSize = fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '.txt').toFixed(0);
+				var extension = ' KB';
+				if (fileSize > 1000) {
+					fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '.txt').toFixed(2);
+					extension = ' MB';
+				}
+				client.say(channel, '@' + user['username'] + ', ' + 'log file for channel ' + channel.substr(1) + ' is ' + fileSize + extension);
+	        	global.cooldown = true;
 			}
-			client.say(channel, '@' + user['username'] + ', ' + 'log file for channel ' + channel.substr(1) + ' is ' + fileSize + extension);
-        	global.cooldown = true;
-		}
-		else {
-			var fileSize = fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(0);
-			var extension = ' KB';
-			if (fileSize > 1000) {
-				fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(2);
-				extension = ' MB';
+			else {
+				var fileSize = fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(0);
+				var extension = ' KB';
+				if (fileSize > 1000) {
+					fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(2);
+					extension = ' MB';
+				}
+				client.say(channel, '@' + user['username'] + ', ' + 'log file for ' + name + ' is ' + fileSize + extension);
+				global.cooldown = true;
 			}
-			client.say(channel, '@' + user['username'] + ', ' + 'log file for ' + name + ' is ' + fileSize + extension);
-			global.cooldown = true;
 		}
     }
 });
