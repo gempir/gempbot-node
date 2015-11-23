@@ -50,24 +50,27 @@ function stringIsLongerThan(inputString, lengthToCheck) {
     return false;
 }
 
-function occurrences(string, subString, allowOverlapping) {
-    string += "";
-    subString += "";
-    if (subString.length <= 0) return (string.length + 1);
-
-    var n = 0,
-        pos = 0,
-        step = allowOverlapping ? 1 : subString.length;
-
-    while (true) {
-        pos = string.indexOf(subString, pos);
-        if (pos >= 0) {
-            ++n;
-            pos += step;
-        } else break;
+function occurrences(haystack, needle) {
+    if (!needle || !haystack) {
+        return false;
     }
-    return n;
+    else {
+        var words = haystack.split(needle),
+            count = {};
+        for (var i = 0, len = words.length; i < len; i++) {
+            if (count.hasOwnProperty(words[i])) {
+                count[words[i]] = parseInt(count[words[i]], 10) + 1;
+            }
+            else {
+                count[words[i]] = 1;
+            }
+        }
+        return count;
+    }
 }
+
+
+
 
 module.exports = { 
     getNthWord, 
