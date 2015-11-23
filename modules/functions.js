@@ -50,22 +50,20 @@ function stringIsLongerThan(inputString, lengthToCheck) {
     return false;
 }
 
-function occurrences(string, subString) {
-    string += "";
-    subString += "";
-    if (subString.length <= 0) return (string.length + 1);
-
-    var n = 0,
-        pos = 0
-
-    while (true) {
-        pos = string.indexOf(subString, pos);
-        if (pos >= 0) {
-            ++n;
-            pos += step;
-        } else break;
+function occurrences(haystack, needle) {
+    var count = 0;
+    var position = 0;
+    while(true) {
+        position = haystack.indexOf(needle, position);
+        if(position != -1) {
+        count++;
+        position += needle.length;
+    } 
+    else{
+      break;
     }
-    return n;
+  }
+  return count;
 }
 
 module.exports = { 
