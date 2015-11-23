@@ -56,8 +56,7 @@ function occurrences(string, subString) {
     if (subString.length <= 0) return (string.length + 1);
 
     var n = 0,
-        pos = 0,
-        step = allowOverlapping ? 1 : subString.length;
+        pos = 0
 
     while (true) {
         pos = string.indexOf(subString, pos);
