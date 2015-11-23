@@ -14,7 +14,7 @@ client.on('chat', function(channel, user, message, self) {
     	if ( counter > 2 && global.cooldown === false) {
             
             if (fn.stringContainsUrl(lastMessage) || fn.stringIsLongerThan(lastMessage, 30)) {
-                var combo = 'the phrase';
+                var combo = fn.getNthWord(lastMessage, 1);
             }
             else {
                 var combo = lastMessage;
