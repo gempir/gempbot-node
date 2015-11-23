@@ -78,7 +78,7 @@ client.on('chat', function (channel, user, message, self) {
 
             
             if (fn.fileExists(logFile)) {
-                if (fn.getFilesizeInKilobytes(logFile) > 500) {
+                if (fn.getFilesizeInKilobytes(logFile) > 2000) {
                     client.say(channel, logsFor + ' is one of the high rank spammers, you can\'t see his logs');
                 } 
                 else {
