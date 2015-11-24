@@ -13,11 +13,15 @@ client.on('chat', function(channel, user, message, self) {
     if (currentMessage != lastMessage) {
     	if ( counter > 2 && global.cooldown === false) {
             
-            if (fn.stringContainsUrl(lastMessage) || fn.stringIsLongerThan(lastMessage, 30)) {
+
+            if (fn.stringIsLongerThan(lastMessage, 30)) {
                 var combo = fn.getNthWord(lastMessage, 1);
             }
             else {
                 var combo = lastMessage;
+            }
+            if (fn.stringContainsUrl(combo)) {
+                combo = '...'
             }
 
     		client.action(channel, counter + 'x ' + combo + ' COMBO');
