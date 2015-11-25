@@ -74,34 +74,55 @@ client.on('chat', function (channel, user, message, self) {
             var logsFor = fn.getNthWord(message,2);
             var logsForLower = logsFor.toLowerCase();
             var logFile = 'logs/' + channel.substr(1) + '/' + logsForLower + '.txt';
+            var logFileChannel = 'logs/' + channel.substr(1) + '.txt';
             var logsShort = null;
 
-            
-            if (fn.fileExists(logFile)) {
-                if (fn.getFilesizeInKilobytes(logFile) > 500) {
-                    client.say(channel, logsFor + ' is one of the high rank spammers, you can\'t see his logs');
-                } 
-                else {
-                    cfg.pastebin.createPasteFromFile(logFile, 'logs for ' + logsFor,null,2) 
-                        .then(function (data) {
-                            client.say(channel, '@' + user.username + ', pastebin.com/' + data);
-                            console.log('Pastebin created: ' + data);
-                            setTimeout(function(){
-                                cfg.pastebin.deletePaste(data)
-                                console.log('Pastebin deleted: ' + data)
-                            }, 600000);    
-                        })
-                        .fail(function (err) {
-                                client.say(channel, err);
-                                console.log(err);
-                        });
-                }
+            if (logsFor = 'channel') {
+                fs.readFile(logFileChannel, function(err,data) {
+                    var shortLogs = data.toString()
+                    shortLogs = shortLogs.substr(shortLogs.length - 100000);
+                    cfg.pastebin.createPaste(shortLogs, 'logs for channel ' + channel.substr(1),null,2) 
+                            .then(function (data) {
+                                client.say(channel, '@' + user.username + ', pastebin.com/' + data);
+                                console.log('Pastebin created: ' + data);
+                                setTimeout(function(){
+                                    cfg.pastebin.deletePaste(data)
+                                    console.log('Pastebin deleted: ' + data)
+                                }, 600000);    
+                            })
+                            .fail(function (err) {
+                                    client.say(channel, err);
+                                    console.log(err);
+                    });
+                });
             }
             else {
-                if (fn.stringIsLongerThan(logsFor, 20)) {
-                    logsFor = 'the user';
+                if (fn.fileExists(logFile)) {
+                    if (fn.getFilesizeInKilobytes(logFile) > 500) {
+                        client.say(channel, logsFor + ' is one of the high rank spammers, you can\'t see his logs');
+                    } 
+                    else {
+                        cfg.pastebin.createPasteFromFile(logFile, 'logs for ' + logsFor,null,2) 
+                            .then(function (data) {
+                                client.say(channel, '@' + user.username + ', pastebin.com/' + data);
+                                console.log('Pastebin created: ' + data);
+                                setTimeout(function(){
+                                    cfg.pastebin.deletePaste(data)
+                                    console.log('Pastebin deleted: ' + data)
+                                }, 600000);    
+                            })
+                            .fail(function (err) {
+                                    client.say(channel, err);
+                                    console.log(err);
+                            });
+                    }
                 }
-                client.say(channel, user['username'] + ', ' + logsFor + ' has no log here');
+                else {
+                    if (fn.stringIsLongerThan(logsFor, 20)) {
+                        logsFor = 'the user';
+                    }
+                    client.say(channel, user['username'] + ', ' + logsFor + ' has no log here');
+                }
             }
         }
     }
