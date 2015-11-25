@@ -10,6 +10,7 @@ client.on('chat', function(channel, user, message, self) {
         var searchPhrase = message.replace('!countme','');
         fs.readFile('logs/' + channel.substr(1) + '/' + user.username +'.txt', function (err, data) {
             var emoteCount = fn.occurrences(data, searchPhrase);
+            emoteCount = fn.numberFormatted(emoteCount);
 
             if (fn.stringContainsUrl(searchPhrase) || fn.stringIsLongerThan(searchPhrase, 20)) {
                 var phrase = 'the phrase';
@@ -30,6 +31,7 @@ client.on('chat', function(channel, user, message, self) {
         var searchPhrase = message.replace('!count','');
         fs.readFile('logs/' + channel.substr(1) + '.txt', function (err, data) {
             var emoteCount = fn.occurrences(data, searchPhrase);
+            emoteCount = fn.numberFormatted(emoteCount);
             
             if (fn.stringContainsUrl(searchPhrase) || fn.stringIsLongerThan(searchPhrase, 20)) {
                 var phrase = 'the phrase';

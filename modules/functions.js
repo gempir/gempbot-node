@@ -43,6 +43,10 @@ function stringContainsUrl(inputString) {
     return false;
 }
 
+function numberFormatted(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 function stringIsLongerThan(inputString, lengthToCheck) {
     if (inputString.length > lengthToCheck) {
         return true;
@@ -74,5 +78,6 @@ module.exports = {
     occurrences,
     stringContainsUrl, 
     stringIsLongerThan,
-    fileExists
+    fileExists,
+    numberFormatted
 };
