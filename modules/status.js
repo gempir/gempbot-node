@@ -24,7 +24,7 @@ client.on('chat', function (channel, user, message, self) {
         if (message.toLowerCase() === '!status') {
             var time = process.uptime();
     		var uptime = (time + "").toHHMMSS();
-            client.say(channel, user['username'] + ', bot uptime: ' + uptime);
+            client.say(channel, '@' + user['username'] + ', bot uptime: ' + uptime);
         }
    }
 });
@@ -39,7 +39,7 @@ client.on('chat', function (channel, user, message, self) {
 			if (fn.stringIsLongerThan(name, 20)) {
 				name = 'the user';
 			}
-        	client.say(channel, user['username'] + ', ' + name + ' has no log here');        
+        	client.say(channel, '@' + user['username'] + ', ' + name + ' has no log here');        
         }
 	    else {
 			if (name === 'channel') {

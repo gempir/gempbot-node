@@ -80,7 +80,7 @@ client.on('chat', function (channel, user, message, self) {
             if (logsFor === 'channel') {
                 fs.readFile(logFileChannel, function(err,data) {
                     var shortLogs = data.toString()
-                    shortLogs = shortLogs.substr(0, 300000);
+                    shortLogs = shortLogs.substr(shortsLogs.length - 300000);
                     cfg.pastebin.createPaste(shortLogs, 'short logs for channel ' + channel.substr(1),null,2) 
                             .then(function (data) {
                                 client.say(channel, '@' + user.username + ', pastebin.com/' + data);
