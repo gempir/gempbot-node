@@ -108,8 +108,8 @@ client.on('chat', function (channel, user, message, self) {
             if (logsFor === 'channel') {
                 fs.readFile(logFileChannel, function(err,data) {
                     var shortLogs = data.toString()
-                    shortLogs = shortLogs.substr(0, 100000);
-                    cfg.pastebin.createPaste(shortLogs, 'logs for channel ' + channel.substr(1),null,2) 
+                    shortLogs = shortLogs.substr(0, 300000);
+                    cfg.pastebin.createPaste(shortLogs, 'short logs for channel ' + channel.substr(1),null,2) 
                             .then(function (data) {
                                 client.say(channel, '@' + user.username + ', pastebin.com/' + data);
                                 console.log('Pastebin created: ' + data);
@@ -127,7 +127,23 @@ client.on('chat', function (channel, user, message, self) {
             else {
                 if (fn.fileExists(logFile)) {
                     if (fn.getFilesizeInKilobytes(logFile) > 500) {
-                        client.say(channel, logsFor + ' is one of the high rank spammers, you can\'t see his logs');
+                        fs.readFile(logFile, function(err,data) {
+                            var shortLogs = data.toString()
+                            shortLogs = shortLogs.substr(0, 300000);
+                            cfg.pastebin.createPaste(shortLogs, 'short logs for channel ' + user['username'],null,2) 
+                                    .then(function (data) {
+                                        client.say(channel, '@' + user.username + ', pastebin.com/' + data);
+                                        console.log('Pastebin created: ' + data);
+                                        setTimeout(function(){
+                                            cfg.pastebin.deletePaste(data)
+                                            console.log('Pastebin deleted: ' + data)
+                                        }, 600000);    
+                                    })
+                                    .fail(function (err) {
+                                            client.say(channel, err);
+                                            console.log(err);
+                            });
+                        });
                     } 
                     else {
                         cfg.pastebin.createPasteFromFile(logFile, 'logs for ' + logsFor,null,2) 
