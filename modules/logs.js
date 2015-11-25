@@ -58,40 +58,12 @@ client.on('action', function (channel, user, message, self) {
 
 client.on('chat', function (channel, user, message, self) {   
     var file = 'logs/' + channel.substr(1) +'.txt';
-    fs.exists(file, function (exists) {
-        if(exists){
-            var data = fs.readFileSync(file); //read existing contents into data
-            var fd = fs.openSync(file, 'w+');
-            var buffer = new Buffer('[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n');
-            fs.writeSync(fd, buffer, 0, buffer.length); //write new data
-            fs.writeSync(fd, data, 0, data.length); //append old data
-            fs.close(fd);
-        } else {
-            fs.writeFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n', function (err) {
-              if (err) throw err;
-              console.log('created ' + channel + '.txt');
-            });
-        }
-    });
+    fs.appendFile(file, user.username + ': ' + message + '\n', function(){});  
 });
 
 client.on('action', function (channel, user, message, self) {
     var file = 'logs/' + channel.substr(1) +'.txt';
-    fs.exists(file, function (exists) {
-        if(exists){
-            var data = fs.readFileSync(file); //read existing contents into data
-            var fd = fs.openSync(file, 'w+');
-            var buffer = new Buffer('[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n');
-            fs.writeSync(fd, buffer, 0, buffer.length); //write new data
-            fs.writeSync(fd, data, 0, data.length); //append old data
-            fs.close(fd);
-        } else {
-            fs.writeFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n', function (err) {
-              if (err) throw err;
-              console.log('created ' + channel + '.txt');
-            });
-        }
-    });
+    fs.appendFile(file, user.username + ': ' + message + '\n', function(){});
 });
 
 
