@@ -15,7 +15,7 @@ client.on('chat', function(channel, user, message, self) {
             
 
             if (fn.stringIsLongerThan(lastMessage, 30)) {
-                var combo = fn.getNthWord(lastMessage, 1);
+                var combo = fn.getNthWord(lastMessage, 1) + ' ...';
             }
             else {
                 var combo = lastMessage;
