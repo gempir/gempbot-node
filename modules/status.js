@@ -24,7 +24,7 @@ client.on('chat', function (channel, user, message, self) {
         if (message.toLowerCase() === '!status') {
             var time = process.uptime();
     		var uptime = (time + "").toHHMMSS();
-            client.say(channel, 'bot uptime: ' + uptime);
+            client.say(channel, user['username'] + ', bot uptime: ' + uptime);
         }
    }
 });
@@ -34,7 +34,7 @@ client.on('chat', function (channel, user, message, self) {
 	var name = fn.getNthWord(message, 3);
     if (messageStart === '!status logs' && name != undefined && global.cooldown === false) {
 		name = name.toLowerCase();
-		if (!fn.fileExists('logs/' + channel.substr(1) + '/' + name +  '.txt')) {
+		if (!fn.fileExists('logs/' + channel.substr(1) + '/' + name +  '.txt') && name != 'channel') {
         	
 			if (fn.stringIsLongerThan(name, 20)) {
 				name = 'the user';
@@ -42,25 +42,27 @@ client.on('chat', function (channel, user, message, self) {
         	client.say(channel, user['username'] + ', ' + name + ' has no log here');        
         }
         else {
-			if (name === 'channel') {
-				var fileSize = fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '.txt').toFixed(0);
-				var extension = ' KB';
-				if (fileSize > 1000) {
-					fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '.txt').toFixed(2);
-					extension = ' MB';
+	        else {
+				if (name === 'channel') {
+					var fileSize = fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '.txt').toFixed(0);
+					var extension = ' KB';
+					if (fileSize > 1000) {
+						fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '.txt').toFixed(2);
+						extension = ' MB';
+					}
+					client.say(channel, '@' + user['username'] + ', ' + 'log file for channel ' + channel.substr(1) + ' is ' + fileSize + extension);
+		        	global.cooldown = true;
 				}
-				client.say(channel, '@' + user['username'] + ', ' + 'log file for channel ' + channel.substr(1) + ' is ' + fileSize + extension);
-	        	global.cooldown = true;
-			}
-			else {
-				var fileSize = fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(0);
-				var extension = ' KB';
-				if (fileSize > 1000) {
-					fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(2);
-					extension = ' MB';
+				else {
+					var fileSize = fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(0);
+					var extension = ' KB';
+					if (fileSize > 1000) {
+						fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(2);
+						extension = ' MB';
+					}
+					client.say(channel, '@' + user['username'] + ', ' + 'log file for ' + name + ' is ' + fileSize + extension);
+					global.cooldown = true;
 				}
-				client.say(channel, '@' + user['username'] + ', ' + 'log file for ' + name + ' is ' + fileSize + extension);
-				global.cooldown = true;
 			}
 		}
     }
