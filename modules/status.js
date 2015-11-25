@@ -41,29 +41,28 @@ client.on('chat', function (channel, user, message, self) {
 			}
         	client.say(channel, user['username'] + ', ' + name + ' has no log here');        
         }
-        else {
-	        else {
-				if (name === 'channel') {
-					var fileSize = fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '.txt').toFixed(0);
-					var extension = ' KB';
-					if (fileSize > 1000) {
-						fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '.txt').toFixed(2);
-						extension = ' MB';
-					}
-					client.say(channel, '@' + user['username'] + ', ' + 'log file for channel ' + channel.substr(1) + ' is ' + fileSize + extension);
-		        	global.cooldown = true;
+	    else {
+			if (name === 'channel') {
+				var fileSize = fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '.txt').toFixed(0);
+				var extension = ' KB';
+				if (fileSize > 1000) {
+					fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '.txt').toFixed(2);
+					extension = ' MB';
 				}
-				else {
-					var fileSize = fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(0);
-					var extension = ' KB';
-					if (fileSize > 1000) {
-						fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(2);
-						extension = ' MB';
-					}
-					client.say(channel, '@' + user['username'] + ', ' + 'log file for ' + name + ' is ' + fileSize + extension);
-					global.cooldown = true;
+				client.say(channel, '@' + user['username'] + ', ' + 'log file for channel ' + channel.substr(1) + ' is ' + fileSize + extension);
+		        global.cooldown = true;
+			}
+			else {
+				var fileSize = fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(0);
+				var extension = ' KB';
+				if (fileSize > 1000) {
+					fileSize = fn.getFilesizeInMegabytes('logs/' + channel.substr(1) + '/' + name +  '.txt').toFixed(2);
+					extension = ' MB';
 				}
+				client.say(channel, '@' + user['username'] + ', ' + 'log file for ' + name + ' is ' + fileSize + extension);
+				global.cooldown = true;
 			}
 		}
+		
     }
 });
