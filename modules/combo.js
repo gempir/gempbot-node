@@ -19,7 +19,7 @@ client.on('chat', function(channel, user, message, self) {
             }
             else {
                 var combo = lastMessage;
-            }An
+            }
             if (fn.stringContainsUrl(combo)) {
                 combo = '...'
             }
