@@ -6,7 +6,6 @@ This bot can also count the amount the chat or yourself used a specific phrase.
 And it will count combo's when users use the same message directly back to back.
 
 
-
 # Features
 
 Type **!status** to find out the current channels the bot is connected to.
@@ -21,10 +20,15 @@ Type **!status logs 'username'** to get the size report for a users log file
 
 Type **!status logs channel** to get the size of the channel's log file 
 
+Type **!lines 'username'** to get a line count for someones log file
+
+
 # Installation
 Download the Bot https://github.com/danielps1/gempbot/archive/master.zip
 
 Install nodejs from https://nodejs.org/
+
+I have found out that node 4.2.1 works best. If you are having issues definetly try another node version.
 
 Open **gempbot.js** with a text editor of your choice
 
@@ -74,15 +78,4 @@ Now start the bot by opening a terminal/shell window and type node gempbot.js or
 
 The bot will create logs folder on it's own.
 
-# Credits 
-
-This bot is possible because of this genius libary http://www.tmijs.org/
-Check out the documentation for more features.
-
-Used modules:
-- https://github.com/Schmoopiie/tmi.js
-- https://github.com/moment/moment/
-- https://github.com/caolan/async
-- https://github.com/j3lte/pastebin-js
-- https://github.com/isaacs/node-graceful-fs
 
