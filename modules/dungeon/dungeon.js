@@ -15,7 +15,7 @@ function dungeonHandler(channel, user, message)
             return false;
         }
         if (!bool) {
-            queries.setDungeonStatus(user.username, "ACTIVE", function(result) {
+            queries.setDungeonStatus(user.username, 1, function(result) {
                 
             });
             output.whisper(user.username, "You're in Dungeon mode now. More coming soon");
@@ -37,10 +37,18 @@ function dungeonHandler(channel, user, message)
 }
 
 
-function dungeonHandler(channel, user, message)
+function dungeonCommandHandler(channel, user, message)
 {
+    var dngCommand = getNthWord(getmessage.toLowerCase(), 2);
 
+    if (dngCommand === 'status') {
+        getDungeonStatus(user);
+    }
+}
 
+function getDungeonStatus(user)
+{
+    return null;
 }
 
 module.exports = 
