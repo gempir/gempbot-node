@@ -1,3 +1,4 @@
+
 var channel = require('./modules/twitch/channel');
 var handler = require('./modules/eventHandler');
 require('./modules/logs');
