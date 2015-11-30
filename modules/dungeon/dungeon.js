@@ -1,7 +1,9 @@
-var fn       = require('./../functions');
-var db       = require('./../db/connectDB');
-var queries  = require('./../db/queries');
-var output   = require('./../twitch/output');
+var fn            = require('./../functions');
+var db            = require('./../db/connectDB');
+var queries       = require('./../db/queries');
+var output        = require('./../twitch/output');
+var dngEnter      = require('./dungeonEnter');
+
 
 function dungeonHandler(channel, user, message)
 {
@@ -9,13 +11,13 @@ function dungeonHandler(channel, user, message)
 
 
     if (messageLowerCase === '!dungeon') {
-        queries.isInDungeon(user.username, function(bool) {
+        queries.isDungeonUser(user.username, function(bool) {
         if (bool) {
             console.log(user.username + ' already in dungeon');
             return false;
         }
         if (!bool) {
-            queries.setDungeonStatus(user.username, 1, function(result) {
+            queries.setDungeon(user.username, function(result) {
                 
             });
             output.whisper(user.username, "You're in Dungeon mode now. More coming soon");
@@ -24,12 +26,12 @@ function dungeonHandler(channel, user, message)
         });
     }
     if (fn.getNthWord(messageLowerCase, 1) === '!dungeon' && messageLowerCase != '!dungeon') {
-        queries.isInDungeon(user.username, function(bool) {
+        queries.isDungeonUser(user.username, function(bool) {
             if (bool) {
                 dungeonCommandHandler(channel, user, message);
             }
             else {
-                output.whisper(user.username, 'You are not in dungeon mode yet. Enter Dungeon mode by typing !dungeon');
+                output.whisper(user.username, 'You are not in dungeon mode yet. Enter Dungeon mode by typing "!dungeon"');
             }
         })
     }
@@ -39,16 +41,44 @@ function dungeonHandler(channel, user, message)
 
 function dungeonCommandHandler(channel, user, message)
 {
-    var dngCommand = getNthWord(getmessage.toLowerCase(), 2);
+    var dngCommand = fn.getNthWord(message.toLowerCase(), 2);
 
     if (dngCommand === 'status') {
-        getDungeonStatus(user);
+        getStatus(user);
+    }
+    if (dngCommand === 'enter') {
+        queries.isActiveInDungeon(user.username, function(result) {
+            if (result) {
+                output.whisper(user.username, 'You\'re already in a dungeon. Wait for a response!');
+            }
+            else if (!result) {
+                dngEnter.enterDungeon(user);
+            }
+        })        
     }
 }
 
-function getDungeonStatus(user)
+
+function getStatus(user)
 {
-    return null;
+    queries.getDungeonStatusAndLevel(user.username, function(rows) {
+        if (!rows) {
+            return null;
+        }
+        var levelResponse = 'in dungeon level ' + rows[0].dungeonlevel;
+        if (rows[0].dungeonstatus === 'BOSS') {
+            output.whisper(user.username, 'You are currently on a boss ' + levelResponse);
+        }
+        else if (rows[0].dungeonstatus === 'DUNGEON') {
+            output.whisper(user.username, 'You\'re ' + levelResponse + ' and there is still time left until the end.');
+        }
+        else if (rows[0].dungeonstatus === 'IDLE') {
+            output.whisper(user.username, 'You\'re currently not in a dungeon type "!dungeon enter" to enter the next dungeon level');
+        }
+        else {
+            return false;
+        }
+    });
 }
 
 module.exports = 

@@ -19,6 +19,11 @@ function getFilesizeInMegabytes(filepath)
  	return fileSizeInMegabytes;
 }
 
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
 function getFilesizeInKilobytes(filepath)
 {
 	var stats = fs.statSync(filepath);
@@ -115,5 +120,6 @@ module.exports =
     fileExists,
     numberFormatted,
     lineCount,
-    secsToTime
+    secsToTime,
+    getRandomInt
 };

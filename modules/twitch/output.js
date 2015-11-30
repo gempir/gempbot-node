@@ -15,7 +15,7 @@ function say(channel, message, action)
 	if (!action) {
 		global.cooldown = true;
 		chat.say(channel, message);
-		console.log('[OUTPUT]' + '/me ' + message);
+		console.log('[OUTPUT] ' + message);
 	}
 	else if (action) {
 		global.cooldown = true;
