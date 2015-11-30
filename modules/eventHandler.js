@@ -28,9 +28,6 @@ function channelEventHandler(channel, user, message, self) {
 		case '!logs':
 			logs.uploadLogs(channel, user, message);
 			break;
-		case '!status':
-			status.statusHandler(channel, user, message);
-			break;
 		case '!lines':
 			lines.countLines(channel, user, message);
 			break;
