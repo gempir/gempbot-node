@@ -10,7 +10,7 @@ function enterDungeon(user)
 	queries.incrementDungeonLevel(user.username, function(result) {
 		if (result){
 			queries.getDungeonStatusAndLevel(user.username, function(rows) {
-				output.whisper(user.username, 'You are now in dungeon level ' + rows[0].dungeonlevel);
+				output.whisper(user.username, 'You are now in dungeon level ' + rows[0].dungeonlevel + ' wait 10min until you either fail or win');
 			});
 		}
 
@@ -29,14 +29,14 @@ function startTimer(user)
 			finishDungeon(user.username, dungeonLevel + 1);
 			clearInterval(interval);
 			return true;
-		}, 60000);	
+		}, 600000);	
 
 		interval = setInterval(function() {
 			if (!failDungeon(user.username, dungeonLevel + 1)) {
 				clearInterval(interval);
 				return false;
 			}
-		}, 5000);
+		}, 50000);
 
 		// for future boss additions 
 		/*setInterval(function(user) {

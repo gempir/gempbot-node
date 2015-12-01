@@ -20,7 +20,7 @@ function dungeonHandler(channel, user, message)
             queries.setDungeon(user.username, function(result) {
                 
             });
-            output.whisper(user.username, "You're in Dungeon mode now. More coming soon");
+            output.whisper(user.username, "You're in Dungeon mode now. Type \"!dungeon enter\" to start.");
             console.log(user['username'] + ' went into Dungeon mode');
         }
         });

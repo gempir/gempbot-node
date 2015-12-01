@@ -2,7 +2,7 @@ var channelModule = require('./channel');
 var whisperModule = require('./whisper');
 
 chat = channelModule.client;
-group = whisperModule.client;
+group = whisperModule.bot;
 
 function say(channel, message, action)
 {
@@ -27,7 +27,7 @@ function say(channel, message, action)
 
 function whisper(channel, message)
 {
-	group.whisper(channel, message);
+	group.say(channel, '.w ' + channel + ' ' + message);
 	console.log('[OUTPUT] ' + '/w ' + channel + ' ' + message)
 }
 
