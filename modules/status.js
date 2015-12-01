@@ -17,7 +17,7 @@ function statusBot(channel, user, message )
 {
 	var time = process.uptime();
 	var uptime = fn.secsToTime((time + ""));
-    output.say(channel, '@' + user['username'] + ', bot uptime: ' + uptime + ', branch: ' + git.branch() + ' (' + git.short() + ')');    
+    output.say(channel, '@' + user['username'] + ', bot uptime: ' + uptime + ' | branch: ' + git.branch() + ' (' + git.short() + ')');    
 }
 
 function statusLogsUser(channel, user, message) 

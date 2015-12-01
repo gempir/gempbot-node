@@ -48,7 +48,7 @@ function adminCommands(channel, user, message, command)
 	if (command.substr(0,7) === '!status' && user.username == cfg.admin) {
 			status.statusHandler(channel, user, message);
 	} 
-	else if (command.substr(0,9) === '!shutdown' && user.username == cfg.admin) {
+	else if (command.substr(0,9) === '!reboot' && user.username == cfg.admin) {
 		console.log('shutdown');
 		queries.setAllUsersToIdle(function(){
 			output.say(channel, 'shutting down...');
@@ -56,7 +56,6 @@ function adminCommands(channel, user, message, command)
 		});
 	}	
 }
-
 
 module.exports = 
 {
