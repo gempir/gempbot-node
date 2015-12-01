@@ -66,9 +66,6 @@ function getStatus(user, channel)
             return null;
         }
         var levelResponse = 'in dungeon level ' + rows[0].dungeonlevel;
-        if (levelResponse > 20) {
-            output.say(channel, user + ' is in dungeon level ' + levelResponse + ' PogChamp');
-        }
         if (rows[0].dungeonstatus === 'BOSS') {
             output.whisper(user.username, 'You are currently on a boss ' + levelResponse);
         }

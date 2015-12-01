@@ -14,7 +14,7 @@ require('./modules/dungeon/dungeon.js');
 // startup 
 setTimeout(function() {
 	output.say(cfg.options.channels[0], 'Bot starting | branch: ' + git.branch() + ' (' + git.short() + ')');
-}, 3000);
+}, 5000);
 
 
 channel.client.on('chat', function(channel, user, message, self) {
