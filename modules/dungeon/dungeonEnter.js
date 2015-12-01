@@ -10,7 +10,7 @@ function enterDungeon(user)
 	queries.incrementDungeonLevel(user.username, function(result) {
 		if (result){
 			queries.getDungeonStatusAndLevel(user.username, function(rows) {
-				output.whisper(user.username, 'You are now in dungeon level ' + rows[0].dungeonlevel + ' wait 1min until you either fail or win');
+				output.whisper(user.username, 'You are now in dungeon level ' + rows[0].dungeonlevel + ' if you survive 5min you win');
 			});
 		}
 
