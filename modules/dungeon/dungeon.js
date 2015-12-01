@@ -44,7 +44,7 @@ function dungeonCommandHandler(channel, user, message)
     var dngCommand = fn.getNthWord(message.toLowerCase(), 2);
 
     if (dngCommand === 'status') {
-        getStatus(user);
+        getStatus(user, channel);
     }
     if (dngCommand === 'enter') {
         queries.isActiveInDungeon(user.username, function(result) {
@@ -59,13 +59,16 @@ function dungeonCommandHandler(channel, user, message)
 }
 
 
-function getStatus(user)
+function getStatus(user, channel)
 {
-    queries.getDungeonStatusAndLevel(user.username, function(rows) {
+    queries.getDungeonStatusAndLevel(user.username, channel, function(rows) {
         if (!rows) {
             return null;
         }
         var levelResponse = 'in dungeon level ' + rows[0].dungeonlevel;
+        if (levelResponse > 20) {
+            output.say(channel, user + ' is in dungeon level ' + levelResponse + ' PogChamp');
+        }
         if (rows[0].dungeonstatus === 'BOSS') {
             output.whisper(user.username, 'You are currently on a boss ' + levelResponse);
         }
