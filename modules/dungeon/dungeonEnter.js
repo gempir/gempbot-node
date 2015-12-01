@@ -50,7 +50,7 @@ function finishDungeon(username, dungeonLevel) {
 	queries.setDungeonStatus(username, 'IDLE', function(result){})
 	output.whisper(username, 'You finished dungeon level ' + dungeonLevel);
 	if (dungeonLevel > 20) {
-		output.say('#nymn_hs', username + 'just finished dungeon level ' + dungeonLevel + ' PogChamp');
+		output.say('#nymn_hs', username + ' just finished dungeon level ' + dungeonLevel + ' PogChamp');
 	}
 	return true;
 }
