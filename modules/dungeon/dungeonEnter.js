@@ -10,7 +10,7 @@ function enterDungeon(user)
 	queries.incrementDungeonLevel(user.username, function(result) {
 		if (result){
 			queries.getDungeonStatusAndLevel(user.username, function(rows) {
-				output.whisper(user.username, 'You are now in dungeon level ' + rows[0].dungeonlevel + ' wait 10min until you either fail or win');
+				output.whisper(user.username, 'You are now in dungeon level ' + rows[0].dungeonlevel + ' wait 1min until you either fail or win');
 			});
 		}
 
@@ -54,7 +54,7 @@ function finishDungeon(username, dungeonLevel) {
 
 function failDungeon(username, dungeonLevel) {
 	// roll the dice 
-	if (fn.getRandomInt(0,100) > 85) {
+	if (fn.getRandomInt(0,100) > 95) {
 		queries.setDungeonStatus(username, 'IDLE', function(result){})
 		queries.decrementDungeonLevel(username);
 		output.whisper(username, 'You failed the dungeon level ' + dungeonLevel);
