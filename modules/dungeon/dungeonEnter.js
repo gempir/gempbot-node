@@ -29,14 +29,14 @@ function startTimer(user)
 			finishDungeon(user.username, dungeonLevel + 1);
 			clearInterval(interval);
 			return true;
-		}, 600000);	
+		}, 60000);	
 
 		interval = setInterval(function() {
 			if (!failDungeon(user.username, dungeonLevel + 1)) {
 				clearInterval(interval);
 				return false;
 			}
-		}, 50000);
+		}, 5000);
 
 		// for future boss additions 
 		/*setInterval(function(user) {
