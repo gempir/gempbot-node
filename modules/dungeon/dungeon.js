@@ -61,7 +61,7 @@ function dungeonCommandHandler(channel, user, message)
 
 function getStatus(user, channel)
 {
-    queries.getDungeonStatusAndLevel(user.username, channel, function(rows) {
+    queries.getDungeonStatusAndLevel(user.username, function(rows) {
         if (!rows) {
             return null;
         }
