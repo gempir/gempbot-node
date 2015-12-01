@@ -54,7 +54,7 @@ function finishDungeon(username, dungeonLevel) {
 
 function failDungeon(username, dungeonLevel) {
 	// roll the dice 
-	if (fn.getRandomInt(0,100) > 5) {
+	if (fn.getRandomInt(0,100) > 85) {
 		queries.setDungeonStatus(username, 'IDLE', function(result){})
 		queries.decrementDungeonLevel(username);
 		output.whisper(username, 'You failed the dungeon level ' + dungeonLevel);
