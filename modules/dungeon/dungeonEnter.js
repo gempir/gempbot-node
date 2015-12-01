@@ -48,7 +48,6 @@ function startTimer(user)
 
 function finishDungeon(username, dungeonLevel) {
 	queries.setDungeonStatus(username, 'IDLE', function(result){})
-	dungeonLevel = dungeonLevel + 1;
 	output.whisper(username, 'You finished dungeon level ' + dungeonLevel);
 	return true;
 }
