@@ -5,37 +5,15 @@ var output = require('./twitch/output');
 
 function quoteCommandHandler(channel, user, message)
 {
-	if (message.toLowerCase() === '!randomquote') {
-		randomQuoteFromChannel(channel, user, message);
-	}
 	if (message.toLowerCase() !== '!randomquote') {
 		userToQuote = fn.getNthWord(message, 2);
 		randomQuoteFromUser(channel, user, message, userToQuote);
 	}
+	else {
+		console.log('[LOG] no user for quote');
+		return false;
+	}
 }
-
-
-
-function randomQuoteFromChannel(channel, user, message) 
-{
-
-	fs.readFile('logs/' + channel.substr(1) + '.txt', function (err, data) {
-		if (err) {
-			console.log('[ERROR] randomquote channel fail');
-		}
-    	
-    	logsSplit = data.toString().split("\n");
-        quote = logsSplit[Math.floor(Math.random()*logsSplit.length)];
-
-        if (quote.length > 150 || fn.stringContainsUrl(quote)) {
-        	console.log('[LOG] skipped channel quote');
-        	randomQuoteFromChannel(channel, user, message);
-        	return false;
-        }
-        output.say(channel, '" ' + quote + ' "');
-    });
-}
-
 
 function randomQuoteFromUser(channel, user, message, userToQuote) 
 {
@@ -51,7 +29,7 @@ function randomQuoteFromUser(channel, user, message, userToQuote)
 		        quote = logsSplit[Math.floor(Math.random()*logsSplit.length)];
 		        quote = quote.split(']');
 		        quote = quote[1];
-
+// err
 		        if (quote.length > 150 || fn.stringContainsUrl(quote)) {
 		        	console.log('[LOG] skipped user quote');
 		        	randomQuoteFromUser(channel, user, message, userToQuote);
