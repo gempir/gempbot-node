@@ -45,7 +45,7 @@ function channelEventHandler(channel, user, message, self) {
 
 function adminCommands(channel, user, message, command) 
 {
-	if (command.substr(0,7) === '!status' && user.username == cfg.admin) {
+	if (command.substr(0,7) === '!status') {
 			status.statusHandler(channel, user, message);
 	} 
 	else if (command.substr(0,9) === '!reboot' && user.username == cfg.admin) {
