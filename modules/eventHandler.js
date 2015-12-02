@@ -37,9 +37,9 @@ function channelEventHandler(channel, user, message, self) {
 		case '!countme':
 			count.countMe(channel, user, message);
 			break;
-		case '!dungeon':
-			dng.dungeonHandler(channel, user, message);
-			break;
+		//case '!dungeon':
+		//	dng.dungeonHandler(channel, user, message);
+		//	break;
 	}
 }
 
