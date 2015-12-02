@@ -9,6 +9,7 @@ var lines   = require('./lines');
 var dng     = require('./dungeon/dungeon');
 var queries = require('./db/queries');
 var output  = require('./twitch/output');
+var quote   = require('./quote');
 
 function channelEventHandler(channel, user, message, self) {
 	combo.count(channel, user, message);
@@ -37,9 +38,13 @@ function channelEventHandler(channel, user, message, self) {
 		case '!countme':
 			count.countMe(channel, user, message);
 			break;
+		case '!randomquote':
+			quote.quoteCommandHandler(channel, user, message);
+			break;
 		//case '!dungeon':
 		//	dng.dungeonHandler(channel, user, message);
 		//	break;
+
 	}
 }
 

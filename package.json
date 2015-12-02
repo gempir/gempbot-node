@@ -12,7 +12,9 @@
     "tmi.js": "0.0.24"
   },
   "devDependencies": {
-    "git-rev-sync": "^1.4.0"
+    "git-rev-sync": "^1.4.0",
+    "irc": "^0.4.0",
+    "tmi.js": "0.0.24"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -11,7 +11,7 @@ var settings = {
 var irc = require("irc");
 
 var bot = new irc.Client(settings.server, settings.nick, {
-    debug: true,
+    debug: false,
     password: settings.password,
     username: settings.nick
 });

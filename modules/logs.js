@@ -24,12 +24,12 @@ function userLogs(channel, user, message)
         if(exists){
             var data = fs.readFileSync(file); 
             var fd = fs.openSync(file, 'w+');
-            var buffer = new Buffer('[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n');
+            var buffer = new Buffer('[GMT+1 ' + moment().utcOffset(60).format('DD.MM.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n');
             fs.writeSync(fd, buffer, 0, buffer.length); 
             fs.writeSync(fd, data, 0, data.length); 
             fs.close(fd);
         } else {
-            fs.writeFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n', function (err) {
+            fs.writeFile(file, '[GMT+1 ' + moment().utcOffset(60).format('DD.MM.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n', function (err) {
               if (err) throw err;
               console.log('created ' + user.username + '.txt');
             });
