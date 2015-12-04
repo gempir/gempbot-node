@@ -10,6 +10,7 @@ var skip = false;
 function count(channel, user, message)
 {
     var currentMessage = message;
+    skip = false;
 
     if (currentMessage != lastMessage) {
         if ( counter > 2) {
