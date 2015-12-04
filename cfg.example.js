@@ -4,13 +4,6 @@ setInterval(function() {
 
 var admin = 'gempir';
 
-var db = {
-    host: 'localhost',
-    user: 'YOURUSER',
-    password: 'YOURPASSWORD',
-    database: 'gempir'
-}
-
 var options = {
         options: {
             debug: true
@@ -20,17 +13,17 @@ var options = {
             reconnect: true
         },
         identity: {
-            username: 'YOURBOTNAME',
-            password: 'oauth:YOURTOKEN'
+            username: 'gempbot',
+            password: 'oauth:'
         },
         channels: ['#gempir']
 };
 
 var PastebinAPI = require('pastebin-js'),
     pastebin = new PastebinAPI({
-          'api_dev_key' : 'YOURDEVKEY',
-          'api_user_name' : 'YOURUSERNAME',
-          'api_user_password' : 'YOURPASSWORD'
+          'api_dev_key' : '',
+          'api_user_name' : '',
+          'api_user_password' : ''
         });
 
 

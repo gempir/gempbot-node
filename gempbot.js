@@ -8,8 +8,6 @@ require('./modules/status');
 require('./modules/count');
 require('./modules/combo');
 require('./modules/lines');
-require('./modules/db/logUsers');
-require('./modules/dungeon/dungeon.js');
 
 // startup 
 setTimeout(function() {
