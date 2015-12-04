@@ -95,8 +95,8 @@ function occurrences(haystack, needle)
 {
     var count = 0;
     var position = 0;
-    haystack = haystack.toLowerCase();
-    
+    haystack = haystack.toString().toLowerCase();
+
     while(true) {
         position = haystack.indexOf(needle.toLowerCase(), position);
         if( position != -1) {
