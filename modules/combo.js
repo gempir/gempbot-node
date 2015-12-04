@@ -9,7 +9,7 @@ var counter = 1;
 function count(channel, user, message)
 {
     var currentMessage = message;
-
+    console.log(fn.stringIsLongerThan(lastMessage, 30), fn.stringContainsUrl(lastMessage))
     if (currentMessage != lastMessage) {
         if ( counter > 2) {
             if (fn.stringIsLongerThan(lastMessage, 30) || fn.stringContainsUrl(lastMessage)) {
