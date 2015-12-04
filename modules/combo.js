@@ -12,7 +12,6 @@ function count(channel, user, message)
 
     if (currentMessage != lastMessage) {
         if ( counter > 2) {
-            
             if (fn.stringIsLongerThan(lastMessage, 30) || fn.stringContainsUrl(lastMessage)) {
                 return false;
             }
