@@ -9,10 +9,11 @@ var counter = 1;
 function count(channel, user, message)
 {
     var currentMessage = message;
-    
+
     if (currentMessage != lastMessage) {
         if ( counter > 2) {
             if (fn.stringIsLongerThan(lastMessage, 30) || fn.stringContainsUrl(lastMessage)) {
+                lastMessage = message;
                 return false;
             }
             else {
