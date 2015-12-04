@@ -5,6 +5,7 @@ var output = require('./twitch/output');
 var lastMessage = '';
 var currentMessage = '';
 var counter = 1;
+var skip = false;
 
 function count(channel, user, message)
 {
@@ -12,14 +13,19 @@ function count(channel, user, message)
 
     if (currentMessage != lastMessage) {
         if ( counter > 2) {
-            if (fn.stringIsLongerThan(lastMessage, 30) || fn.stringContainsUrl(lastMessage)) {
-                lastMessage = message;
-                return false;
+            
+            if (fn.stringContainsUrl(lastMessage)) {
+                skip = true;
+            }
+            if (fn.stringIsLongerThan(lastMessage, 30)) {
+                skip = true;
             }
             else {
                 var combo = lastMessage;
             }
-            output.say(channel, counter + 'x ' + combo + ' COMBO', true);
+            if (!skip) {
+                output.say(channel, counter + 'x ' + combo + ' COMBO', true);
+            }
         }
         counter = 1;
     }
