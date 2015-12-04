@@ -1,19 +1,17 @@
 {
   "name": "gempbot",
-  "version": "1.0.0",
-  "description": "twitch bot written in node js",
+  "version": "1.3.0",
+  "description": "bot for twitch chat",
   "main": "gempbot.js",
-  "dependencies": {
-    "async": "^1.4.2",
-    "graceful-fs": "^4.1.2",
-    "moment": "^2.10.6",
-    "mysql": "^2.9.0",
-    "pastebin-js": "^0.3.2",
-    "tmi.js": "0.0.24"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "async": "^1.5.0",
+    "fs": "0.0.2",
     "git-rev-sync": "^1.4.0",
     "irc": "^0.4.0",
+    "moment": "^2.10.6",
+    "mysql": "^2.9.0",
+    "pastebin-js": "^0.3.4",
     "tmi.js": "0.0.24"
   },
   "scripts": {
@@ -21,15 +19,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/danielps1/gempbot.git"
+    "url": "git+https://github.com/gempir/gempbot.git"
   },
-  "keywords": [
-    "nodejs"
-  ],
-  "author": "danielps1",
+  "author": "gempir",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/danielps1/gempbot/issues"
+    "url": "https://github.com/gempir/gempbot/issues"
   },
-  "homepage": "https://github.com/danielps1/gempbot#readme"
+  "homepage": "https://github.com/gempir/gempbot#readme"
 }

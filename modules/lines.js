@@ -1,6 +1,6 @@
 var cfg = require('../cfg');
 var fn = require('./functions');
-var fs = require('graceful-fs');
+var fs = require('fs');
 var output = require('./twitch/output');
 
 

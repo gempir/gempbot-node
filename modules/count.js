@@ -1,5 +1,5 @@
 var output = require('./twitch/output');
-var fs = require('graceful-fs');
+var fs = require('fs');
 var fn = require('./functions');
 
 function count(channel, user, message) 
