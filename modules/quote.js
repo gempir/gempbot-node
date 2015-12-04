@@ -1,4 +1,4 @@
-var fs     = require('fs');
+var fs     = require('graceful-fs');
 var fn     = require('./functions');
 var output = require('./twitch/output');
 

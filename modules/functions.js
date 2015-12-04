@@ -1,4 +1,4 @@
-var fs = require('fs')
+var fs = require('graceful-fs')
 
 function getNthWord(string, n)
 {
