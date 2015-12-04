@@ -13,12 +13,8 @@ function count(channel, user, message)
     if (currentMessage != lastMessage) {
         if ( counter > 2) {
             
-            if (fn.stringContainsUrl(lastMessage)) {
-                var combo = '...'
-            }
-            if (fn.stringIsLongerThan(lastMessage, 30)) {
-                var combo = fn.getNthWord(lastMessage, 1);
-                combo = combo + ' [...]';
+            if (fn.stringIsLongerThan(lastMessage, 30) || fn.stringContainsUrl(lastMessage)) {
+                return false;
             }
             else {
                 var combo = lastMessage;

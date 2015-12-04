@@ -2,6 +2,7 @@ var fs     = require('graceful-fs');
 var fn     = require('./functions');
 var output = require('./twitch/output');
 
+var global.quoteCounter = 0;
 
 function quoteCommandHandler(channel, user, message)
 {
@@ -30,7 +31,11 @@ function randomQuoteFromUser(channel, user, message, userToQuote)
 		        quote = quote.split(']');
 		        quote = quote[1];
 // err
-		        if (quote.length > 150 || fn.stringContainsUrl(quote)) {
+		        if (quote.length < 10 || quote.length > 150 || fn.stringContainsUrl(quote)) {
+		        	global.quoteCounter++;
+		        	if (global.quoteCounter > 9) {
+		        		return false;
+		        	}
 		        	console.log('[LOG] skipped user quote');
 		        	randomQuoteFromUser(channel, user, message, userToQuote);
 		        	return false;
