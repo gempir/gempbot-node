@@ -2,7 +2,7 @@ var fs     = require('graceful-fs');
 var fn     = require('./functions');
 var output = require('./twitch/output');
 
-var global.quoteCounter = 0;
+global.quoteCounter = 0;
 
 function quoteCommandHandler(channel, user, message)
 {
