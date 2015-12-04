@@ -20,7 +20,7 @@ function randomQuoteFromUser(channel, user, message, userToQuote)
 {
 	userToQuote = userToQuote.toLowerCase();
 	userFile = 'logs/' + channel.substr(1) + '/' + userToQuote + '.txt';
-	if (getFilesizeInKilobytes(userFile) < 10) {
+	if (fn.getFilesizeInKilobytes(userFile) < 10) {
 		return false;
 	}
 	fs.exists(userFile, function (exists) {
