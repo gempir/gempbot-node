@@ -21,7 +21,9 @@ function randomQuoteFromUser(channel, user, message, userToQuote)
 	userToQuote = userToQuote.toLowerCase();
 	userFile = 'logs/' + channel.substr(1) + '/' + userToQuote + '.txt';
 	fs.exists(userFile, function (exists) {
-        
+        if (fn.getFilesizeInKilobytes(userFile) < 10) {
+			return false;
+		}
         if(exists){
             fs.readFile(userFile, function (err, data) {
 				if (err) {
@@ -35,6 +37,7 @@ function randomQuoteFromUser(channel, user, message, userToQuote)
 		        if (quote.length < 10 || quote.length > 150 || fn.stringContainsUrl(quote)) {
 		        	global.quoteCounter++;
 		        	if (global.quoteCounter > 9) {
+		        		global.quoteCounter = 0;
 		        		return false;
 		        	}
 		        	console.log('[LOG] skipped user quote');
