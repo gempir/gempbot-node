@@ -17,7 +17,7 @@ function stats(channel, username, message, whisper)
     var logStats = fn.logStats(file, linesFor);
     
     if (whisper) {
-        output.whisper(user, linesFor + '\'s ' + logStats );
+        output.whisper(username, linesFor + '\'s ' + logStats );
     }
     else {
         output.say(channel, '@' + username + ', ' + linesFor + '\'s ' + logStats);
