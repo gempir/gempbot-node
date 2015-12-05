@@ -55,7 +55,7 @@ function channelLogs(channel, user, message)
 }
 
 
-function uploadLogs(channel, user, message) 
+function uploadLogs(channel, username, message) 
 {
     if (message.toLowerCase() === '!logs') {
         return false;
@@ -75,7 +75,7 @@ function uploadLogs(channel, user, message)
                     .then(function (data) {
                         console.log('Pastebin created: ' + data);
                         console.log(logsFor, logFileChannel);
-                        output.whisper(user.username, 'short logs for channel '+ channel.substr(1) + ' pastebin.com/' + data); 
+                        output.whisper(username, 'short logs for channel '+ channel.substr(1) + ' pastebin.com/' + data); 
                     })
                     .fail(function (err) {
                             output.say(channel, err);
@@ -88,11 +88,11 @@ function uploadLogs(channel, user, message)
                 fs.readFile(logFile, function(err,data) {
                     var shortLogs = data.toString()
                     shortLogs = shortLogs.substr(0, 300000);
-                    cfg.pastebin.createPaste(shortLogs, 'short logs for channel ' + user['username'],null,0, '10M') 
+                    cfg.pastebin.createPaste(shortLogs, 'short logs for channel ' + username,null,0, '10M') 
                             .then(function (data) {
                                 console.log('Pastebin created: ' + data);
                                 console.log(logsFor, logFile);
-                                output.whisper(user.username, 'short logs for '+ logsFor + ' pastebin.com/' + data);
+                                output.whisper(username, 'short logs for '+ logsFor + ' pastebin.com/' + data);
                             })
                             .fail(function (err) {
                                     output.say(channel, err);
@@ -101,7 +101,7 @@ function uploadLogs(channel, user, message)
                 });
             } 
         else {
-            console.log(user['username'] + ', ' + logsFor + ' has no log here');
+            console.log(logsFor + ' has no log here');
         }
     }
 }

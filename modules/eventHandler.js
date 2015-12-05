@@ -23,7 +23,7 @@ function channelEventHandler(channel, user, message, self) {
 
 	switch (command) {
 		case '!logs':
-			logs.logsCommandHandler(channel, user, message, false);
+			logs.logsCommandHandler(channel, user.username, message, false);
 			break;
 		case '!lines':
 			lines.countLines(channel, user, message, false);
@@ -52,7 +52,7 @@ function whisperEventHandler(username, message) {
 
 	switch (command) {
 		case '!logs':
-			logs.logsCommandHandler(cfg.options.channels[0], username, message, true);
+			logs.logsCommandHandler(cfg.options.channels[0], username, message);
 			break;
 		case '!lines':
 			lines.countLines(cfg.options.channels[0], username, message, true);
