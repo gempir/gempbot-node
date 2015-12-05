@@ -41,7 +41,7 @@ function countMe(channel, username, message, whisper)
             output.whisper(username, 'You used ' + phrase + ' ' + emoteCount + ' times');
         }
         else {
-            output.say(channel, '@' + user.username + ', you used ' + phrase + ' ' + emoteCount + ' times');
+            output.say(channel, '@' + username + ', you used ' + phrase + ' ' + emoteCount + ' times');
         }
     });
 }
