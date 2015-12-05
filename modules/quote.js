@@ -30,7 +30,7 @@ function quoteUser(channel, user, message, whisper)
 		        		return false;
 		        	}
 		        	console.log('[LOG] skipped user quote');
-		        	randomQuoteFromUser(channel, user, message, userToQuote);
+		        	quoteUser(channel, user, message, whisper);
 		        	return false;
 		        }
 		        if (whisper) {
