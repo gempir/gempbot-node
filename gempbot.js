@@ -1,4 +1,5 @@
 var channel = require('./modules/twitch/channel');
+var whisper = require('./modules/twitch/whisper');
 var handler = require('./modules/eventHandler');
 var git     = require('git-rev-sync');
 var cfg     = require('./cfg');
@@ -9,10 +10,11 @@ require('./modules/count');
 require('./modules/combo');
 require('./modules/lines');
 
+
 // startup 
 setTimeout(function() {
 	output.say(cfg.options.channels[0], 'Bot starting | branch: ' + git.branch() + ' (' + git.short() + ')');
-}, 5000);
+}, 3000);
 
 
 channel.client.on('chat', function(channel, user, message, self) {
@@ -23,3 +25,6 @@ channel.client.on('action', function(channel, user, message, self) {
     handler.channelEventHandler(channel, user, message, self);
 });
 
+whisper.group.on('whisper', function (username, message) {
+	handler.whisperEventHandler(username, message);
+});

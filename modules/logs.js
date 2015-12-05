@@ -16,14 +16,14 @@ cfg.options.channels.forEach(function(channel) {
   }
 });
 
-function logsCommandHandler(channel, user, message)
+function logsCommandHandler(channel, user, message, whisper)
 {
     bigCommand = fn.getNthWord(message, 1) + ' ' + fn.getNthWord(message, 2);
     if (bigCommand === '!logs size') {
-        logsSize(channel, user, message);
+        logsSize(channel, user, message, whisper);
     }
     else if (fn.getNthWord(message, 1) === '!logs') {
-        uploadLogs(channel, user, message);
+        uploadLogs(channel, user, message); // logs are always whispered!
     }
 }
 
@@ -106,7 +106,7 @@ function uploadLogs(channel, user, message)
     }
 }
 
-function logsSize(channel, user, message) 
+function logsSize(channel, user, message, whisper) 
 {
     var messageStart = message.substr(0,12).toLowerCase();
     var name = fn.getNthWord(message, 3);
@@ -117,7 +117,7 @@ function logsSize(channel, user, message)
         if (fn.stringIsLongerThan(name, 20)) {
             name = 'the user';
         }
-        console.log('@' + user['username'] + ', ' + name + ' has no log here');        
+        console.log(name + ' has no log here');        
     }
     else {
         if (name === 'channel') {
@@ -128,7 +128,12 @@ function logsSize(channel, user, message)
                 fileSize = fn.getFilesizeInMegabytes(file).toFixed(2);
                 extension = ' MB';
             }
-            output.say(channel, '@' + user['username'] + ', ' + 'log file for channel ' + channel.substr(1) + ' is ' + fileSize + extension);
+            if (whisper) {
+                output.whisper(user, 'Log file for channel ' + channel.substr(1) + ' is ' + fileSize + extension);
+            }
+            else {
+                output.say(channel, '@' + user.username + ', ' + 'log file for channel ' + channel.substr(1) + ' is ' + fileSize + extension);
+            }
         }
         else {
             var file = 'logs/' + channel.substr(1) + '/' + name +  '.txt'
@@ -138,7 +143,12 @@ function logsSize(channel, user, message)
                 fileSize = fn.getFilesizeInMegabytes(file).toFixed(2);
                 extension = ' MB';
             }
-            output.say(channel, '@' + user['username'] + ', ' + 'log file for ' + name + ' is ' + fileSize + extension);
+            if (whisper) {
+                output.whisper(user, 'Log file for ' + name + ' is ' + fileSize + extension);
+            }
+            else {
+                output.say(channel, '@' + user.username + ', ' + 'log file for ' + name + ' is ' + fileSize + extension);
+            }
         }
     }
 }

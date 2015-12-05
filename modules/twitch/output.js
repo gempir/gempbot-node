@@ -39,10 +39,14 @@ function sayNoCD(channel, message, action)
 }
 
 
-function whisper(channel, message)
+function whisper(username, message)
 {
-	group.say(channel, '.w ' + channel + ' ' + message);
-	console.log('[WHISPER] ' + '/w ' + channel + ' ' + message)
+	if (global.whisperCooldown) {
+		return false;
+	}
+	global.whisperCooldown = true;
+	group.whisper(username, message);
+	console.log('[WHISPER] ' + '/w ' + username + ' ' + message)
 }
 
 module.exports = 

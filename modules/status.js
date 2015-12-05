@@ -4,11 +4,17 @@ var git    = require('git-rev-sync');
 var output = require('./twitch/output');
 
 
-function statusBot(channel, user, message )
+function statusBot(channel, user, message, whisper)
 {
 	var time = process.uptime();
 	var uptime = fn.secsToTime((time + ""));
-    output.sayNoCD(channel, '@' + user['username'] + ', bot uptime: ' + uptime + ' | branch: ' + git.branch() + ' (' + git.short() + ')');    
+
+	if (whisper) {
+		output.whisper(user, 'Bot uptime: ' + uptime + ' | branch: ' + git.branch() + ' (' + git.short() + ')');
+	}
+    else {
+    	output.sayNoCD(channel, '@' + user['username'] + ', bot uptime: ' + uptime + ' | branch: ' + git.branch() + ' (' + git.short() + ')');
+    }   
 }
 
 module.exports = 

@@ -1,24 +1,22 @@
 var cfg = require('./../../cfg');
+var irc = require('tmi.js');
 
-var settings = {
-    server : "192.16.64.180",
-    port: 443,
-    secure: false,
-    nick : cfg.options.identity.username,
-    password : cfg.options.identity.password 
-}
-
-var irc = require("irc");
-
-var group = new irc.Client(settings.server, settings.nick, {
-    debug: false,
-    password: settings.password,
-    username: settings.nick
+var group = new irc.client({
+        options: {
+            debug: true
+        },
+        connection: {
+            server: "group.tmi.twitch.tv",
+            port: 80,
+            reconnect: true
+        },
+        identity: {
+            username: cfg.options.identity.username,
+            password: cfg.options.identity.password
+        },
 });
 
-group.connect(function() {
-    console.log("Connected!");
-});
+group.connect();
 
 module.exports = 
 {

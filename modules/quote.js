@@ -4,16 +4,9 @@ var output = require('./twitch/output');
 
 global.quoteCounter = 0;
 
-function quoteCommandHandler(channel, user, message)
+function quoteUser(channel, user, message, whisper) 
 {
-	if (message.toLowerCase() !== '!randomquote') {
-		userToQuote = fn.getNthWord(message, 2);
-		randomQuoteFromUser(channel, user, message, userToQuote);
-	}
-}
-
-function randomQuoteFromUser(channel, user, message, userToQuote) 
-{
+	var userToQuote = fn.getNthWord(message, 2); 
 	userToQuote = userToQuote.toLowerCase();
 	userFile = 'logs/' + channel.substr(1) + '/' + userToQuote + '.txt';
 	fs.exists(userFile, function (exists) {
@@ -40,7 +33,12 @@ function randomQuoteFromUser(channel, user, message, userToQuote)
 		        	randomQuoteFromUser(channel, user, message, userToQuote);
 		        	return false;
 		        }
-		        output.say(channel, '"' + quote + ' "');
+		        if (whisper) {
+		        	output.whisper(user, '"' + quote + ' "');
+		        }
+		        else {
+		        	output.say(channel, '"' + quote + ' "');
+		        }
 		    });
         } else {
             console.log('[ERROR] ' + userToQuote + ' has no logs')
@@ -53,5 +51,5 @@ function randomQuoteFromUser(channel, user, message, userToQuote)
 
 module.exports = 
 {
-	quoteCommandHandler
+	quoteUser
 }
