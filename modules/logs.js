@@ -129,7 +129,7 @@ function logsSize(channel, username, message, whisper)
                 extension = ' MB';
             }
             if (whisper) {
-                output.whisper(user, 'Log file for channel ' + channel.substr(1) + ' is ' + fileSize + extension);
+                output.whisper(username, 'Log file for channel ' + channel.substr(1) + ' is ' + fileSize + extension);
             }
             else {
                 output.say(channel, '@' + username + ', ' + 'log file for channel ' + channel.substr(1) + ' is ' + fileSize + extension);
@@ -144,7 +144,7 @@ function logsSize(channel, username, message, whisper)
                 extension = ' MB';
             }
             if (whisper) {
-                output.whisper(user, 'Log file for ' + name + ' is ' + fileSize + extension);
+                output.whisper(username, 'Log file for ' + name + ' is ' + fileSize + extension);
             }
             else {
                 output.say(channel, '@' + username + ', ' + 'log file for ' + name + ' is ' + fileSize + extension);
