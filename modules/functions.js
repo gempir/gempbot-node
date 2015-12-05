@@ -91,6 +91,31 @@ function stringIsLongerThan(inputString, lengthToCheck)
     return false;
 }
 
+function logStats(file, username) 
+{
+    var fileBuffer =  fs.readFileSync(file);
+    var to_string = fileBuffer.toString();
+    var split_lines = to_string.split("\n");
+    split_lines.pop();
+    var lineCount = split_lines.length;
+    var messageLength = 0;
+    var wordCount = 0;
+
+    for (var i = 0, len = split_lines.length; i < len; i++) {
+        messageAndUsernameOnly = split_lines[i].split(']');
+        messageOnly = messageAndUsernameOnly[1].split(username + ':');
+        messageLength += messageOnly[1].length;
+        messageSplit = messageOnly[1].split(' ');
+        wordCount += messageSplit.length;
+    }
+    var avgMessageLength = messageLength / lineCount;
+    var avgWords = wordCount / lineCount;
+    avgMessageLength = avgMessageLength.toFixed(0);
+    avgWords = avgWords.toFixed(1);
+
+    return ' average message has ' + avgMessageLength + ' characters and ' + avgWords + ' words, and he/she spammed a total of ' + lineCount + ' lines';
+}
+
 function occurrences(haystack, needle)
 {
     var count = 0;
@@ -119,7 +144,7 @@ module.exports =
     stringIsLongerThan,
     fileExists,
     numberFormatted,
-    lineCount,
     secsToTime,
-    getRandomInt
+    getRandomInt,
+    logStats
 };

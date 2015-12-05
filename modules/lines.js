@@ -4,39 +4,29 @@ var fs = require('graceful-fs');
 var output = require('./twitch/output');
 
 
-function countLines(channel, user, message, whisper)
+function stats(channel, username, message, whisper)
 {
-    if (message.toLowerCase() === '!lines') {
+    if (message === '!lines') { // make sure a username is actually specified
         return false;
     }
     var linesFor = fn.getNthWord(message,2).toLowerCase();
-    if (linesFor === 'channel') {
-        var fileChannel = 'logs/' + channel.substr(1) + '.txt';
-        var lineCount = fn.lineCount(file);
-        lineCount = fn.numberFormatted(lineCount);
-        if (whisper) {
-            output.whisper(user,'Channel ' + channel.substr(1) + ' has ' + lineCount + ' lines');
-        }
-        else {
-            output.say(channel, '@' + user['username'] + ', channel ' + channel.substr(1) + ' has ' + lineCount + ' lines');
-        }
+    var file = 'logs/' + channel.substr(1) + '/' + linesFor +'.txt';
+    if (!fn.fileExists(file)) {
+        return false;
+    }
+    var logStats = fn.logStats(file, linesFor);
+    
+    if (whisper) {
+        output.whisper(user, linesFor + '\'s ' + logStats );
     }
     else {
-        var file = 'logs/' + channel.substr(1) + '/' + linesFor +'.txt';
-        var lineCount = fn.lineCount(file);
-        lineCount = fn.numberFormatted(lineCount);
-        if (whisper) {
-            output.whisper(user, linesFor + ' spammed ' + lineCount + ' lines');
-        }
-        else {
-            output.say(channel, '@' + user['username'] + ', ' + linesFor + ' spammed ' + lineCount + ' lines');
-        }
+        output.say(channel, '@' + username + ', ' + linesFor + '\'s ' + logStats);
     }   
 }
 
 
 module.exports = 
 {
-    countLines
+    stats
 }    
 

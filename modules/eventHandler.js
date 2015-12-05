@@ -26,7 +26,7 @@ function channelEventHandler(channel, user, message, self) {
 			logs.logsCommandHandler(channel, user.username, message, false);
 			break;
 		case '!lines':
-			lines.countLines(channel, user, message, false);
+			lines.stats(channel, user.username, message, false);
 			break;
 		case '!count':
 			count.count(channel, user, message, false);
@@ -55,7 +55,7 @@ function whisperEventHandler(username, message) {
 			logs.logsCommandHandler(cfg.options.channels[0], username, message);
 			break;
 		case '!lines':
-			lines.countLines(cfg.options.channels[0], username, message, true);
+			lines.stats(cfg.options.channels[0], username, message, true);
 			break;
 		case '!count':
 			count.count(cfg.options.channels[0], username, message, true);
