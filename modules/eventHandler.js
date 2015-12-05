@@ -52,7 +52,7 @@ function whisperEventHandler(username, message) {
 
 	switch (command) {
 		case '!logs':
-			logs.logsCommandHandler(cfg.options.channels[0], username, message);
+			logs.logsCommandHandler(cfg.options.channels[0], username, message, true);
 			break;
 		case '!lines':
 			lines.stats(cfg.options.channels[0], username, message, true);
