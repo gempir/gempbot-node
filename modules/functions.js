@@ -103,7 +103,7 @@ function logStats(file, username)
 
     for (var i = 0, len = split_lines.length; i < len; i++) {
         messageAndUsernameOnly = split_lines[i].split(']');
-        if (typeof messageAndUsernameOnly !== 'undefined') {
+        if (typeof messageAndUsernameOnly[1] !== 'undefined') {
             messageOnly = messageAndUsernameOnly[1].split(username + ':');
             messageLength += messageOnly[1].length;
             messageSplit = messageOnly[1].split(' ');
