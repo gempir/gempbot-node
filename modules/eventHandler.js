@@ -37,17 +37,15 @@ function channelEventHandler(channel, user, message, self) {
 		case '!randomquote':
 			quote.quoteCommandHandler(channel, user, message);
 			break;
-		case '!whisperme':
-			output.whisper(user.username,'Hello ;)');
 	}
 }
 
 function adminCommands(channel, user, message, command) 
 {
-	if (command === '!status') {
+	if (message.toLowerCase() === '!status') {
 			status.statusBot(channel, user, message);
 	} 
-	else if (command.substr(0,9) === '!reboot' && user.username == cfg.admin) {
+	else if (message.toLowerCase() === '!reboot' && user.username == cfg.admin) {
 		console.log('shutdown');
 		queries.setAllUsersToIdle(function(){
 			output.say(channel, 'shutting down...');

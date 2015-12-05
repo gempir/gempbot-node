@@ -42,7 +42,7 @@ function sayNoCD(channel, message, action)
 function whisper(channel, message)
 {
 	group.say(channel, '.w ' + channel + ' ' + message);
-	console.log('[OUTPUT] ' + '/w ' + channel + ' ' + message)
+	console.log('[WHISPER] ' + '/w ' + channel + ' ' + message)
 }
 
 module.exports = 
