@@ -106,7 +106,7 @@ function uploadLogs(channel, username, message)
     }
 }
 
-function logsSize(channel, user, message, whisper) 
+function logsSize(channel, username, message, whisper) 
 {
     var messageStart = message.substr(0,12).toLowerCase();
     var name = fn.getNthWord(message, 3);
@@ -132,7 +132,7 @@ function logsSize(channel, user, message, whisper)
                 output.whisper(user, 'Log file for channel ' + channel.substr(1) + ' is ' + fileSize + extension);
             }
             else {
-                output.say(channel, '@' + user.username + ', ' + 'log file for channel ' + channel.substr(1) + ' is ' + fileSize + extension);
+                output.say(channel, '@' + username + ', ' + 'log file for channel ' + channel.substr(1) + ' is ' + fileSize + extension);
             }
         }
         else {
@@ -147,7 +147,7 @@ function logsSize(channel, user, message, whisper)
                 output.whisper(user, 'Log file for ' + name + ' is ' + fileSize + extension);
             }
             else {
-                output.say(channel, '@' + user.username + ', ' + 'log file for ' + name + ' is ' + fileSize + extension);
+                output.say(channel, '@' + username + ', ' + 'log file for ' + name + ' is ' + fileSize + extension);
             }
         }
     }
