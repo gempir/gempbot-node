@@ -103,10 +103,12 @@ function logStats(file, username)
 
     for (var i = 0, len = split_lines.length; i < len; i++) {
         messageAndUsernameOnly = split_lines[i].split(']');
-        messageOnly = messageAndUsernameOnly[1].split(username + ':');
-        messageLength += messageOnly[1].length;
-        messageSplit = messageOnly[1].split(' ');
-        wordCount += messageSplit.length;
+        if (typeof messageAndUsernameOnly !== 'undefined') {
+            messageOnly = messageAndUsernameOnly[1].split(username + ':');
+            messageLength += messageOnly[1].length;
+            messageSplit = messageOnly[1].split(' ');
+            wordCount += messageSplit.length;
+        }
     }
     var avgMessageLength = messageLength / lineCount;
     var avgWords = wordCount / lineCount;
