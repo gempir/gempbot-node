@@ -1,16 +1,14 @@
 # gempbot
 This is a nodejs twitchbot with a logging functionality that requires no webhosting.
-This bot uses pastebin.com to give you the log files, log files above 500kb are not uploaded since that's the limit for free accounts. I'm working on a feature that will only upload the last 500 lines or something like that.
+You just have to run a node app on your pc. 
 
-This bot can also count the amount the chat or yourself used a specific phrase. 
-And it will count combo's when users use the same message directly back to back.
-
+I commit a lot because that's how I deploy to my server. Sorry If my commits are mostly worthless. 
 
 # Features
 
 Type **!status** to find out the current channels the bot is connected to.
 
-Type **!logs 'username'** to get a pastebin log of a single user with a timestamp.
+Type **!logs 'username'** to get a pastebin log of a single user with a timestamp as a whisper.
 
 Type **!count 'phrase'** to get the number of times the chat wrote that phrase, also works with sentences
 
@@ -22,9 +20,11 @@ Type **!status logs channel** to get the size of the channel's log file
 
 Type **!lines 'username'** to get a line count for someones log file
 
+Type **!randomquote 'username'** to get a randomquote from a users logs
+
 
 # Installation
-Download the Bot https://github.com/danielps1/gempbot/archive/master.zip
+Download the Bot https://github.com/gempir/gempbot/archive/master.zip
 
 Install nodejs from https://nodejs.org/
 
@@ -70,7 +70,7 @@ You can find your twitch auth key by going to http://twitchapps.com/tmi
 And finally change "channels" to the channel(s) you want to make the bot connect to.
 Make sure to start with a **#**
 
-Don't forget to install node modules with the node package manger like this:
+Don't forget to install node modules with the npm like this:
   
     npm install
     
