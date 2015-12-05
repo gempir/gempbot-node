@@ -6,16 +6,26 @@ var output = require('./twitch/output');
 
 if (!fs.existsSync('logs')){
     fs.mkdirSync('logs');
-    console.log('Created folder: logs');
+    console.log('[LOG] Created folder: logs');
 }
 
 cfg.options.channels.forEach(function(channel) {
   if (!fs.existsSync('logs/' + channel.substr(1))){
     fs.mkdirSync('logs/' + channel.substr(1));
-    console.log('Created folder: ' + channel.substr(1));
+    console.log('[LOG] Created folder: ' + channel.substr(1));
   }
 });
 
+function logsCommandHandler(channel, user, message)
+{
+    bigCommand = fn.getNthWord(message, 1) + ' ' + fn.getNthWord(message, 2);
+    if (bigCommand === '!logs size') {
+        logsSize(channel, user, message);
+    }
+    else if (fn.getNthWord(message, 1) === '!logs') {
+        uploadLogs(channel, user, message);
+    }
+}
 
 function userLogs(channel, user, message)
 {
@@ -31,7 +41,7 @@ function userLogs(channel, user, message)
         } else {
             fs.writeFile(file, '[GMT+1 ' + moment().utcOffset(60).format('DD.MM.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n', function (err) {
               if (err) throw err;
-              console.log('created ' + user.username + '.txt');
+              console.log('[LOG] created ' + user.username + '.txt');
             });
         }
     });
@@ -91,13 +101,44 @@ function uploadLogs(channel, user, message)
                 });
             } 
         else {
-            if (fn.stringContainsUrl(logsFor) || fn.stringIsLongerThan(logsFor, 20)) {
-                var userLogs = 'the user';
+            console.log(user['username'] + ', ' + logsFor + ' has no log here');
+        }
+    }
+}
+
+function logsSize(channel, user, message) 
+{
+    var messageStart = message.substr(0,12).toLowerCase();
+    var name = fn.getNthWord(message, 3);
+    
+    name = name.toLowerCase();
+    if (!fn.fileExists('logs/' + channel.substr(1) + '/' + name +  '.txt') && name != 'channel') {
+        
+        if (fn.stringIsLongerThan(name, 20)) {
+            name = 'the user';
+        }
+        console.log('@' + user['username'] + ', ' + name + ' has no log here');        
+    }
+    else {
+        if (name === 'channel') {
+            var file = 'logs/' + channel.substr(1) + '.txt'
+            var fileSize = fn.getFilesizeInKilobytes(file).toFixed(0);
+            var extension = ' KB';
+            if (fileSize > 1000) {
+                fileSize = fn.getFilesizeInMegabytes(file).toFixed(2);
+                extension = ' MB';
             }
-            else {
-                var userLogs = logsFor;
+            output.say(channel, '@' + user['username'] + ', ' + 'log file for channel ' + channel.substr(1) + ' is ' + fileSize + extension);
+        }
+        else {
+            var file = 'logs/' + channel.substr(1) + '/' + name +  '.txt'
+            var fileSize = fn.getFilesizeInKilobytes(file).toFixed(0);
+            var extension = ' KB';
+            if (fileSize > 1000) {
+                fileSize = fn.getFilesizeInMegabytes(file).toFixed(2);
+                extension = ' MB';
             }
-            output.say(channel, user['username'] + ', ' + userLogs + ' has no log here');
+            output.say(channel, '@' + user['username'] + ', ' + 'log file for ' + name + ' is ' + fileSize + extension);
         }
     }
 }
@@ -106,5 +147,5 @@ module.exports =
 {
     channelLogs,
     userLogs,
-    uploadLogs
+    logsCommandHandler
 }

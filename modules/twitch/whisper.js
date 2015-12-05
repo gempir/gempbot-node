@@ -10,17 +10,17 @@ var settings = {
 
 var irc = require("irc");
 
-var bot = new irc.Client(settings.server, settings.nick, {
+var group = new irc.Client(settings.server, settings.nick, {
     debug: false,
     password: settings.password,
     username: settings.nick
 });
 
-bot.connect(function() {
+group.connect(function() {
     console.log("Connected!");
 });
 
 module.exports = 
 {
-    bot
+    group
 }

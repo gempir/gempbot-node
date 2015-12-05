@@ -23,7 +23,7 @@ function channelEventHandler(channel, user, message, self) {
 
 	switch (command) {
 		case '!logs':
-			logs.uploadLogs(channel, user, message);
+			logs.logsCommandHandler(channel, user, message);
 			break;
 		case '!lines':
 			lines.countLines(channel, user, message);
@@ -37,14 +37,15 @@ function channelEventHandler(channel, user, message, self) {
 		case '!randomquote':
 			quote.quoteCommandHandler(channel, user, message);
 			break;
-
+		case '!whisperme':
+			output.whisper(user.username,'Hello ;)');
 	}
 }
 
 function adminCommands(channel, user, message, command) 
 {
-	if (command.substr(0,7) === '!status') {
-			status.statusHandler(channel, user, message);
+	if (command === '!status') {
+			status.statusBot(channel, user, message);
 	} 
 	else if (command.substr(0,9) === '!reboot' && user.username == cfg.admin) {
 		console.log('shutdown');

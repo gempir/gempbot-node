@@ -10,10 +10,6 @@ function quoteCommandHandler(channel, user, message)
 		userToQuote = fn.getNthWord(message, 2);
 		randomQuoteFromUser(channel, user, message, userToQuote);
 	}
-	else {
-		console.log('[LOG] no user for quote');
-		return false;
-	}
 }
 
 function randomQuoteFromUser(channel, user, message, userToQuote) 
@@ -33,7 +29,7 @@ function randomQuoteFromUser(channel, user, message, userToQuote)
 		        quote = logsSplit[Math.floor(Math.random()*logsSplit.length)];
 		        quote = quote.split(']');
 		        quote = quote[1];
-// err
+
 		        if (quote.length < 10 || quote.length > 150 || fn.stringContainsUrl(quote)) {
 		        	global.quoteCounter++;
 		        	if (global.quoteCounter > 9) {
@@ -47,7 +43,7 @@ function randomQuoteFromUser(channel, user, message, userToQuote)
 		        output.say(channel, '"' + quote + ' "');
 		    });
         } else {
-            console.log('[ERROR]' + userToQuote + ' has no logs')
+            console.log('[ERROR] ' + userToQuote + ' has no logs')
         }
     });
 	
