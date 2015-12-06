@@ -14,11 +14,11 @@ function quoteUser(channel, user, message, whisper)
 	userFile = 'logs/' + channel.substr(1) + '/' + userToQuote + '.txt';
 	
 	if (!fn.fileExists(userFile)) {
-    	console.log('[ERROR] ' + userToQuote + ' has no logs');
+    	console.log('[LOG] ' + userToQuote + ' has no logs');
     	return false;
     }
     if (fn.getFilesizeInKilobytes(userFile) < 1) {
-    	console.log('[ERROR] ' + userToQuote + ' logs less than 1KB');
+    	console.log('[LOG] ' + userToQuote + ' logs less than 1KB');
 		return false;
 	}
 

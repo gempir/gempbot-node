@@ -65,8 +65,7 @@ function uploadLogs(channel, username, message)
     var logFile = 'logs/' + channel.substr(1) + '/' + logsFor + '.txt';
     var logFileChannel = 'logs/' + channel.substr(1) + '.txt';
     var logsShort = null;
-    
-    console.log(logsFor);
+
     if (logsFor === 'channel') {
         fs.readFile(logFileChannel, function(err,data) {
             var shortLogs = data.toString()
@@ -101,7 +100,7 @@ function uploadLogs(channel, username, message)
                 });
             } 
         else {
-            console.log(logsFor + ' has no log here');
+            console.log('[LOG] ' + logsFor + ' has no log here');
         }
     }
 }
@@ -117,7 +116,7 @@ function logsSize(channel, username, message, whisper)
         if (fn.stringIsLongerThan(name, 20)) {
             name = 'the user';
         }
-        console.log(name + ' has no log here');        
+        console.log('[LOG] ' + name + ' has no log here');        
     }
     else {
         if (name === 'channel') {
