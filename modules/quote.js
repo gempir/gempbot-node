@@ -16,7 +16,7 @@ function quoteUser(channel, user, message, whisper)
         if(exists){
             fs.readFile(userFile, function (err, data) {
 				if (err) {
-					output.say(userToQuote + ' has no logs here')
+					return false;
 				}
 		    	logsSplit = data.toString().split("\n");      
 		        quote = logsSplit[Math.floor(Math.random()*logsSplit.length)];
