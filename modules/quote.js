@@ -6,6 +6,9 @@ global.quoteCounter = 0;
 
 function quoteUser(channel, user, message, whisper) 
 {
+	if (message.toLowerCase === '!randomquote') {
+		return false;
+	}
 	var userToQuote = fn.getNthWord(message, 2); 
 	userToQuote = userToQuote.toLowerCase();
 	userFile = 'logs/' + channel.substr(1) + '/' + userToQuote + '.txt';
@@ -45,11 +48,7 @@ function quoteUser(channel, user, message, whisper)
         	output.say(channel, '"' + quote + ' "');
         }
     });
-        
-            
-      
-    });
-	
+       	
 	
 }
 
