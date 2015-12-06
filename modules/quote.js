@@ -6,7 +6,7 @@ global.quoteCounter = 0;
 
 function quoteUser(channel, user, message, whisper) 
 {
-	if (message.toLowerCase === '!randomquote') {
+	if (message.toLowerCase() === '!randomquote') {
 		return false;
 	}
 	var userToQuote = fn.getNthWord(message, 2); 
