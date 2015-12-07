@@ -1,12 +1,13 @@
-var cfg     = require('./../cfg');
-var fn      = require('./functions');
-var logs    = require('./logs.js');
-var combo   = require('./combo');
-var status  = require('./status');
-var count   = require('./count');
-var lines   = require('./lines');
-var output  = require('./twitch/output');
-var quote   = require('./quote');
+var cfg         = require('./../cfg');
+var fn          = require('./functions');
+var logs        = require('./logs.js');
+var combo       = require('./combo');
+var status      = require('./status');
+var count       = require('./count');
+var lines       = require('./lines');
+var output      = require('./twitch/output');
+var quote       = require('./quote');
+var lastmessage = require('./lastmessage');
 
 function channelEventHandler(channel, user, message, self) {
 	combo.count(channel, user, message);
@@ -37,6 +38,9 @@ function channelEventHandler(channel, user, message, self) {
 		case '!randomquote':
 			quote.quoteUser(channel, user, message, false);
 			break;
+		case '!lastmessage':
+			lastmessage.lastMessage(channel, user.username, message, false);
+			break;
 	}
 }
 
@@ -66,21 +70,32 @@ function whisperEventHandler(username, message) {
 		case '!randomquote':
 			quote.quoteUser(cfg.options.channels[0], username, message, true);
 			break;
+		case '!lastmessage':
+			lastmessage.lastMessage(cfg.options.channels[0], username, message, true);
+			break;
 	}
 }
 
-function adminCommands(channel, user, message, whisper) 
+function adminCommands(channel, username, message, whisper) 
 {
+	if (!(username.username == cfg.admin)) {
+		return false;
+	}
 	if (message.toLowerCase() === '!status') {
-			status.statusBot(channel, user, message, whisper);
+			status.statusBot(channel, username, message, whisper);
+	}
+	if (message.substr(0,8).toLowerCase() === '!nuclear') {
+		console.log('test');
+		nuclear.goNuclear(channel, username, message);
 	} 
-	else if (message.toLowerCase() === '!reboot' && user.username == cfg.admin) {
-		console.log('shutdown');
-		queries.setAllUsersToIdle(function(){
-			output.say(channel, 'shutting down...');
-			process.exit()
-		});
-	}	
+	else if (message.substr(0,4).toLowerCase() === '!say') {
+		var toSay = message.substr(5);
+		output.sayNoCD(channel, toSay);
+	}
+	else if (message.toLowerCase() === '!reboot') {
+		console.log('[LOG] shutdown');
+		output.say(channel, 'shutting down...');
+	}
 }
 
 module.exports = 
