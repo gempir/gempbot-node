@@ -8,6 +8,7 @@ var lines       = require('./lines');
 var output      = require('./twitch/output');
 var quote       = require('./quote');
 var lastmessage = require('./lastmessage');
+var eightball   = require('./eightball');
 
 function channelEventHandler(channel, user, message, self) {
 	combo.count(channel, user, message);
@@ -34,6 +35,9 @@ function channelEventHandler(channel, user, message, self) {
 			break;
 		case '!countme':
 			count.countMe(channel, user.username, message, false);
+			break;
+		case '!8ball':
+			eightball.getRandomAnswer(channel, user.username, message, false);
 			break;
 		case '!randomquote':
 			quote.quoteUser(channel, user, message, false);
