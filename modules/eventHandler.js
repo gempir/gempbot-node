@@ -21,16 +21,26 @@ function channelEventHandler(channel, user, message, self) {
 
 	adminCommands(channel, user, message, false);
 
-	if (global.cooldown) {
-		return false;
-	}
-
+	// no cooldown commands
 	switch (command) {
 		case '!voting':
 			if (cfg.trusted.indexOf(user.username) > -1) {
 				skip.startVoting(channel, user, message, self);
 			}
 			break;
+		case '!skip':
+			skip.countVotes(channel, user, message);
+			break;
+		case '!stay':
+			skip.countVotes(channel, user, message);
+			break;
+	}
+
+	if (global.cooldown) {
+		return false;
+	}
+
+	switch (command) {
 		case '!logs':
 			logs.logsCommandHandler(channel, user.username, message, false);
 			break;
@@ -51,12 +61,6 @@ function channelEventHandler(channel, user, message, self) {
 			break;
 		case '!lastmessage':
 			lastmessage.lastMessage(channel, user.username, message, false);
-			break;
-		case '!skip':
-			skip.countVotes(channel, user, message);
-			break;
-		case '!stay':
-			skip.countVotes(channel, user, message);
 			break;
 	}
 }
