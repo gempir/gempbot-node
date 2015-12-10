@@ -1,6 +1,21 @@
 var output = require('./twitch/output');
 var net    = require('net');
-var stream = net.connect('/tmp/gempbot.sock');
+global.socketConnection = false;
+
+try {
+	var stream = net.connect('/tmp/gempbot.sock')
+	.on('connect', function() {
+        global.socketConnection = true;
+    })
+    .on('error', function(err) {
+        console.log('[ERROR] failed socket connection');
+        global.socketConnection = false;
+    })
+}
+catch(err) {
+        console.log("[ERROR] socket connection failed! " + err);
+}
+	
 
 
 function startVoting(channel, user, message) {
@@ -13,8 +28,12 @@ function startVoting(channel, user, message) {
 
 	setTimeout(function(){
 		output.sayNoCD(channel, '@' + user.username + ', The voting ended, skip: [ ' + global.skip + ' ] | stay: [ ' + global.stay + ' ] | votes: [ ' + global.voters.length + ' ]');
-		global.voting = false;
-		stream.write(global.skip + ',' + global.stay + ',' + global.voters.length);
+		
+		if (global.socketConnection) {
+			global.voting = false;
+			stream.write(global.skip + ',' + global.stay + ',' + global.voters.length);
+		}
+		
 	}, 30000);
 }
 
