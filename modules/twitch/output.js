@@ -1,6 +1,8 @@
 var channelModule = require('./channel');
 var whisperModule = require('./whisper');
 
+	
+
 chat = channelModule.client;
 group = whisperModule.group;
 

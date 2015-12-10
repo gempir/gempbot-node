@@ -1,4 +1,6 @@
 var output = require('./twitch/output');
+var net    = require('net');
+var stream = net.connect('/tmp/gempbot.sock');
 
 
 function startVoting(channel, user, message) {
@@ -7,10 +9,12 @@ function startVoting(channel, user, message) {
 	global.voters = [];
 	global.voting = true;
 	output.sayNoCD(channel, 'A voting has been started type [ !skip ] or [ !stay ] to vote on the current content. The voting is over after 30 seconds ');
+	stream.write('started');
 
 	setTimeout(function(){
 		output.sayNoCD(channel, '@' + user.username + ', The voting ended, skip: [ ' + global.skip + ' ] | stay: [ ' + global.stay + ' ] | votes: [ ' + global.voters.length + ' ]');
 		global.voting = false;
+		stream.write(global.skip + ',' + global.stay + ',' + global.voters.length);
 	}, 30000);
 }
 

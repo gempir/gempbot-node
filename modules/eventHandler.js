@@ -9,7 +9,7 @@ var output      = require('./twitch/output');
 var quote       = require('./quote');
 var lastmessage = require('./lastmessage');
 var eightball   = require('./eightball');
-var skip        = require('./skip');
+var skip        = require('./vote');
 
 function channelEventHandler(channel, user, message, self) {
 	combo.count(channel, user, message);

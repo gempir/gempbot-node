@@ -30,7 +30,6 @@ channel.client.on("connected", function (address, port) {
 });
 
 whisper.group.on("connected", function (address, port) {
-	output.whisper(cfg.admin, 'Connected to group servers on ' + address + ':' + port);
 	console.log('[STARTUP] Connected to group servers on ' + address + ':' + port);
 });
 
