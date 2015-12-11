@@ -11,6 +11,9 @@ function startVoting(channel, user, message) {
 		global.votingOption = 'skip';
 		overlay.emit('skip');
 	}
+	else {
+		return false;
+	}
 	global.votes  = [0,0];
 	global.voters = [];
 	global.voting = true;
@@ -18,9 +21,10 @@ function startVoting(channel, user, message) {
 	
 	setTimeout(function(){
 		global.voting = false;
+		console.log(global.votes[0], global.votes[1]);
 		overlay.emit(global.votes[0] + ',' + global.votes[1]);
 		var totalVotes = Number(global.votes[0]) + Number(global.votes[1]);
-		output.sayNoCD(channel, '@' + user.username + ', The voting ended, skip: [ ' + global.votes[0] + ' ] | stay: [ ' + global.votes[0] + ' ] | votes: [ ' + totalVotes + ' ]');
+		output.sayNoCD(channel, '@' + user.username + ', The voting ended, skip: [ ' + global.votes[0] + ' ] | stay: [ ' + global.votes[1] + ' ] | votes: [ ' + totalVotes + ' ]');
 	}, 45000);
 }
 
@@ -29,29 +33,24 @@ function voteCommandHandler(channel, user, message)
 	if (message.toLowerCase() === '!vote') {
 		return false; // make sure an option is set
 	}
-	var option = fn.getNthWord(message.toLowerCase(), 2);
-	console.log(option);
-
-	switch (option) {
-		case 'skip':
-			votingSkip(channel, user, message);
-			break;
-	}
+	votingSkip(channel, user, message);
 }
 
 function votingSkip(channel, user, message) {
-	if (message.toLowerCase() === '!vote stay') {
+	if (message.toLowerCase() == '!vote stay') {
 		if (global.voters.indexOf(user.username) > -1) {
 			return false;
 		}
+		console.log('stay voted');
 		global.votes[1] += 1;
 		global.voters.push(user.username)
 		
 	}
-	if (message.toLowerCase() === '!vote skip') {
+	if (message.toLowerCase() == '!vote skip') {
 		if (global.voters.indexOf(user.username) > -1) {
 			return false;
 		}
+		console.log('skip voted');
 		global.votes[0] += 1;
 		global.voters.push(user.username)
 	}

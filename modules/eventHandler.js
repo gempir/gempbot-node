@@ -22,13 +22,13 @@ function channelEventHandler(channel, user, message, self) {
 
 	// no cooldown commands
 	switch (command) {
+		case '!vote':
+			voting.voteCommandHandler(channel, user, message);
+			break;
 		case '!voting':
 			if (cfg.trusted.indexOf(user.username) > -1) {
 				voting.startVoting(channel, user, message, self);
 			}
-			break;
-		case '!vote':
-			voting.voteCommandHandler(channel, user, message);
 			break;
 	}
 
