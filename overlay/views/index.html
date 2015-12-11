@@ -1,0 +1,41 @@
+<div class="popup"></div>
+<link href='https://fonts.googleapis.com/css?family=Roboto:900,700,400' rel='stylesheet' type='text/css'>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
+<style>
+  .popup {
+    color: white;
+    -webkit-text-stroke: 1.5px #000000;
+    text-shadow: 1px 1px 3px rgba(150, 150, 150, 1);
+    font-size: 32px;
+    font-family: Roboto;
+    font-weight: 700;
+    display: none;
+  }
+  .skip {
+    color: #e74c3c;
+        }
+  .stay {
+    color: #2ecc71;
+  }
+
+</style>
+<script>
+  var socket = io.connect();
+  socket.on('votes', function (data) {
+    if (data.indexOf('skip') > -1) {
+      var text = 'A voting has been started type <span class="skip">!vote skip</span> or <span class="stay">!vote stay</span> to vote on the current content.  <br> The voting is over after 30 seconds'; 
+    }
+    else {
+      var votes = data.split(',');
+      var totalVotes = Number(votes[0]) + Number(votes[1]);
+      var text = '<span class="skip"> skip: ' + votes[0] + '</span><br><span class="stay">stay: ' + votes[1] + '</span><br>votes: ' + totalVotes; 
+    }
+    $('.popup').html(text).slideDown();
+    setTimeout(function() {
+      $('.popup').slideUp();
+    }, 20000);
+
+  });
+</script>
+</script>

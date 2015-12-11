@@ -9,13 +9,12 @@ var output      = require('./twitch/output');
 var quote       = require('./quote');
 var lastmessage = require('./lastmessage');
 var eightball   = require('./eightball');
-var skip        = require('./vote');
+var voting        = require('./voting');
 
 function channelEventHandler(channel, user, message, self) {
 	combo.count(channel, user, message);
 	logs.channelLogs(channel, user, message);
 	logs.userLogs(channel, user, message);
-	skip.countVotes(channel,user,message);
 
 	command = fn.getNthWord(message.toLowerCase(), 1);
 
@@ -25,14 +24,11 @@ function channelEventHandler(channel, user, message, self) {
 	switch (command) {
 		case '!voting':
 			if (cfg.trusted.indexOf(user.username) > -1) {
-				skip.startVoting(channel, user, message, self);
+				voting.startVoting(channel, user, message, self);
 			}
 			break;
-		case '!skip':
-			skip.countVotes(channel, user, message);
-			break;
-		case '!stay':
-			skip.countVotes(channel, user, message);
+		case '!vote':
+			voting.voteCommandHandler(channel, user, message);
 			break;
 	}
 

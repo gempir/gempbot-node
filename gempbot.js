@@ -4,6 +4,7 @@ var handler = require('./modules/eventHandler');
 var git     = require('git-rev-sync');
 var cfg     = require('./cfg');
 var output  = require('./modules/twitch/output');
+require('./overlay/overlay.js');
 require('./modules/logs');
 require('./modules/status');
 require('./modules/count');
