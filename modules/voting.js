@@ -20,7 +20,7 @@ function startVoting(channel, user, message) {
 		global.voting = false;
 		overlay.emit(global.votes[0] + ',' + global.votes[1]);
 		var totalVotes = Number(global.votes[0]) + Number(global.votes[1]);
-		output.sayNoCD(channel, '@' + user.username + ', The voting ended, skip: [ ' + global.votes[0] + ' ] | stay: [ ' + global.votes[0] + ' ] | votes: [ ' + totalVotes; + ' ]');
+		output.sayNoCD(channel, '@' + user.username + ', The voting ended, skip: [ ' + global.votes[0] + ' ] | stay: [ ' + global.votes[0] + ' ] | votes: [ ' + totalVotes + ' ]');
 	}, 45000);
 }
 
