@@ -30,21 +30,7 @@ function logsCommandHandler(channel, user, message, whisper)
 function userLogs(channel, user, message)
 {
     var file = 'logs/' + channel.substr(1) + '/' + user.username +'.txt';
-    fs.exists(file, function (exists) {
-        if(exists){
-            var data = fs.readFileSync(file); 
-            var fd = fs.openSync(file, 'w+');
-            var buffer = new Buffer('[GMT+1 ' + moment().utcOffset(60).format('DD.MM.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n');
-            fs.writeSync(fd, buffer, 0, buffer.length); 
-            fs.writeSync(fd, data, 0, data.length); 
-            fs.close(fd);
-        } else {
-            fs.writeFile(file, '[GMT+1 ' + moment().utcOffset(60).format('DD.MM.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n', function (err) {
-              if (err) throw err;
-              console.log('[LOG] created ' + user.username + '.txt');
-            });
-        }
-    });
+    fs.appendFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n', function(){});
 }
 
 
