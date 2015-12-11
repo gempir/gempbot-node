@@ -21,7 +21,7 @@
 
 </style>
 <script>
-  var socket = io.connect('http://46.101.195.112:3000');
+  var socket = io.connect();
   socket.on('votes', function (data) {
     if (data.indexOf('skip') > -1) {
       var text = 'A voting has been started type <span class="skip">!vote skip</span> or <span class="stay">!vote stay</span> to vote on the current content.  <br> The voting is over after 30 seconds'; 
