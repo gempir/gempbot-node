@@ -3,6 +3,8 @@ var overlay = require('./../overlay/overlay');
 var fn 	    = require('./functions');
 
 function startVoting(channel, user, message) {
+	global.votes  = [0,0];
+
 	if (message.toLowerCase() === '!voting') {
 		output.whisper(user.username, 'No voting option specified try [ !voting skip ]');
 		return false;
@@ -15,7 +17,6 @@ function startVoting(channel, user, message) {
 		votingRateController(channel, user, message);
 	}
 	if (message.toLowerCase() === '!voting skip') {
-		global.votes  = [0,0];
 		global.voting = true;
 		global.voters = [];
 		overlay.emit('startSkip');	
