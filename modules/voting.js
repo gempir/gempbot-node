@@ -90,7 +90,7 @@ function votingRateController(channel, user, message) {
 		global.voting = false;
 		output.sayNoCD(channel, '@' + user.username + ', The voting ended, the average ratings is: [ ' + avgRating + ' ] | votes: [ ' + global.ratings.length + ' ]');
 		overlay.emit('resultsRate' + avgRating + ',' + global.ratings.length);
-	}, 15000);
+	}, 45000);
 }
 
 module.exports = 
