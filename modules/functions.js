@@ -29,10 +29,6 @@ function weightedAverage(input) {
     var weighted_total = 0;
     var total_weight = 0;;
 
-    if (input.length % 3 !== 0) {
-        throw new Error("Input array length is not a multiple of 3.");
-    }
-
     for (var i = 0; i < input.length; i += 3) {
         weights.push(input[i] * input[i + 1]);
         values.push(input[i + 2]);
