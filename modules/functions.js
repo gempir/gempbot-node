@@ -23,25 +23,6 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function weightedAverage(input) {
-    var weights = [];
-    var values = [];
-    var weighted_total = 0;
-    var total_weight = 0;;
-
-    for (var i = 0; i < input.length; i += 3) {
-        weights.push(input[i] * input[i + 1]);
-        values.push(input[i + 2]);
-    }
-
-    for (var i = 0; i < weights.length; i += 1) {
-        weighted_total += weights[i] * values[i];
-        total_weight += weights[i];
-    }
-
-    return weighted_total / total_weight;
-}
-
 function getLine(filename, line_no, callback) {
     var stream = fs.createReadStream(filename, {
       flags: 'r',
@@ -199,6 +180,5 @@ module.exports =
     secsToTime,
     getRandomInt,
     logStats,
-    getLine,
-    weightedAverage
+    getLine
 };
