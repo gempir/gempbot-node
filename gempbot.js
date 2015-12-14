@@ -11,7 +11,6 @@ require('./modules/count');
 require('./modules/combo');
 require('./modules/lines');
 
-
 channel.client.on('chat', function(channel, user, message, self) {
     handler.channelEventHandler(channel, user, message, self);
 });

@@ -84,7 +84,7 @@ function votingRateController(channel, user, message) {
 	setTimeout(function(){
 		var totalRatings = 0;
 		for (var i = 0; i < global.ratings.length; i++) {
-			totalRatings += global.ratings[i];
+			totalRatings += Number(global.ratings[i]);
 		}
 		var avgRating = (totalRatings / global.ratings.length).toFixed(1);
 		global.voting = false;
