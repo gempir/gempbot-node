@@ -83,7 +83,7 @@ function votingRateController(channel, user, message) {
 	output.sayNoCD(channel, 'A rating voting has been started type [ !vote 5 ] (number from 0-10 with decimals) to rate the current content. The voting ends in 45 seconds.');
 	
 	setTimeout(function(){
-		var avgRating = weightedAverage(global.ratings).toFixed(1);
+		var avgRating = fn.weightedAverage(global.ratings).toFixed(1);
 		global.voting = false;
 		output.sayNoCD(channel, '@' + user.username + ', The voting ended, the average ratings is: [ ' + avgRating + ' ] | votes: [ ' + global.ratings.length + ' ]');
 		overlay.emit('resultsRate' + avgRating + ',' + global.ratings.length);
