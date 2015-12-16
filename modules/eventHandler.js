@@ -8,8 +8,8 @@ var lines       = require('./lines');
 var output      = require('./twitch/output');
 var quote       = require('./quote');
 var lastmessage = require('./lastmessage');
-var eightball   = require('./eightball');
-var voting        = require('./voting');
+var timer       = require('./timer');
+var voting      = require('./voting');
 
 function channelEventHandler(channel, user, message, self) {
 	combo.count(channel, user, message);
@@ -45,17 +45,17 @@ function channelEventHandler(channel, user, message, self) {
 		case '!lines':
 			lines.stats(channel, user.username, message, false);
 			break;
-		// case '!count':
-		// 	count.count(channel, user, message, false);
-		// 	break;
+		case '!count':
+			count.count(channel, user, message, false);
+		 	break;
 		case '!countme':
 			count.countMe(channel, user.username, message, false);
 			break;
-		case '!8ball':
-			eightball.getRandomAnswer(channel, user.username, message, false);
+		case '!timer':
+			timer.setTimer(channel, user.username, message);
 			break;
 		case '!randomquote':
-			quote.quoteUser(channel, user, message, false);
+			quote.getQuote(channel, user, message, false);
 			break;
 		case '!lastmessage':
 			lastmessage.lastMessage(channel, user.username, message, false);
