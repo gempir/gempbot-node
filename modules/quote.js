@@ -54,14 +54,6 @@ function getQuote(channel, user, message, whisper)
 
 function getRandomQuote(channel, username, message, whisper)
 {
-    if (message.toLowerCase() === '!8ball') {
-        return false;
-    }
-    if (message.indexOf('?') === -1) {
-        console.log('[LOG] no question');
-        return false;
-    }
-
     fs.readdir('logs/' + channel.substr(1) + '/', function (err, files) {
         if (err) throw err;
 

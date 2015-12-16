@@ -1,4 +1,5 @@
 var output = require('./twitch/output');
+var fn     = require('./functions');
 
 function setTimer(channel, username, message)
 {
@@ -15,10 +16,11 @@ function setTimer(channel, username, message)
 
 function startTimer(username, givenTime, timerMessage)
 {
-	output.whisper(username, 'timer set: ' + timerMessage + ' in' + givenTime + ' seconds');
+	console.log(givenTime);
+	output.whisper(username, 'timer set: ' + timerMessage + ' in ' + givenTime + ' seconds');
 	setTimeout(function() {
-		output.whisper(username, 'You\'re timer is up: ' + timerMessage + '(' + givenTime + 's)'); 
-	}, timer * 100);
+		output.whisper(username, 'You\'re timer is up: ' + timerMessage + ' (' + givenTime + 's)'); 
+	}, givenTime * 1000);
 
 }
 
