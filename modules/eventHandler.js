@@ -32,6 +32,9 @@ function channelEventHandler(channel, user, message, self) {
 				voting.startVoting(channel, user, message, self);
 			}
 			break;
+		case '!timer':
+			timer.setTimer(channel, user.username, message);
+			break;
 	}
 
 	if (global.cooldown) {
@@ -50,9 +53,6 @@ function channelEventHandler(channel, user, message, self) {
 		 	break;
 		case '!countme':
 			count.countMe(channel, user.username, message, false);
-			break;
-		case '!timer':
-			timer.setTimer(channel, user.username, message);
 			break;
 		case '!randomquote':
 			quote.getQuote(channel, user, message, false);
