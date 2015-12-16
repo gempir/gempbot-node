@@ -39,7 +39,7 @@ function getQuote(channel, user, message, whisper)
         		return false;
         	}
         	console.log('[LOG] skipped user quote');
-        	quoteUser(channel, user, message, whisper);
+        	getQuote(channel, user, message, whisper);
         	return false;
         }
         if (whisper) {
@@ -69,7 +69,7 @@ function getRandomQuote(channel, username, message, whisper)
 
         if (fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '/' + answerLog) < 1) {
             console.log('[LOG] skipped user answer');
-            getRandomAnswer(channel, username, message, whisper);
+            getRandomQuote(channel, username, message, whisper);
             return false;
         }
 
@@ -84,7 +84,7 @@ function getRandomQuote(channel, username, message, whisper)
 
             if (answer.length > 100 || fn.stringContainsUrl(answer)) {
                 console.log('[LOG] skipped user answer');
-                getRandomAnswer(channel, username, message, whisper);
+                getRandomQuote(channel, username, message, whisper);
                 return false;
             }
             if (whisper) {
@@ -101,5 +101,5 @@ function getRandomQuote(channel, username, message, whisper)
 
 module.exports = 
 {
-	quoteUser
+	getQuote
 }

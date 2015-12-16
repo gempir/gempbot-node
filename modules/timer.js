@@ -13,7 +13,7 @@ function setTimer(channel, username, message)
 }
 
 
-funtion startTimer(username, givenTime, timerMessage);
+function startTimer(username, givenTime, timerMessage)
 {
 	output.whisper(username, 'timer set: ' + timerMessage + ' in' + givenTime + ' seconds');
 	setTimeout(function() {
