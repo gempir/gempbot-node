@@ -1,26 +1,11 @@
 # gempbot
-This is a nodejs twitchbot with a logging functionality that requires no webhosting.
-You just have to run a node app on your pc. 
 
-I commit a lot because that's how I deploy to my server. Sorry If my commits are mostly worthless. 
+This bot is highly experimental and constantly changing. Don't consider all pushes to github stable since I test a lot.
+This is also a fun oriented bot and less of a general channel bot. It does stuff like counting emotes for specific users or the whole chat. 
+And this is one of the strengths of this bot, it has built in logging completly usable without any webserver.
+It uploads logs to pastebin and you don't have to host anything yourself.
 
-# Features
-
-Type **!status** to find out the current channels the bot is connected to.
-
-Type **!logs 'username'** to get a pastebin log of a single user with a timestamp as a whisper.
-
-Type **!count 'phrase'** to get the number of times the chat wrote that phrase, also works with sentences
-
-Type **!countme 'phrase'** to get the number of times you used a specific phrase, this also works with sentences
-
-Type **!status logs 'username'** to get the size report for a users log file
-
-Type **!status logs channel** to get the size of the channel's log file 
-
-Type **!lines 'username'** to get a line count for someones log file
-
-Type **!randomquote 'username'** to get a randomquote from a users logs
+Explore the modules folder to find out more features of my bot the eventHandler.js has all commands, if you are unsure where to look.
 
 
 # Installation
