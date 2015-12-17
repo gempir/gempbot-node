@@ -10,6 +10,7 @@ var quote       = require('./quote');
 var lastmessage = require('./lastmessage');
 var timer       = require('./timer');
 var voting      = require('./voting');
+var followage   = require('./followage');
 
 function channelEventHandler(channel, user, message, self) {
 	combo.count(channel, user, message);
@@ -42,6 +43,9 @@ function channelEventHandler(channel, user, message, self) {
 	}
 
 	switch (command) {
+		case '!followage':
+			followage.getFollowage(channel, user.username, message);
+			break;
 		case '!logs':
 			logs.logsCommandHandler(channel, user.username, message, false);
 			break;
