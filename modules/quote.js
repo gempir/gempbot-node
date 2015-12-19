@@ -18,10 +18,9 @@ function getQuote(channel, user, message, whisper)
     	console.log('[LOG] ' + userToQuote + ' has no logs');
     	return false;
     }
-    if (fn.getFilesizeInKilobytes(userFile) < 1) {
-    	console.log('[LOG] ' + userToQuote + ' logs less than 1KB');
-		return false;
-	}
+    if (global.quoteSkip > 20) {
+        return false;
+    }
 
     fs.readFile(userFile, function (err, data) {
 		if (err) {
@@ -39,6 +38,7 @@ function getQuote(channel, user, message, whisper)
         		return false;
         	}
         	console.log('[LOG] skipped user quote');
+            global.quoteSkip += 1;
         	getQuote(channel, user, message, whisper);
         	return false;
         }
@@ -62,7 +62,7 @@ function getRandomQuote(channel, username, message, whisper)
         if (global.quoteSkip > 20) {
             return false;
         }
-        
+
         fs.readFile('logs/' + channel.substr(1) + '/' + answerLog, function (err, data) {
             if (err) {
                 return false;
