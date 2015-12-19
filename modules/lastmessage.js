@@ -17,15 +17,19 @@ function lastMessage(channel, username, message, whisper) {
 		return false;
 	}
 	
-	fn.getLine(file, 0, function(err, line){
-		var message = line.split(']');
+	fs.readFile(file, function(err, data){
+        data = data.toString();
+        var lines = data.split('\n');
+        lastLine = lines[lines.length-2];
+        lastLine = lastLine.split(']');
 	    if (whisper) {
-	    	output.whisper(username, '" ' + message[1] + ' "');
+	    	output.whisper(username, '" ' + lastLine[1] + ' "');
 	    }
 	    else {
-	    	output.say(channel, '" ' + message[1] + ' "');
+	    	output.say(channel, '" ' + lastLine[1] + ' "');
 	    }
-	})
+    })
+	
 }
 
 module.exports = 
