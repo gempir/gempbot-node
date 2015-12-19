@@ -44,7 +44,7 @@ function channelEventHandler(channel, user, message, self) {
 
 	switch (command) {
 		case '!followage':
-			followage.getFollowage(channel, user.username, message);
+			followage.followageCommandHandler(channel, user.username, message);
 			break;
 		case '!logs':
 			logs.logsCommandHandler(channel, user.username, message, false);
