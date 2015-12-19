@@ -12,23 +12,22 @@ function getFollowage(channel, username, message)
 
 	var following = fn.getNthWord(message, 2); 
 	var channelSub = channel.substr(1);
-	var followJsonURL = 'https://api.twitch.tv/kraken/users/'+ username +'/follows/channels/' + following;
-	
+	var followURL = 'https://api.rtainc.co/twitch/followers/length?channel='+ following +'&name=' + username;
+
 	if (fn.stringContainsUrl(following) || fn.stringIsLongerThan(following, 50)) {
 	  		return false;
 	}
 
-	request(followJsonURL, function (error, response, body) {
-		console.log('[GET] ' + followJsonURL);
+	request(followURL, function (error, response, body) {
+		console.log('[GET] ' + followURL);
 	  	if (!error && response.statusCode == 200) {
-	    	var obj = JSON.parse(body);
-	    	var followage = obj.created_at.substr(0,10);
-	    	output.say(channel, username + ' has been following ' + following + ' since ' + followage);
-	  } 
-	  else {
-	  	output.say(channel, username + ' is not following ' + following + ' or the channel doesn\'t exit');
-	    console.log("[GET] API ERROR: ", error, ", status code: ", response.statusCode);
-	  }
+	  		output.say(channel, username + ' has been following ' + following + ' ' + body.toString());
+	  	} 
+	  	else {
+	  		output.say(channel, username + ' is not following ' + following + ' or the channel doesn\'t exist');
+	  		return false;
+	  	}
+
 	});
 	
 
@@ -37,18 +36,19 @@ function getFollowage(channel, username, message)
 function getChannelFollowage(channel, username, message)
 {
 	var channelSub = channel.substr(1);
-	var followJsonURL = 'https://api.twitch.tv/kraken/users/'+ username +'/follows/channels/' + channelSub;
-	request(followJsonURL, function (error, response, body) {
-		console.log('[GET] ' + followJsonURL);
+	var followURL = 'https://api.rtainc.co/twitch/followers/length?channel='+ channelSub +'&name=' + username;
+
+
+	request(followURL, function (error, response, body) {
+		console.log('[GET] ' + followURL);
 	  	if (!error && response.statusCode == 200) {
-	    	var obj = JSON.parse(body);
-	    	var followage = obj.created_at.substr(0,10);
-	    	output.say(channel, username + ' has been following ' + channelSub + ' since ' + followage);
-	  } 
-	  else {
-	  	output.say(channel, username + ' is not following ' + channelSub);
-	    console.log("[GET] API ERROR: ", error, ", status code: ", response.statusCode);
-	  }
+	    	output.say(channel, username + ' has been following ' + channelSub + ' ' + body.toString());
+	  	} 
+	  	else {
+	  		output.say(channel, username + ' is not following ' + channelSub + ' or the channel doesn\'t exist');
+	  		return false;
+	  	}
+
 	});
 }
 
