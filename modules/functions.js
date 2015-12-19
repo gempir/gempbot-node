@@ -94,6 +94,9 @@ function lineCount(file)
     return lineCount;
 }
 
+function countWords(str) {
+  return str.split(/\s+/).length;
+}
 
 function stringContainsUrl(inputString)
 {
@@ -180,5 +183,6 @@ module.exports =
     secsToTime,
     getRandomInt,
     logStats,
-    getLine
+    getLine,
+    countWords
 };

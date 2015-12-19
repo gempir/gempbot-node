@@ -10,6 +10,11 @@ function getFollowage(channel, username, message)
 		return null;
 	}
 
+	if (fn.countWords(message) >= 3) { 
+		getChannelUserFollowage(channel, username, message);
+		return null;
+	} 
+
 	var following = fn.getNthWord(message, 2); 
 	var channelSub = channel.substr(1);
 	var followURL = 'https://api.rtainc.co/twitch/followers/length?channel='+ following +'&name=' + username;
@@ -46,6 +51,25 @@ function getChannelFollowage(channel, username, message)
 	  	} 
 	  	else {
 	  		output.say(channel, username + ' is not following ' + channelSub + ' or the channel doesn\'t exist');
+	  		return false;
+	  	}
+
+	});
+}
+
+function getChannelUserFollowage(channel, username, message)
+{
+	var following = fn.getNthWord(message, 2);
+	var userFollow = fn.getNthWord(message, 3);
+	var followURL = 'https://api.rtainc.co/twitch/followers/length?channel='+ following +'&name=' + userFollow;
+
+	request(followURL, function (error, response, body) {
+		console.log('[GET] ' + followURL);
+	  	if (!error && response.statusCode == 200) {
+	    	output.say(channel, userFollow + ' has been following ' + following + ' ' + body.toString());
+	  	} 
+	  	else {
+	  		output.say(channel, userFollow + ' is not following ' + following + ' or the channel doesn\'t exist');
 	  		return false;
 	  	}
 
