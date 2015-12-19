@@ -59,12 +59,10 @@ function getRandomQuote(channel, username, message, whisper)
 
         var answerLog = files[Math.floor(Math.random()*files.length)];
 
-        if (fn.getFilesizeInKilobytes('logs/' + channel.substr(1) + '/' + answerLog) < 1) {
-            console.log('[LOG] skipped user answer');
-            getRandomQuote(channel, username, message, whisper);
+        if (global.quoteSkip > 20) {
             return false;
         }
-
+        
         fs.readFile('logs/' + channel.substr(1) + '/' + answerLog, function (err, data) {
             if (err) {
                 return false;
@@ -77,6 +75,7 @@ function getRandomQuote(channel, username, message, whisper)
             if (answer.length > 100 || fn.stringContainsUrl(answer)) {
                 console.log('[LOG] skipped user answer');
                 getRandomQuote(channel, username, message, whisper);
+                global.quoteSkip += 1;
                 return false;
             }
             if (whisper) {
