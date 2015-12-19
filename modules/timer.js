@@ -19,7 +19,7 @@ function startTimer(username, givenTime, timerMessage)
 	console.log(givenTime);
 	output.whisper(username, 'timer set: ' + timerMessage + ' in ' + givenTime + ' seconds');
 	setTimeout(function() {
-		output.whisper(username, 'You\'re timer is up: ' + timerMessage + ' (' + givenTime + 's)'); 
+		output.whisper(username, 'Your timer is up: ' + timerMessage + ' (' + givenTime + 's)'); 
 	}, givenTime * 1000);
 
 }
