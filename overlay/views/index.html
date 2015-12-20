@@ -24,7 +24,7 @@
 
 </style>
 <script>
-  var socket = io.connect('http://46.101.195.112:3000');
+  var socket = io.connect();
   socket.on('votes', function (data) {
     if (data.indexOf('startSkip') > -1) {
       var text = 'A voting has been started type <span class="skip">!vote skip</span> or <span class="stay">!vote stay</span> to vote on the current content.  <br> The voting is over after 45 seconds'; 
@@ -43,9 +43,11 @@
       var totalVotes = Number(votes[0]) + Number(votes[1]);
       var text = '<span class="skip"> skip: ' + votes[0] + '</span><br><span class="stay">stay: ' + votes[1] + '</span><br>votes: ' + totalVotes; 
     }
-    $('.popup').html(text).slideDown();
+    
+    $('.popup').html(text).animate({width: [ "toggle", "swing" ], height: [ "toggle", "swing" ], opacity: "toggle"});
+
     setTimeout(function() {
-      $('.popup').slideUp();
+      $('.popup').animate({width: [ "toggle", "swing" ], height: [ "toggle", "swing" ], opacity: "toggle"});
     }, 20000);
 
   });
