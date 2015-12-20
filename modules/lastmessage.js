@@ -10,7 +10,7 @@ function lastMessage(channel, username, message, whisper) {
 		return false;
 	}
 	
-	var lastMessageFor = fn.getNthWord(message, 2);
+	var lastMessageFor = fn.getNthWord(message, 2).toLowerCase();
 	var file = 'logs/' + channel.substr(1) + '/' + lastMessageFor + '.txt';
 
 	if (!fn.fileExists(file)) {
