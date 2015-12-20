@@ -56,7 +56,7 @@ function votingSkip(channel, user, message) {
 		global.votes[0] += 1;
 		global.voters.push(user.username)
 	}
-	else if (!(message.toLowerCase().match(regex) === null || !(message.toLowerCase().match(regex2) === null) {
+	else if (!(message.toLowerCase().match(regex)) === null || !(message.toLowerCase().match(regex2) === null)) {
 		if (global.voters.indexOf(user.username) > -1) {
 			return false;
 		}
