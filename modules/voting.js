@@ -38,6 +38,8 @@ function voteCommandHandler(channel, user, message)
 
 function votingSkip(channel, user, message) {
 
+	var regex = '(!)(vote)( )(\\d+)';
+
 	if (message.toLowerCase() == '!vote stay') {
 		if (global.voters.indexOf(user.username) > -1) {
 			return false;
@@ -50,11 +52,10 @@ function votingSkip(channel, user, message) {
 		if (global.voters.indexOf(user.username) > -1) {
 			return false;
 		}
-		console.log('skip voted');
 		global.votes[0] += 1;
 		global.voters.push(user.username)
 	}
-	else if (message.toLowerCase().substr(0,5) === '!vote') {
+	else if (!(message.toLowerCase().match(regex) === null)) {
 		if (global.voters.indexOf(user.username) > -1) {
 			return false;
 		}
