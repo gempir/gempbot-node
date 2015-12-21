@@ -56,9 +56,6 @@ function channelEventHandler(channel, user, message, self) {
 		case '!lines':
 			lines.stats(channel, user.username, message, false);
 			break;
-		case '!count':
-			count.count(channel, user, message, false);
-		 	break;
 		case '!countme':
 			count.countMe(channel, user.username, message, false);
 			break;
