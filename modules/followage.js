@@ -26,7 +26,7 @@ function getUserLocalFollowage(channel, username, message)
 	var channelSub = channel.substr(1);
 	var followURL = 'https://api.rtainc.co/twitch/followers/length?channel='+ channelSub +'&name=' + following;
 
-	if (fn.stringContainsUrl(following) || fn.stringIsLongerThan(following, 50)) {
+	if (fn.stringContainsUrl(following) || fn.stringIsLongerThan(following, 30)) {
 	  		return false;
 	}
 
@@ -36,9 +36,6 @@ function getUserLocalFollowage(channel, username, message)
 	  		output.say(channel, following + ' has been following ' + channelSub + ' ' + body.toString());
 	  	} 
 	  	else {
-	  		if (fn.stringContainsUrl(channelSub) || fn.stringIsLongerThan(channelSub, 30)) {
-	  			channelSub = 'the channel';
-	  		}
 	  		output.say(channel, following + ' is not following ' + channelSub + ' or the channel doesn\'t exist');
 	  		return false;
 	  	}
@@ -70,6 +67,14 @@ function getUserChannelFollowage(channel, username, message)
 	var following = fn.getNthWord(message, 3);
 	var userFollow = fn.getNthWord(message, 2);
 	var followURL = 'https://api.rtainc.co/twitch/followers/length?channel='+ following +'&name=' + userFollow;
+
+	if (fn.stringContainsUrl(following) || fn.stringIsLongerThan(following, 30)) {
+	  		return false;
+	}
+
+	if (fn.stringContainsUrl(userFollow) || fn.stringIsLongerThan(userFollow, 30)) {
+	  		return false;
+	}
 
 	request(followURL, function (error, response, body) {
 		console.log('[GET] ' + followURL);
