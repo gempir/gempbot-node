@@ -36,6 +36,9 @@ function getUserLocalFollowage(channel, username, message)
 	  		output.say(channel, following + ' has been following ' + channelSub + ' ' + body.toString());
 	  	} 
 	  	else {
+	  		if (fn.stringContainsUrl(channelSub) || fn.stringIsLongerThan(channelSub, 30)) {
+	  			channelSub = 'the channel';
+	  		}
 	  		output.say(channel, following + ' is not following ' + channelSub + ' or the channel doesn\'t exist');
 	  		return false;
 	  	}
