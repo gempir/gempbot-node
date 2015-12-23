@@ -102,10 +102,12 @@ function whisperEventHandler(username, message) {
 
 function adminCommands(channel, username, message, whisper) 
 {
-	if (!(username.username == cfg.admin)) {
+	if (!(username === cfg.admin)) {
 		return false;
 	}
+	
 	if (message.toLowerCase() === '!status') {
+			
 			status.statusBot(channel, username, message, whisper);
 	}
 	if (message.substr(0,8).toLowerCase() === '!nuclear') {
