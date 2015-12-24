@@ -125,32 +125,12 @@ function stringIsLongerThan(inputString, lengthToCheck)
     return false;
 }
 
-
-
-function occurrences(haystack, needle)
-{
-    var count = 0;
-    var position = 0;
-    while(true) {
-        position = haystack.indexOf(needle, position);
-        if( position != -1) {
-            count++;
-            position += needle.length;
-        } 
-    else{
-      break;
-    }
-  }
-  return count;
-}
-
 module.exports = 
 { 
     getNthWord, 
     getFilesizeInKilobytes,
     getFilesizeInMegabytes,
     isBroadcaster,
-    occurrences,
     stringContainsUrl, 
     stringIsLongerThan,
     fileExists,
