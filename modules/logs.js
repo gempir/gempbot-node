@@ -55,7 +55,7 @@ function uploadLogs(channel, username, message)
     if (logsFor === 'channel') {
         fs.readFile(logFileChannel, function(err,data) {
             var shortLogs = data.toString()
-            shortLogs = shortLogs.substr(shortLogs.length - 10000);
+            shortLogs = shortLogs.substr(shortLogs.length - 20000);
             cfg.pastebin.createPaste(shortLogs, 'short logs for channel ' + channel.substr(1),null,0, '10M') 
                     .then(function (data) {
                         console.log('Pastebin created: ' + data);
@@ -72,7 +72,7 @@ function uploadLogs(channel, username, message)
         if (fn.fileExists(logFile)) {
                 fs.readFile(logFile, function(err,data) {
                     var shortLogs = data.toString()
-                    shortLogs = shortLogs.substr(shortLogs.length - 10000);
+                    shortLogs = shortLogs.substr(shortLogs.length - 20000);
                     cfg.pastebin.createPaste(shortLogs, 'short logs for channel ' + username,null,0, '10M') 
                             .then(function (data) {
                                 console.log('Pastebin created: ' + data);

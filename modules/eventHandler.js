@@ -45,10 +45,10 @@ function channelEventHandler(channel, user, message, self) {
 
 	switch (command) {
 		case '!followage':
-			followage.followageCommandHandler(channel, user.username, message);
+			followage.followageCommandHandler(channel, user.username, message, false);
 			break;
 		case '!chatters':
-			chatters.getStaff(channel, user.username, message);
+			chatters.chattersCommandHandler(channel, user.username, message, false);
 			break;
 		case '!logs':
 			logs.logsCommandHandler(channel, user.username, message, false);
@@ -74,11 +74,23 @@ function whisperEventHandler(username, message) {
 
 	adminCommands(cfg.options.channels[0], username, message, true);
 
+	// no cooldown commands
+	switch (command) {
+		case '!vote':
+			if (global.voting) {
+				voting.voteCommandHandler(channel, user, message);
+			}
+			break;
+	}
+
 	if (global.whisperCooldown) {
 		return false;
 	}
 
 	switch (command) {
+		case '!followage':
+			followage.followageCommandHandler(cfg.options.channels[0], username, message, true);
+			break;
 		case '!logs':
 			logs.logsCommandHandler(cfg.options.channels[0], username, message, true);
 			break;

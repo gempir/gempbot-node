@@ -4,23 +4,23 @@ var fs 	    = require('graceful-fs');
 var request = require('request');
 
 
-function followageCommandHandler(channel, username, message) {
+function followageCommandHandler(channel, username, message, whisper) {
 	if (message.toLowerCase() === '!followage') {
-		getLocalFollowage(channel, username, message)
+		getLocalFollowage(channel, username, message, whisper)
 		return;
 	}
 	if (fn.countWords(message) === 2) {
-		getUserLocalFollowage(channel, username, message);
+		getUserLocalFollowage(channel, username, message, whisper);
 		return;
 	}
 	if (fn.countWords(message) >= 3) {
-		getUserChannelFollowage(channel, username, message);
+		getUserChannelFollowage(channel, username, message, whisper);
 		return;
 	}
 }
 
 
-function getUserLocalFollowage(channel, username, message)
+function getUserLocalFollowage(channel, username, message, whisper)
 {
 	var following = fn.getNthWord(message, 2); 
 	var channelSub = channel.substr(1);
@@ -33,17 +33,27 @@ function getUserLocalFollowage(channel, username, message)
 	request(followURL, function (error, response, body) {
 		console.log('[GET] ' + followURL);
 	  	if (!error && response.statusCode == 200) {
-	  		output.say(channel, following + ' has been following ' + channelSub + ' ' + body.toString());
+	  		if (whisper) {
+	  			output.whisper(username, following + ' has been following ' + channelSub + ' ' + body.toString());
+	  		}
+	  		else {
+	  			output.say(channel, '@' +  username + ', ' + following + ' has been following ' + channelSub + ' ' + body.toString());
+	  		}
 	  	} 
 	  	else {
-	  		output.say(channel, following + ' is not following ' + channelSub + ' or the channel doesn\'t exist');
+	  		if (whisper) {
+	  			output.whisper(username, following + ' is not following ' + channelSub + ' or the channel doesn\'t exist');
+	  		} 
+	  		else {
+	  			output.say(channel, '@' + username  + ', ' + following + ' is not following ' + channelSub + ' or the channel doesn\'t exist');
+	  		}
 	  		return false;
 	  	}
 
 	});
 }
 
-function getLocalFollowage(channel, username, message)
+function getLocalFollowage(channel, username, message, whisper)
 {
 	var channelSub = channel.substr(1);
 	var followURL = 'https://api.rtainc.co/twitch/followers/length?channel='+ channelSub +'&name=' + username;
@@ -52,17 +62,27 @@ function getLocalFollowage(channel, username, message)
 	request(followURL, function (error, response, body) {
 		console.log('[GET] ' + followURL);
 	  	if (!error && response.statusCode == 200) {
-	    	output.say(channel, username + ' has been following ' + channelSub + ' ' + body.toString());
+	  		if (whisper) {
+	  			output.whisper(username, 'You have been following ' + channelSub + ' ' + body.toString());
+	  		}
+	  		else {
+	    		output.say(channel, '@' + username + ', you have been following ' + channelSub + ' ' + body.toString());
+	  		}
 	  	} 
 	  	else {
-	  		output.say(channel, username + ' is not following ' + channelSub + ' or the channel doesn\'t exist');
+	  		if (whisper) {
+	  			output.whisper(username, 'You are not following ' + channelSub + ' or the channel doesn\'t exist');
+	  		}
+	  		else {
+	  			output.say(channel, '@' + username + ', you are not following ' + channelSub + ' or the channel doesn\'t exist');
+	  		}
 	  		return false;
 	  	}
 
 	});
 }
 
-function getUserChannelFollowage(channel, username, message)
+function getUserChannelFollowage(channel, username, message, whisper)
 {
 	var following = fn.getNthWord(message, 3);
 	var userFollow = fn.getNthWord(message, 2);
@@ -79,10 +99,20 @@ function getUserChannelFollowage(channel, username, message)
 	request(followURL, function (error, response, body) {
 		console.log('[GET] ' + followURL);
 	  	if (!error && response.statusCode == 200) {
-	    	output.say(channel, userFollow + ' has been following ' + following + ' ' + body.toString());
+	  		if (whisper) {
+	  			output.whisper(username, userFollow + ' has been following ' + following + ' ' + body.toString());
+	  		}
+	  		else {
+	    		output.say(channel, '@' + username + ', ' + userFollow + ' has been following ' + following + ' ' + body.toString());
+	  		}
 	  	} 
 	  	else {
-	  		output.say(channel, userFollow + ' is not following ' + following + ' or the channel doesn\'t exist');
+	  		if (whisper) {
+	  			output.whisper(channel, userFollow + ' is not following ' + following + ' or the channel doesn\'t exist');
+	  		}
+	  		else {
+	  			output.say(channel, '@' + username + ', ' + userFollow + ' is not following ' + following + ' or the channel doesn\'t exist');
+	  		}
 	  		return false;
 	  	}
 
