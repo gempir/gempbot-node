@@ -20,7 +20,7 @@ function channelEventHandler(channel, user, message, self) {
 
 	command = fn.getNthWord(message.toLowerCase(), 1);
 
-	adminCommands(channel, user, message, false);
+	adminCommands(channel, user.username, message, false);
 
 	// no cooldown commands
 	switch (command) {
@@ -105,22 +105,12 @@ function adminCommands(channel, username, message, whisper)
 	if (!(username === cfg.admin)) {
 		return false;
 	}
-	
 	if (message.toLowerCase() === '!status') {
-			
 			status.statusBot(channel, username, message, whisper);
-	}
-	if (message.substr(0,8).toLowerCase() === '!nuclear') {
-		console.log('test');
-		nuclear.goNuclear(channel, username, message);
 	} 
 	else if (message.substr(0,4).toLowerCase() === '!say') {
 		var toSay = message.substr(5);
 		output.sayNoCD(channel, toSay);
-	}
-	else if (message.toLowerCase() === '!reboot') {
-		console.log('[LOG] shutdown');
-		output.say(channel, 'shutting down...');
 	}
 }
 
