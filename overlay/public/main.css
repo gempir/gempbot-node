@@ -1,0 +1,21 @@
+.popup {
+    color: white;
+    -webkit-text-stroke: 1.5px #000000;
+    text-shadow: 1px 1px 3px rgba(150, 150, 150, 1);
+    font-size: 32px;
+    font-family: Roboto;
+    font-weight: 700;
+    display: none;
+}
+
+.skip {
+	color: #e74c3c;
+}
+
+.stay {
+	color: #2ecc71;
+}
+
+.rate {
+	color: #f1c40f;
+}
