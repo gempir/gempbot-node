@@ -1,4 +1,7 @@
 var fs = require('graceful-fs')
+var channelModule = require('./twitch/channel');
+
+var chat = channelModule.client;
 
 function getNthWord(string, n)
 {
@@ -9,6 +12,16 @@ function getNthWord(string, n)
 function isBroadcaster(channel, user)
 {
 	return isBroadcaster = channel.replace('#', '') == user.username;
+}
+
+function isMod(channel, username)
+{
+    if (chat.isMod(channel, username) || username.toLowerCase() === channel.substr(1)) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 function getFilesizeInMegabytes(filepath)
@@ -105,5 +118,6 @@ module.exports =
     numberFormatted,
     secsToTime,
     getRandomInt,
-    countWords
+    countWords,
+    isMod
 };

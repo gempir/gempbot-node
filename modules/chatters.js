@@ -50,6 +50,10 @@ function getStaff(channel, username, message, whisper)
 
 function getMods(channel, username, message, whisper)
 {
+	if (!fn.isMod(channel, username)) {
+		return false;
+	}
+
 	var channelSub = channel.substr(1);
 	var chattersJsonURL = 'https://tmi.twitch.tv/group/user/' + channelSub + '/chatters';
 
