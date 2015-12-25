@@ -2,6 +2,7 @@ var output  = require('./twitch/output');
 var fn      = require('./functions');
 var fs 	    = require('graceful-fs');
 var request = require('request');
+var cfg     = require('./../cfg');
 
 
 function chattersCommandHandler(channel, username, message, whisper)
@@ -50,7 +51,7 @@ function getStaff(channel, username, message, whisper)
 
 function getMods(channel, username, message, whisper)
 {
-	if (!fn.isMod(channel, username)) {
+	if (!(cfg.trusted.indexOf(username) > -1)) {
 		return false;
 	}
 
