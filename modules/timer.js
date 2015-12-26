@@ -8,7 +8,8 @@ function setTimer(channel, username, message)
 	}
 
 	var givenTime = fn.getNthWord(message, 2);
-	var timerMessage = fn.getNthWord(message, 3);
+	var timerMessage = message.replace(givenTime, '');
+	timerMessage = timerMessage.replace('!timer', '');
 
 	startTimer(username, givenTime, timerMessage);
 }
