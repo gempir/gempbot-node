@@ -44,9 +44,9 @@ function channelEventHandler(channel, user, message, self) {
 	}
 
 	switch (command) {
-		case '!followage':
-			followage.followageCommandHandler(channel, user.username, message, false);
-			break;
+		//  case '!followage':
+			//	followage.followageCommandHandler(channel, user.username, message, false);
+			//	break;
 		case '!chatters':
 			chatters.chattersCommandHandler(channel, user.username, message, false);
 			break;
