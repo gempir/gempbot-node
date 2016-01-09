@@ -51,7 +51,7 @@ function getStaff(channel, username, message, whisper)
 
 function getMods(channel, username, message, whisper)
 {
-	if (!(cfg.trusted.indexOf(username) > -1)) {
+	if (!(global.trusted.indexOf(username) > -1)) {
 		return false;
 	}
 

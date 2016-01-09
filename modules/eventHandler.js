@@ -31,7 +31,7 @@ function channelEventHandler(channel, user, message, self) {
 			}
 			break;
 		case '!voting':
-			if (cfg.trusted.indexOf(user.username) > -1) {
+			if (global.trusted.indexOf(user.username) > -1) {
 				voting.startVoting(channel, user, message, self);
 			}
 			break;
