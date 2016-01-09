@@ -61,7 +61,7 @@ function disableCommand(channel, username, message, whisper)
         if (!err) {
             console.log('[CFG] disabled: ' + command);
             if (whisper) {
-                output.whisper(username, cd + ' is now disabled');
+                output.whisper(username, command + ' is now disabled');
             }
             else {
                 output.sayNoCD(channel, '@' + username + ', ' + command + ' is now disabled');
