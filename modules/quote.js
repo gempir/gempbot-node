@@ -1,18 +1,18 @@
 var fs     = require('graceful-fs');
 var fn     = require('./functions');
-var output = require('./twitch/output');
+var output = require('./../connection/output');
 
 global.quoteCounter = 0;
 
-function getQuote(channel, user, message, whisper) 
+function getQuote(channel, user, message, whisper)
 {
 	if (message.toLowerCase() === '!randomquote') {
         return false;
 	}
-	var userToQuote = fn.getNthWord(message, 2); 
+	var userToQuote = fn.getNthWord(message, 2);
 	userToQuote = userToQuote.toLowerCase();
 	userFile = 'logs/' + channel.substr(1) + '/' + userToQuote + '.txt';
-	
+
 	if (!fn.fileExists(userFile)) {
     	console.log('[LOG] ' + userToQuote + ' has no logs');
     	return false;
@@ -25,7 +25,7 @@ function getQuote(channel, user, message, whisper)
 		if (err) {
 			return false;
 		}
-    	logsSplit = data.toString().split("\n");      
+    	logsSplit = data.toString().split("\n");
         quote = logsSplit[Math.floor(Math.random()*logsSplit.length)];
         quote = quote.split(']');
         quote = quote[1];
@@ -47,10 +47,10 @@ function getQuote(channel, user, message, whisper)
         else {
         	output.say(channel, '"' + quote + ' "');
         }
-    });	
+    });
 }
 
-module.exports = 
+module.exports =
 {
 	getQuote
 }

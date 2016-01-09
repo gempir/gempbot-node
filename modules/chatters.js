@@ -1,4 +1,4 @@
-var output  = require('./twitch/output');
+var output  = require('./../connection/output');
 var fn      = require('./functions');
 var fs 	    = require('graceful-fs');
 var request = require('request');
@@ -44,7 +44,7 @@ function getStaff(channel, username, message, whisper)
 	    	else {
 	    		output.say(channel, '@' + username + ', ' + response);
 	    	}
-	  	} 
+	  	}
 	});
 }
 
@@ -79,7 +79,7 @@ function getMods(channel, username, message, whisper)
 	    	else {
 	    		output.say(channel, '@' + username + ', ' + response);
 	    	}
-	  	} 
+	  	}
 	});
 }
 
@@ -100,11 +100,11 @@ function getChatters(channel, username, message, whisper)
 	    	else {
 	    		output.say(channel, '@' + username + ', ' + response);
 	    	}
-	  	} 
+	  	}
 	});
 }
 
-module.exports = 
+module.exports =
 {
 	chattersCommandHandler
 }

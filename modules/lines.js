@@ -1,10 +1,10 @@
 var cfg = require('../cfg');
 var fn = require('./functions');
 var fs = require('graceful-fs');
-var output = require('./twitch/output');
+var output = require('./../connection/output');
 
 
-function lineCount(file, username) 
+function lineCount(file, username)
 {
     var fileBuffer =  fs.readFileSync(file);
     var to_string = fileBuffer.toString();
@@ -27,19 +27,18 @@ function stats(channel, username, message, whisper)
         return false;
     }
     var lines = lineCount(file, linesFor);
-    
+
     if (whisper) {
         output.whisper(username, linesFor + ' has written ' + lines + ' lines');
     }
     else {
         output.say(channel, '@' + username + ', ' + linesFor + ' has written ' + lines + ' lines');
-    }   
+    }
 }
 
 
 
-module.exports = 
+module.exports =
 {
     stats
-}    
-
+}

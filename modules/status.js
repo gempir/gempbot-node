@@ -1,7 +1,7 @@
 var cfg    = require('../cfg');
 var fn     = require('./functions');
 var git    = require('git-rev-sync');
-var output = require('./twitch/output');
+var output = require('./../connection/output');
 
 
 function statusBot(channel, username, message, whisper)
@@ -14,10 +14,10 @@ function statusBot(channel, username, message, whisper)
 	}
     else {
     	output.sayNoCD(channel, '@' + username + ', bot uptime: ' + uptime + ' | branch: ' + git.branch() + ' (' + git.short() + ')');
-    }   
+    }
 }
 
-module.exports = 
+module.exports =
 {
 	statusBot
 }

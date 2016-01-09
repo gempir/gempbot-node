@@ -1,5 +1,5 @@
 var fs = require('graceful-fs')
-var channelModule = require('./twitch/channel');
+var channelModule = require('./../connection/channel');
 var cfg = require('./../cfg');
 
 var chat = channelModule.client;
@@ -18,7 +18,7 @@ function isBroadcaster(channel, user)
 function isMod(channel, username)
 {
     if (chat.isMod(channel, username) || username.toLowerCase() === channel.substr(1) || cfg.admin.toLowerCase() === username) {
-        return true; 
+        return true;
     }
     else {
         return false;
@@ -107,13 +107,13 @@ function stringIsLongerThan(inputString, lengthToCheck)
     return false;
 }
 
-module.exports = 
-{ 
-    getNthWord, 
+module.exports =
+{
+    getNthWord,
     getFilesizeInKilobytes,
     getFilesizeInMegabytes,
     isBroadcaster,
-    stringContainsUrl, 
+    stringContainsUrl,
     stringIsLongerThan,
     fileExists,
     numberFormatted,

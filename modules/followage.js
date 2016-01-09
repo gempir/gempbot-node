@@ -1,4 +1,4 @@
-var output  = require('./twitch/output');
+var output  = require('./../connection/output');
 var fn      = require('./functions');
 var fs 	    = require('graceful-fs');
 var request = require('request');
@@ -22,7 +22,7 @@ function followageCommandHandler(channel, username, message, whisper) {
 
 function getUserLocalFollowage(channel, username, message, whisper)
 {
-	var following = fn.getNthWord(message, 2); 
+	var following = fn.getNthWord(message, 2);
 	var channelSub = channel.substr(1);
 	var followURL = 'https://api.rtainc.co/twitch/followers/length?channel='+ channelSub +'&name=' + following;
 
@@ -39,11 +39,11 @@ function getUserLocalFollowage(channel, username, message, whisper)
 	  		else {
 	  			output.say(channel, '@' +  username + ', ' + following + ' has been following ' + channelSub + ' ' + body.toString());
 	  		}
-	  	} 
+	  	}
 	  	else {
 	  		if (whisper) {
 	  			output.whisper(username, following + ' is not following ' + channelSub + ' or the channel doesn\'t exist');
-	  		} 
+	  		}
 	  		else {
 	  			output.say(channel, '@' + username  + ', ' + following + ' is not following ' + channelSub + ' or the channel doesn\'t exist');
 	  		}
@@ -68,7 +68,7 @@ function getLocalFollowage(channel, username, message, whisper)
 	  		else {
 	    		output.say(channel, '@' + username + ', you have been following ' + channelSub + ' ' + body.toString());
 	  		}
-	  	} 
+	  	}
 	  	else {
 	  		if (whisper) {
 	  			output.whisper(username, 'You are not following ' + channelSub + ' or the channel doesn\'t exist');
@@ -105,7 +105,7 @@ function getUserChannelFollowage(channel, username, message, whisper)
 	  		else {
 	    		output.say(channel, '@' + username + ', ' + userFollow + ' has been following ' + following + ' ' + body.toString());
 	  		}
-	  	} 
+	  	}
 	  	else {
 	  		if (whisper) {
 	  			output.whisper(channel, userFollow + ' is not following ' + following + ' or the channel doesn\'t exist');
@@ -120,7 +120,7 @@ function getUserChannelFollowage(channel, username, message, whisper)
 }
 
 
-module.exports = 
+module.exports =
 {
 	followageCommandHandler
 }

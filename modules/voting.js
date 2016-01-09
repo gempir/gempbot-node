@@ -1,4 +1,4 @@
-var output = require('./twitch/output');
+var output = require('./../connection/output');
 var overlay = require('./../overlay/overlay');
 var fn 	    = require('./functions');
 
@@ -19,16 +19,16 @@ function startVoting(channel, user, message) {
 	if (message.toLowerCase() === '!voting skip') {
 		global.voting = true;
 		global.voters = [];
-		overlay.emit('startSkip');	
+		overlay.emit('startSkip');
 		votingSkipController(channel, user, message);
 	}
 	else {
 		return false;
 	}
-	
+
 }
 
-function voteCommandHandler(channel, user, message) 
+function voteCommandHandler(channel, user, message)
 {
 	if (message.toLowerCase() === '!vote') {
 		return false; // make sure an option is set
@@ -48,7 +48,7 @@ function votingSkip(channel, user, message) {
 		}
 		global.votes[1] += 1;
 		global.voters.push(user.username)
-		
+
 	}
 	else if (message.toLowerCase() == '!vote skip') {
 		if (global.voters.indexOf(user.username) > -1) {
@@ -72,7 +72,7 @@ function votingSkip(channel, user, message) {
 
 function votingSkipController(channel, user, message) {
 	output.sayNoCD(channel, 'A skip or stay voting has been started type [ !vote skip ] or [ !vote stay ] to vote on the current content. The voting is over after 45 seconds ');
-	
+
 	setTimeout(function(){
 		console.log(global.votes[0], global.votes[1]);
 		overlay.emit('resultsSkip' + global.votes[0] + ',' + global.votes[1]);
@@ -84,7 +84,7 @@ function votingSkipController(channel, user, message) {
 
 function votingRateController(channel, user, message) {
 	output.sayNoCD(channel, 'A rating voting has been started type [ !vote 5 ] (number from 0-10 with decimals) to rate the current content. The voting ends in 45 seconds.');
-	
+
 	setTimeout(function(){
 		var totalRatings = 0;
 		for (var i = 0; i < global.ratings.length; i++) {
@@ -97,7 +97,7 @@ function votingRateController(channel, user, message) {
 	}, 45000);
 }
 
-module.exports = 
+module.exports =
 {
 	startVoting,
 	voteCommandHandler

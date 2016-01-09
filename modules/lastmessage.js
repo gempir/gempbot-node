@@ -1,6 +1,6 @@
 
 var fn        = require('./functions');
-var output    = require('./twitch/output');
+var output    = require('./../connection/output');
 var fs        = require('fs'),
     readline  = require('readline');
 
@@ -9,14 +9,14 @@ function lastMessage(channel, username, message, whisper) {
 	if (message === '!lastmessage') {
 		return false;
 	}
-	
+
 	var lastMessageFor = fn.getNthWord(message, 2).toLowerCase();
 	var file = 'logs/' + channel.substr(1) + '/' + lastMessageFor + '.txt';
 
 	if (!fn.fileExists(file)) {
 		return false;
 	}
-	
+
 	fs.readFile(file, function(err, data){
         data = data.toString();
         var lines = data.split('\n');
@@ -29,11 +29,10 @@ function lastMessage(channel, username, message, whisper) {
 	    	output.say(channel, '" ' + lastLine[1] + ' "');
 	    }
     })
-	
+
 }
 
-module.exports = 
+module.exports =
 {
 	lastMessage
 }
-

@@ -1,9 +1,9 @@
-var output = require('./twitch/output');
+var output = require('./../connection/output');
 var fs = require('graceful-fs');
 var fn = require('./functions');
 
 
-function countMe(channel, username, message, whisper) 
+function countMe(channel, username, message, whisper)
 {
     var searchPhrase = message.replace('!countme','');
     fs.readFile('logs/' + channel.substr(1) + '/' + username +'.txt', function (err, data) {
@@ -34,7 +34,7 @@ function occurrences(haystack, needle)
         if( position != -1) {
             count++;
             position += needle.length;
-        } 
+        }
     else{
       break;
     }
@@ -42,8 +42,7 @@ function occurrences(haystack, needle)
   return count;
 }
 
-module.exports = 
+module.exports =
 {
     countMe
 }
-

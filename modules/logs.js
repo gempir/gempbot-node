@@ -2,7 +2,7 @@ var cfg    = require('../cfg.js');
 var fs     = require('graceful-fs');
 var moment = require('moment');
 var fn     = require('./functions');
-var output = require('./twitch/output');
+var output = require('./../connection/output');
 
 if (!fs.existsSync('logs')){
     fs.mkdirSync('logs');
@@ -34,14 +34,14 @@ function userLogs(channel, user, message)
 }
 
 
-function channelLogs(channel, user, message) 
+function channelLogs(channel, user, message)
 {
     var file = 'logs/' + channel.substr(1) +'.txt';
     fs.appendFile(file, user.username + ': ' + message + '\n', function(){});
 }
 
 
-function uploadLogs(channel, username, message) 
+function uploadLogs(channel, username, message)
 {
     if (message.toLowerCase() === '!logs') {
         return false;
@@ -56,11 +56,11 @@ function uploadLogs(channel, username, message)
         fs.readFile(logFileChannel, function(err,data) {
             var shortLogs = data.toString()
             shortLogs = shortLogs.substr(shortLogs.length - 20000);
-            cfg.pastebin.createPaste(shortLogs, 'short logs for channel ' + channel.substr(1),null,0, '10M') 
+            cfg.pastebin.createPaste(shortLogs, 'short logs for channel ' + channel.substr(1),null,0, '10M')
                     .then(function (data) {
                         console.log('Pastebin created: ' + data);
                         console.log(logsFor, logFileChannel);
-                        output.whisper(username, 'short logs for channel '+ channel.substr(1) + ' pastebin.com/' + data); 
+                        output.whisper(username, 'short logs for channel '+ channel.substr(1) + ' pastebin.com/' + data);
                     })
                     .fail(function (err) {
                             output.say(channel, err);
@@ -73,7 +73,7 @@ function uploadLogs(channel, username, message)
                 fs.readFile(logFile, function(err,data) {
                     var shortLogs = data.toString()
                     shortLogs = shortLogs.substr(shortLogs.length - 20000);
-                    cfg.pastebin.createPaste(shortLogs, 'short logs for channel ' + username,null,0, '10M') 
+                    cfg.pastebin.createPaste(shortLogs, 'short logs for channel ' + username,null,0, '10M')
                             .then(function (data) {
                                 console.log('Pastebin created: ' + data);
                                 console.log(logsFor, logFile);
@@ -84,25 +84,25 @@ function uploadLogs(channel, username, message)
                                     console.log(err);
                     });
                 });
-            } 
+            }
         else {
             console.log('[LOG] ' + logsFor + ' has no log here');
         }
     }
 }
 
-function logsSize(channel, username, message, whisper) 
+function logsSize(channel, username, message, whisper)
 {
     var messageStart = message.substr(0,12).toLowerCase();
     var name = fn.getNthWord(message, 3);
-    
+
     name = name.toLowerCase();
     if (!fn.fileExists('logs/' + channel.substr(1) + '/' + name +  '.txt') && name != 'channel') {
-        
+
         if (fn.stringIsLongerThan(name, 20)) {
             name = 'the user';
         }
-        console.log('[LOG] ' + name + ' has no log here');        
+        console.log('[LOG] ' + name + ' has no log here');
     }
     else {
         if (name === 'channel') {
@@ -138,7 +138,7 @@ function logsSize(channel, username, message, whisper)
     }
 }
 
-module.exports = 
+module.exports =
 {
     channelLogs,
     userLogs,

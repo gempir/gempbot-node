@@ -1,4 +1,4 @@
-var cfg = require('./../../cfg');
+var cfg = require('./../cfg');
 var irc = require('tmi.js');
 
 var group = new irc.client({
@@ -18,7 +18,7 @@ var group = new irc.client({
 
 group.connect();
 
-module.exports = 
+module.exports =
 {
     group
 }

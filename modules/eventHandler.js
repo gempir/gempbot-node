@@ -5,7 +5,7 @@ var combo       = require('./combo');
 var status      = require('./status');
 var count       = require('./count');
 var lines       = require('./lines');
-var output      = require('./twitch/output');
+var output      = require('./../connection/output');
 var quote       = require('./quote');
 var lastmessage = require('./lastmessage');
 var timer       = require('./timer');
@@ -112,21 +112,21 @@ function whisperEventHandler(username, message) {
 	}
 }
 
-function adminCommands(channel, username, message, whisper) 
+function adminCommands(channel, username, message, whisper)
 {
 	if (!(username === cfg.admin)) {
 		return false;
 	}
 	if (message.toLowerCase() === '!status') {
 			status.statusBot(channel, username, message, whisper);
-	} 
+	}
 	else if (message.substr(0,4).toLowerCase() === '!say') {
 		var toSay = message.substr(5);
 		output.sayNoCD(channel, toSay);
 	}
 }
 
-module.exports = 
+module.exports =
 {
 	channelEventHandler,
 	whisperEventHandler

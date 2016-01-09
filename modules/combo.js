@@ -1,5 +1,5 @@
 var fn     = require('./functions');
-var output = require('./twitch/output');
+var output = require('./../connection/output');
 
 
 var lastMessage = '';
@@ -14,7 +14,7 @@ function count(channel, user, message)
 
     if (currentMessage != lastMessage) {
         if ( counter > 2) {
-            
+
             if (fn.stringContainsUrl(lastMessage)) {
                 skip = true;
             }
@@ -33,11 +33,11 @@ function count(channel, user, message)
     if (currentMessage.toLowerCase() === lastMessage.toLowerCase()) {
         counter++;
     }
-    lastMessage = message; 
+    lastMessage = message;
 }
 
 
-module.exports = 
+module.exports =
 {
     count
 }
