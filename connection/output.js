@@ -1,7 +1,7 @@
 var channelModule = require('./channel');
 var whisperModule = require('./whisper');
 
-	
+
 
 chat = channelModule.client;
 group = whisperModule.group;
@@ -51,7 +51,7 @@ function whisper(username, message)
 	console.log('[WHISPER] ' + '/w ' + username + ' ' + message)
 }
 
-module.exports = 
+module.exports =
 {
 	say,
 	sayNoCD,

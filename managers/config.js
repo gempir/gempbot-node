@@ -25,7 +25,7 @@ function setWhisperCooldown(cooldown)
 {
     console.log('[CFG] whispercooldown: ' + cooldown);
     global.whisperCooldownInterval = setInterval(function() {
-        global.cooldown = false;
+        global.whisperCooldown = false;
     }, cooldown);
 }
 
