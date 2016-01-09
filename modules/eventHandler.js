@@ -24,6 +24,13 @@ function channelEventHandler(channel, user, message, self) {
 
 	adminCommands(channel, user.username, message, false);
 
+	if (global.trusted.indexOf(user.username) > -1 && message.substr(0,12).toLowerCase() === '!command add') {
+		commands.addMessageCommand(channel, user.username, message, false);
+	}
+	if (global.trusted.indexOf(user.username) > -1 && message.substr(0,15).toLowerCase() === '!command remove') {
+		commands.removeMessageCommand(channel, user.username, message, false);
+	}
+
 	// no cooldown commands
 	switch (command) {
 		case '!vote':
@@ -49,29 +56,32 @@ function channelEventHandler(channel, user, message, self) {
 		return false;
 	}
 
-	switch (command) {
-		case '!followage':
-			followage.followageCommandHandler(channel, user.username, message, false);
-			break;
-		case '!chatters':
-			chatters.chattersCommandHandler(channel, user.username, message, false);
-			break;
-		case '!logs':
-			logs.logsCommandHandler(channel, user.username, message, false);
-			break;
-		case '!lines':
-			lines.stats(channel, user.username, message, false);
-			break;
-		case '!countme':
-			count.countMe(channel, user.username, message, false);
-			break;
-		case '!randomquote':
-			quote.getQuote(channel, user, message, false);
-			break;
-		case '!lastmessage':
-			lastmessage.lastMessage(channel, user.username, message, false);
-			break;
+
+	if (command === '!followage') {
+		followage.followageCommandHandler(channel, user.username, message, false);
 	}
+	else if (command === '!chatters') {
+		chatters.chattersCommandHandler(channel, user.username, message, false);
+	}
+	else if (command === '!logs') {
+		logs.logsCommandHandler(channel, user.username, message, false);
+	}
+	else if (command === '!lines') {
+		lines.stats(channel, user.username, message, false);
+	}
+	else if (command === '!countme') {
+		count.countMe(channel, user.username, message, false);
+	}
+	else if (command === '!randomquote') {
+		quote.getQuote(channel, user, message, false);
+	}
+	else if (command === '!lastmessage') {
+		lastmessage.lastMessage(channel, user.username, message, false);
+	}
+	else if (command.substr(0,1) === '!') {
+		commands.getMessageCommand(channel, user.username, message, false);
+	}
+
 }
 
 function whisperEventHandler(username, message) {
@@ -79,6 +89,13 @@ function whisperEventHandler(username, message) {
 	command = fn.getNthWord(message.toLowerCase(), 1);
 
 	adminCommands(cfg.options.channels[0], username, message, true);
+
+	if (global.trusted.indexOf(user.username) > -1 && message.substr(0,12).toLowerCase() === '!command add') {
+		commands.addMessageCommand(channel, user.username, message, true);
+	}
+	if (global.trusted.indexOf(user.username) > -1 && message.substr(0,15).toLowerCase() === '!command remove') {
+		commands.removeMessageCommand(channel, user.username, message, true);
+	}
 
 	// no cooldown commands
 	switch (command) {
@@ -97,28 +114,29 @@ function whisperEventHandler(username, message) {
 		return false;
 	}
 
-	switch (command) {
-		case '!followage':
-			followage.followageCommandHandler(cfg.options.channels[0], username, message, true);
-			break;
-		case '!logs':
-			logs.logsCommandHandler(cfg.options.channels[0], username, message, true);
-			break;
-		case '!lines':
-			lines.stats(cfg.options.channels[0], username, message, true);
-			break;
-		case '!count':
-			count.count(cfg.options.channels[0], username, message, true);
-			break;
-		case '!countme':
-			count.countMe(cfg.options.channels[0], username, message, true);
-			break;
-		case '!randomquote':
-			quote.quoteUser(cfg.options.channels[0], username, message, true);
-			break;
-		case '!lastmessage':
-			lastmessage.lastMessage(cfg.options.channels[0], username, message, true);
-			break;
+	if (command === '!followage') {
+		followage.followageCommandHandler(channel, user.username, message, true);
+	}
+	else if (command === '!chatters') {
+		chatters.chattersCommandHandler(channel, user.username, message, true);
+	}
+	else if (command === '!logs') {
+		logs.logsCommandHandler(channel, user.username, message, true);
+	}
+	else if (command === '!lines') {
+		lines.stats(channel, user.username, message, true);
+	}
+	else if (command === '!countme') {
+		count.countMe(channel, user.username, message, true);
+	}
+	else if (command === '!randomquote') {
+		quote.getQuote(channel, user, message, true);
+	}
+	else if (command === '!lastmessage') {
+		lastmessage.lastMessage(channel, user.username, message, true);
+	}
+	else if (command.substr(0,1) === '!') {
+		commands.getMessageCommand(channel, user.username, message, true);
 	}
 }
 

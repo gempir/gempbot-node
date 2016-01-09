@@ -13,12 +13,12 @@ config.setCooldowns();
 commands.refreshActiveCommands();
 
 channel.client.on("connected", function (address, port) {
-	output.say(cfg.options.channels[0], 'Bot starting | branch: ' + git.branch() + ' (' + git.short() + ')');
-	console.log('[STARTUP] Bot starting on ' + address + ':' + port + ' | branch: ' + git.branch() + ' (' + git.short() + ')');
+	console.log('[BOOT] Bot starting on ' + address + ':' + port + ' | branch: ' + git.branch() + ' (' + git.short() + ')');
 });
 
 whisper.group.on("connected", function (address, port, err) {
-	console.log('[STARTUP] Connected to group servers on ' + address + ':' + port);
+	output.say(cfg.options.channels[0], 'Bot starting | branch: ' + git.branch() + ' (' + git.short() + ')');
+	console.log('[BOOT] Connected to group servers on ' + address + ':' + port);
 });
 
 whisper.group.on("disconnected", function (reason) {

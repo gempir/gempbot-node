@@ -71,9 +71,76 @@ function disableCommand(channel, username, message, whisper)
     })
 }
 
+function getMessageCommand(channel, username, message, whisper)
+{
+    var command = fn.getNthWord(message, 1);
+    if (typeof command === 'undefined') {
+        return false;
+    }
+    mysql.db.query('SELECT message FROM commands WHERE name = ?', [command], function(err,rows){
+        var response = rows[0].message;
+
+        if (whisper) {
+            output.whisper(username, response);
+        }
+        else {
+            output.say(channel, '@' + username + ', ' + response);
+        }
+    });
+}
+
+function addMessageCommand(channel, username, message, whisper)
+{
+    var name = fn.getNthWord(message, 3);
+    var commandMessage = message.replace('!command add ' + name , '');
+
+    if (typeof name === 'undefined' || typeof commandMessage === 'undefined') {
+        return false;
+    }
+
+    mysql.db.query('INSERT INTO commands (name, enabled, message) VALUES (?, 1, ?)', [name,commandMessage], function(err){
+        if (err) {
+            console.log('[ERROR] adding command failed');
+            return false;
+        }
+        refreshActiveCommands();
+        if (whisper) {
+            output.whisper(username, 'added command ' + name);
+        }
+        else {
+            output.sayNoCD(channel, '@' + username + ', added command ' + name);
+        }
+    });
+}
+
+function removeMessageCommand(channel, username, message, whisper)
+{
+    var name = fn.getNthWord(message, 3);
+
+    if (typeof name === 'undefined') {
+        return false;
+    }
+
+    mysql.db.query('DELETE FROM commands WHERE name = ?', [name], function(err){
+        if (err) {
+            console.log('[ERROR] removing command failed');
+            return false;
+        }
+        refreshActiveCommands();
+        if (whisper) {
+            output.whisper(username, 'removed command ' + name);
+        }
+        else {
+            output.sayNoCD(channel, '@' + username + ', removed command ' + name);
+        }
+    });
+}
 
 module.exports =
 {
     refreshActiveCommands,
-    admin
+    admin,
+    getMessageCommand,
+    addMessageCommand,
+    removeMessageCommand
 }
