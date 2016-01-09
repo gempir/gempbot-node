@@ -12,6 +12,7 @@ var timer       = require('./timer');
 var voting      = require('./voting');
 var followage   = require('./followage');
 var chatters    = require('./chatters');
+var config      = require('./../managers/config');
 
 function channelEventHandler(channel, user, message, self) {
 	combo.count(channel, user, message);
@@ -119,6 +120,9 @@ function adminCommands(channel, username, message, whisper)
 	}
 	if (message.toLowerCase() === '!status') {
 			status.statusBot(channel, username, message, whisper);
+	}
+	else if (message.substr(0,6).toLowerCase() === '!admin') {
+		config.admin(channel, username, message, whisper);
 	}
 	else if (message.substr(0,4).toLowerCase() === '!say') {
 		var toSay = message.substr(5);
