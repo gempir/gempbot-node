@@ -18,7 +18,3 @@ channel.client.on("connected", function (address, port) {
 whisper.group.on("connected", function (address, port, err) {
 	console.log('[STARTUP] Connected to group servers on ' + address + ':' + port);
 });
-
-whisper.group.on("disconnected", function (reason) {
-    process.exit(); // restart bot when not connected to group servers, because whispers won't work otherwise
-});
