@@ -11,7 +11,7 @@ config.refreshTrusted();
 config.setCooldowns();
 
 channel.client.on("connected", function (address, port) {
-	// output.say(cfg.options.channels[0], 'Bot starting | branch: ' + git.branch() + ' (' + git.short() + ')');
+	output.say(cfg.options.channels[0], 'Bot starting | branch: ' + git.branch() + ' (' + git.short() + ')');
 	console.log('[STARTUP] Bot starting on ' + address + ':' + port + ' | branch: ' + git.branch() + ' (' + git.short() + ')');
 });
 
