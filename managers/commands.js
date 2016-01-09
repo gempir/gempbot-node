@@ -41,7 +41,7 @@ function enableCommand(channel, username, message, whisper)
         if (!err) {
             console.log('[CFG] enabled: ' + command);
             if (whisper) {
-                output.whisper(username, cd + ' is now enabled');
+                output.whisper(username, command + ' is now enabled');
             }
             else {
                 output.sayNoCD(channel, '@' + username + ', ' + command + ' is now enabled');
