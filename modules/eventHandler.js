@@ -13,6 +13,7 @@ var voting      = require('./voting');
 var followage   = require('./followage');
 var chatters    = require('./chatters');
 var config      = require('./../managers/config');
+var commands    = require('./../managers/commands');
 
 function channelEventHandler(channel, user, message, self) {
 	combo.count(channel, user, message);
@@ -44,10 +45,14 @@ function channelEventHandler(channel, user, message, self) {
 		return false;
 	}
 
+	if (!(global.activeCommands.indexOf(command) > -1)) {
+		return false;
+	}
+
 	switch (command) {
-		//  case '!followage':
-			//	followage.followageCommandHandler(channel, user.username, message, false);
-			//	break;
+		case '!followage':
+			followage.followageCommandHandler(channel, user.username, message, false);
+			break;
 		case '!chatters':
 			chatters.chattersCommandHandler(channel, user.username, message, false);
 			break;
@@ -88,6 +93,10 @@ function whisperEventHandler(username, message) {
 		return false;
 	}
 
+	if (!(global.activeCommands.indexOf(command) > -1)) {
+		return false;
+	}
+
 	switch (command) {
 		case '!followage':
 			followage.followageCommandHandler(cfg.options.channels[0], username, message, true);
@@ -123,6 +132,9 @@ function adminCommands(channel, username, message, whisper)
 	}
 	else if (message.substr(0,6).toLowerCase() === '!admin') {
 		config.admin(channel, username, message, whisper);
+	}
+	else if (message.substr(0,8).toLowerCase() === '!command') {
+		commands.admin(channel, username, message, whisper);
 	}
 	else if (message.substr(0,4).toLowerCase() === '!say') {
 		var toSay = message.substr(5);

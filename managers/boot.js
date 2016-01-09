@@ -1,4 +1,5 @@
 var config  = require('./config');
+var commands = require('./commands');
 require('./chat');
 var git     = require('git-rev-sync');
 var cfg     = require('./../cfg');
@@ -9,6 +10,7 @@ var output  = require('./../connection/output');
 // stuff to do on boot
 config.refreshTrusted();
 config.setCooldowns();
+commands.refreshActiveCommands();
 
 channel.client.on("connected", function (address, port) {
 	output.say(cfg.options.channels[0], 'Bot starting | branch: ' + git.branch() + ' (' + git.short() + ')');
