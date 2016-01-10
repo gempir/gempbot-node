@@ -19,7 +19,7 @@ function recordChatters(channel, username, message)
 
 	setTimeout(function() {
 		global.chatters.splice(index, 1);
-	}, 10000);
+	}, 900000);
 }
 
 
