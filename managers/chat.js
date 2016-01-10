@@ -93,7 +93,7 @@ function eventHandler(channel, username, message, whisper, user)
 		count.countMe(channel, username, message, whisper);
 	}
 	else if (command === '!randomquote') {
-		quote.getQuote(channel, user, message, whisper);
+		quote.getQuote(channel, username, message, whisper);
 	}
 	else if (command === '!lastmessage') {
 		lastmessage.lastMessage(channel, username, message, whisper);

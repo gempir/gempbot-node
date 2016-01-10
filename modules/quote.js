@@ -4,7 +4,7 @@ var output = require('./../connection/output');
 
 global.quoteCounter = 0;
 
-function getQuote(channel, user, message, whisper)
+function getQuote(channel, username, message, whisper)
 {
 	if (message.toLowerCase() === '!randomquote') {
         return false;
@@ -38,11 +38,11 @@ function getQuote(channel, user, message, whisper)
         	}
         	console.log('[LOG] skipped user quote');
             global.quoteSkip += 1;
-        	getQuote(channel, user, message, whisper);
+        	getQuote(channel, username, message, whisper);
         	return false;
         }
         if (whisper) {
-        	output.whisper(user, '"' + quote + ' "');
+        	output.whisper(username, '"' + quote + ' "');
         }
         else {
         	output.say(channel, '"' + quote + ' "');
