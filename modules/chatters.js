@@ -5,6 +5,24 @@ var request = require('request');
 var cfg     = require('./../cfg');
 
 
+function recordChatters(channel, username, message)
+{
+	if (typeof global.chatters === 'undefined') {
+		global.chatters = [];
+	}
+
+	var index = global.chatters.indexOf(username);
+	if (index > -1) {
+		return false;
+	}
+	global.chatters.push(username);
+
+	setTimeout(function() {
+		global.chatters.splice(index, 1);
+	}, 10000);
+}
+
+
 function chattersCommandHandler(channel, username, message, whisper)
 {
 	switch(message.toLowerCase()) {
@@ -85,26 +103,16 @@ function getMods(channel, username, message, whisper)
 
 function getChatters(channel, username, message, whisper)
 {
-	var channelSub = channel.substr(1);
-	var chattersJsonURL = 'https://tmi.twitch.tv/group/user/' + channelSub + '/chatters';
-
-	request(chattersJsonURL, function (error, response, body) {
-		console.log('[GET] ' + chattersJsonURL);
-	  	if (!error && response.statusCode == 200) {
-	    	var obj = JSON.parse(body);
-	    	var chattersCount = obj.chatter_count;
-	    	var response = 'there are currently ' + chattersCount + ' chatters';
-	    	if (whisper){
-	    		output.whisper(username, response);
-	    	}
-	    	else {
-	    		output.say(channel, '@' + username + ', ' + response);
-	    	}
-	  	}
-	});
+	if (whisper) {
+		output.whisper(username, 'There were ' + global.chatters.length + ' chatters in the last 15mins');
+	}
+	else {
+		output.say(channel, 'There were ' + global.chatters.length + ' chatters in the last 15mins');
+	}
 }
 
 module.exports =
 {
-	chattersCommandHandler
+	chattersCommandHandler,
+	recordChatters
 }
