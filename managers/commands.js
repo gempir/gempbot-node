@@ -7,11 +7,16 @@ function refreshActiveCommands()
     mysql.db.query('SELECT name FROM commands WHERE enabled = 1', function(err,rows) {
         global.activeCommands = [];
         for (i = 0, len = rows.length; i < len; i++) {
-            global.activeCommands.push(rows[i].name);
+            global.activeCommands.push(rows[i].name.toLowerCase());
         }
-        console.log(global.activeCommands);
+        console.log('[LOG] active commands: ' + global.activeCommands);
     });
 
+}
+
+function getActiveCommands(channel, username, message, whisper)
+{
+    output.whisper(username, 'active commands in ' + channel + ': ' + global.activeCommands);
 }
 
 function admin(channel, username, message, whisper)
@@ -74,17 +79,27 @@ function disableCommand(channel, username, message, whisper)
 function getMessageCommand(channel, username, message, whisper)
 {
     var command = fn.getNthWord(message, 1);
+
     if (typeof command === 'undefined') {
         return false;
     }
     mysql.db.query('SELECT message FROM commands WHERE name = ?', [command], function(err,rows){
         var response = rows[0].message;
-
+        if (response === null || response === '') {
+            return false;
+        }
         if (whisper) {
             output.whisper(username, response);
         }
         else {
-            output.say(channel, '@' + username + ', ' + response);
+            console.log('command');
+            if (response.indexOf('--response') > -1) {
+                response = response.replace('--response', '');
+                output.say(channel, '@' + username + ', ' + response);
+            }
+            else {
+                output.say(channel, response);
+            }
         }
     });
 }
@@ -142,5 +157,6 @@ module.exports =
     admin,
     getMessageCommand,
     addMessageCommand,
-    removeMessageCommand
+    removeMessageCommand,
+    getActiveCommands
 }

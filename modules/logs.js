@@ -27,17 +27,17 @@ function logsCommandHandler(channel, user, message, whisper)
     }
 }
 
-function userLogs(channel, user, message)
+function userLogs(channel, username, message)
 {
-    var file = 'logs/' + channel.substr(1) + '/' + user.username +'.txt';
-    fs.appendFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + user.username + ': ' + message + '\n', function(){});
+    var file = 'logs/' + channel.substr(1) + '/' + username +'.txt';
+    fs.appendFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + username + ': ' + message + '\n', function(){});
 }
 
 
-function channelLogs(channel, user, message)
+function channelLogs(channel, username, message)
 {
     var file = 'logs/' + channel.substr(1) +'.txt';
-    fs.appendFile(file, user.username + ': ' + message + '\n', function(){});
+    fs.appendFile(file, username + ': ' + message + '\n', function(){});
 }
 
 
