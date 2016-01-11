@@ -43,7 +43,7 @@ function eventHandler(channel, username, message, whisper, user)
     if (username.toLowerCase() === cfg.admin.toLowerCase()) {
         adminCommands(channel, username, message, whisper);
     }
-    if (global.trusted.indexOf(username.toLowerCase() > -1)) {
+    if (global.trusted.indexOf(username.toLowerCase()) > -1)) {
         trustedCommands(channel, username, message, whisper);
     }
     if (user != null) {
