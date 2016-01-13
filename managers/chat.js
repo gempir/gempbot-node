@@ -19,24 +19,26 @@ var commands    = require('./../managers/commands');
 
 
 channel.client.on('chat', function(channel, user, message, self) {
-    eventHandler(channel, user.username, message, false, user);
+    eventHandler(channel, user.username, message, false, user, false);
 });
 
 channel.client.on('action', function(channel, user, message, self) {
-    eventHandler(channel, user.username, message, false, user);
+    eventHandler(channel, user.username, message, false, user, false);
 });
 
 whisper.group.on('whisper', function (username, message) {
-	eventHandler(cfg.options.channels[0], username, message, true, null);
+	eventHandler(cfg.options.channels[0], username, message, true, null, true);
 });
 
 
-function eventHandler(channel, username, message, whisper, user)
+function eventHandler(channel, username, message, whisper, user, isWhisper)
 {
-    combo.count(channel, username, message);
-	logs.channelLogs(channel, username, message);
-	logs.userLogs(channel, username, message);
-    chatters.recordChatters(channel, username, message);
+    if (!isWhisper) {
+        combo.count(channel, username, message);
+        logs.channelLogs(channel, username, message);
+        logs.userLogs(channel, username, message);
+        chatters.recordChatters(channel, username, message);
+    }
 
     var command = fn.getNthWord(message, 1).toLowerCase();
 
