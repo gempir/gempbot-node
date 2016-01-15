@@ -72,7 +72,7 @@ function eventHandler(channel, username, message, whisper, user, isWhisper)
 
     if (global.cooldown) {
         console.log('[LOG] global cooldown');
-		whisper = true;
+		return false;
 	}
 
     // normal stuff
