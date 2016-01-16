@@ -25,8 +25,7 @@ function count(channel, user, message)
                 var combo = lastMessage;
             }
             if (!skip) {
-                output.sayPriority(channel, counter + 'x ' + combo + ' COMBO', true);
-                return false;
+                output.say(channel, counter + 'x ' + combo + ' COMBO', true);
             }
         }
         counter = 1;
