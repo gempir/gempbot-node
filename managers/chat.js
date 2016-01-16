@@ -34,7 +34,7 @@ whisper.group.on('whisper', function (username, message) {
 function eventHandler(channel, username, message, whisper, user, isWhisper)
 {
     if (!isWhisper) {
-        combo.count(channel, username, message);
+        combo.count(channel, user, message);
         logs.channelLogs(channel, username, message);
         logs.userLogs(channel, username, message);
         chatters.recordChatters(channel, username, message);

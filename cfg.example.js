@@ -1,13 +1,4 @@
-setInterval(function() {
-  global.cooldown = false;
-}, 7000); 
-
-setInterval(function() {
-  global.whisperCooldown = false;
-}, 50); 
-
 var admin = 'gempir';
-var trusted = ['gempir','gempbot'];
 
 var options = {
         options: {
@@ -18,24 +9,31 @@ var options = {
             reconnect: true
         },
         identity: {
-            username: 'NAME',
-            password: 'oauth:KEY'
+            username: 'gempbot',
+            password: 'oauth:'
         },
         channels: ['#gempir'] // do not put more than 1 here. This bot is not written for multiple channels
 };
 
+var dbOptions = {
+  host: "host",
+  user: "user",
+  password: "pw",
+  database: "db"
+}
+
 var PastebinAPI = require('pastebin-js'),
     pastebin = new PastebinAPI({
-          'api_dev_key' : 'KEY',
-          'api_user_name' : 'NAME',
-          'api_user_password' : 'PW'
+          'api_dev_key' : 'key',
+          'api_user_name' : 'name',
+          'api_user_password' : 'pw'
         });
 
 
-module.exports = 
-{ 
+module.exports =
+{
     pastebin,
     admin,
     options,
-    trusted
+    dbOptions
 };

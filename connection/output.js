@@ -26,6 +26,26 @@ function say(channel, message, action)
 	}
 }
 
+function sayPriority(channel, message, action)
+{
+	action = action || false;
+
+	if (global.priorityCooldown) {
+		return false;
+	}
+
+	if (!action) {
+		global.priorityCooldown = true;
+		chat.say(channel, message);
+		console.log('[SAY] ' + message);
+	}
+	else if (action) {
+		global.priorityCooldown = true;
+		chat.action(channel, message);
+		console.log('[SAY]' + '/me ' + message);
+	}
+}
+
 function sayNoCD(channel, message, action)
 {
 	action = action || false;
@@ -55,5 +75,6 @@ module.exports =
 {
 	say,
 	sayNoCD,
-	whisper
+	whisper,
+	sayPriority
 }

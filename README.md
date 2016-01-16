@@ -5,7 +5,6 @@ This is also a fun oriented bot and less of a general channel bot. It does stuff
 And this is one of the strengths of this bot, it has built in logging completly usable without any webserver.
 It uploads logs to pastebin and you don't have to host anything yourself.
 
-Explore the modules folder to find out more features of my bot the eventHandler.js has all commands, if you are unsure where to look.
 
 
 # Installation

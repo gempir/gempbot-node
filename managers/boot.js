@@ -13,7 +13,7 @@ config.setCooldowns();
 commands.refreshActiveCommands();
 
 channel.client.on("connected", function (address, port) {
-	console.log('[BOOT] Bot starting on ' + address + ':' + port + ' | branch: ' + git.branch() + ' (' + git.short() + ')');
+	console.log('[BOOT] connected to chat');
 });
 
 whisper.group.on("connected", function (address, port, err) {

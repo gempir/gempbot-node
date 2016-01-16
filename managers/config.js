@@ -10,6 +10,7 @@ function setCooldowns()
         clearInterval(global.whisperCooldownInterval);
         setGlobalCooldown(rows[0].globalcooldown);
         setWhisperCooldown(rows[0].whispercooldown);
+        setPriorityCooldown(rows[0].prioritycooldown);
     });
 }
 
@@ -26,6 +27,14 @@ function setWhisperCooldown(cooldown)
     console.log('[CFG] whispercooldown: ' + cooldown);
     global.whisperCooldownInterval = setInterval(function() {
         global.whisperCooldown = false;
+    }, cooldown);
+}
+
+function setPriorityCooldown(cooldown)
+{
+    console.log('[CFG] priorityCooldown: ' + cooldown);
+    global.priorityCooldownInterval = setInterval(function() {
+        global.priorityCooldown = false;
     }, cooldown);
 }
 
@@ -129,6 +138,24 @@ function cooldown(channel, username, message, whisper)
                 }
                 else {
                     output.sayNoCD(channel, '@' + username + ', new global cd: ' + cd + ' ms');
+                }
+                setCooldowns();
+            }
+        })
+    }
+    if (command === 'priority') {
+        var cd = fn.getNthWord(message, 4)
+        if (typeof cd === 'undefined') {
+            return false;
+        };
+        mysql.db.query('UPDATE config SET prioritycooldown = ? WHERE id = 1', [cd], function (err) {
+            if (!err) {
+                console.log('[CFG] priority cd: ' + cd);
+                if (whisper) {
+                    output.whisper(username, ' new priority cd: ' + cd + ' ms');
+                }
+                else {
+                    output.sayNoCD(channel, '@' + username + ', new priority cd: ' + cd + ' ms');
                 }
                 setCooldowns();
             }
