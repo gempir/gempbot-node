@@ -18,7 +18,7 @@ function count(channel, user, message)
     skip = false;
 
     if (counter === 1) {
-        comboWord = fn.getNthWord(message, 1);
+        comboWord = message;
     }
 
     if (currentMessage.indexOf(comboWord) === -1) {
