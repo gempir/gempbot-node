@@ -1,44 +1,39 @@
 var fn     = require('./functions');
 var output = require('./../connection/output');
-var cfg    = require('./../cfg');
 
 
 var lastMessage = '';
 var currentMessage = '';
-var comboWord = '';
 var counter = 1;
 var skip = false;
 
 function count(channel, user, message)
 {
-    if (user.username.toLowerCase() === cfg.options.identity.username.toLowerCase()) {
-        return false;
-    }
     currentMessage = message;
     skip = false;
 
-    if (counter === 1) {
-        comboWord = message;
-    }
+    if (currentMessage != lastMessage) {
+        if ( counter > 2) {
 
-    if (currentMessage.indexOf(comboWord) === -1) {
-        if ( counter > 5) {
             if (fn.stringContainsUrl(lastMessage)) {
                 skip = true;
             }
             if (fn.stringIsLongerThan(lastMessage, 30)) {
                 skip = true;
             }
+            else {
+                var combo = lastMessage;
+            }
             if (!skip) {
                 var comboTotal = counter;
                 counter = 1;
-                output.sayNoCD(channel, (comboTotal - 1) + 'x ' + comboWord + ' COMBO', true);
+                output.sayNoCD(channel, comboTotal + 'x ' + combo + ' COMBO', true);
                 return;
             }
         }
         counter = 1;
     }
-    else if (currentMessage.indexOf(comboWord) > -1) {
+    else if (currentMessage === lastMessage) {
         counter++;
     }
     lastMessage = message;
