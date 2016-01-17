@@ -14,14 +14,14 @@ function count(channel, user, message)
     if (user.username.toLowerCase() === cfg.options.identity.username.toLowerCase()) {
         return false;
     }
-    currentMessage = message;
+    currentMessage = message + ' ';
     skip = false;
     console.log(counter);
     if (counter === 1) {
         comboWord = message;
     }
     console.log('comboWord: ' + comboWord);
-    if (currentMessage.indexOf(comboWord) === -1) {
+    if (currentMessage.indexOf(comboWord + ' ') === -1) {
         if ( counter > 2) {
             if (fn.stringContainsUrl(lastMessage)) {
                 skip = true;
@@ -38,7 +38,7 @@ function count(channel, user, message)
         }
         counter = 1;
     }
-    else if (currentMessage.indexOf(comboWord) > -1) {
+    else if (currentMessage.indexOf(comboWord + ' ') > -1) {
         counter++;
     }
     lastMessage = message;
