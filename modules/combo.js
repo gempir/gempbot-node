@@ -22,7 +22,7 @@ function count(channel, user, message)
     }
 
     if (currentMessage.indexOf(comboWord) === -1) {
-        if ( counter > 2) {
+        if ( counter > 5) {
             if (fn.stringContainsUrl(lastMessage)) {
                 skip = true;
             }
