@@ -16,11 +16,9 @@ function count(channel, user, message)
     }
     currentMessage = message + ' ';
     skip = false;
-    console.log(counter);
     if (counter === 1) {
         comboWord = message;
     }
-    console.log('comboWord: ' + comboWord);
     if (currentMessage.indexOf(comboWord + ' ') === -1) {
         if ( counter > 2) {
             if (fn.stringContainsUrl(lastMessage)) {
