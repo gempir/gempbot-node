@@ -1,18 +1,26 @@
 var fn     = require('./functions');
 var output = require('./../connection/output');
+var cfg    = require('./../cfg');
 
 
 var lastMessage = '';
 var currentMessage = '';
+var comboWord = '';
 var counter = 1;
 var skip = false;
 
 function count(channel, user, message)
 {
-    var currentMessage = message;
+    if (user.username.toLowerCase() === cfg.options.identity.username.toLowerCase()) {
+        return false;
+    }
+    currentMessage = message;
     skip = false;
-
-    if (currentMessage != lastMessage) {
+    console.log(counter);
+    if (counter === 1) {
+        comboWord = message;
+    }
+    if (currentMessage.indexOf(lastMessage) === -1) {
         if ( counter > 2) {
 
             if (fn.stringContainsUrl(lastMessage)) {
@@ -25,12 +33,15 @@ function count(channel, user, message)
                 var combo = lastMessage;
             }
             if (!skip) {
-                output.say(channel, counter + 'x ' + combo + ' COMBO', true);
+                var comboTotal = counter;
+                counter = 1;
+                output.sayNoCD(channel, comboTotal + 'x ' + comboWord + ' COMBO', true);
+                return;
             }
         }
         counter = 1;
     }
-    if (currentMessage.toLowerCase() === lastMessage.toLowerCase()) {
+    else if (currentMessage.indexOf(lastMessage) > -1) {
         counter++;
     }
     lastMessage = message;

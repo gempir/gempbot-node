@@ -12,13 +12,14 @@ var db = mysql.createConnection({
 
 db.connect(function(err){
   if(err){
-    console.log('Error connecting to Db');
-    return;
+    console.log('[DB] Error connecting to Db');
+	process.exit();
+	return;
   }
-  console.log('Connection established');
+  console.log('[DB] DB Connection established');
 });
 
-module.exports = 
+module.exports =
 {
 	db
 }
