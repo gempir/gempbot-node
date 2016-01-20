@@ -63,7 +63,7 @@ function votingSkip(channel, username, message) {
 		}
 
 		var voteValue = fn.getNthWord(message, 2).replace(',','.');
-		if (voteValue <= 10 && voteValue >= 0) {
+		if (voteValue <= 10 && voteValue > 0) {
 			global.voters.push(username);
 			global.ratings.push(voteValue);
 		}
