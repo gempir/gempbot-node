@@ -32,12 +32,12 @@ function nuke(channel, username, message)
         nukeTime = fn.getNthWord(message, 2);
     }
 
-    output.sayNoCD(channel, 'MrDestructoid THIS CHAT WILL BE NUKED IN 10 SECONDS', true);
+    output.sayNoCD(channel, 'VaultBoy THIS CHAT WILL BE NUKED IN 10 SECONDS', true);
 
     setTimeout(function() {
         for (index = 0; index < global.toNuke.length; index++) {
             output.sayNoCD(channel, '/timeout ' + global.toNuke[index] + ' ' + nukeTime);
-            output.sayNoCD(channel, 'MrDestructoid NUKED ' + global.toNuke.length + ' CHATTERS', true);
+            output.sayNoCD(channel, 'VaultBoy NUKED ' + global.toNuke.length + ' CHATTERS', true);
             global.toNuke = [];
         }
     }, 10000);
