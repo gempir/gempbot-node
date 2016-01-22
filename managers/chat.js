@@ -16,7 +16,7 @@ var followage   = require('./../modules/followage');
 var chatters    = require('./../modules/chatters');
 var config      = require('./../managers/config');
 var commands    = require('./../managers/commands');
-
+var nuke        = require('./../modules/nuke');
 
 channel.client.on('chat', function(channel, user, message, self) {
     eventHandler(channel, user.username, message, false, user, false);
@@ -38,6 +38,7 @@ function eventHandler(channel, username, message, whisper, user, isWhisper)
         logs.channelLogs(channel, username, message);
         logs.userLogs(channel, username, message);
         chatters.recordChatters(channel, username, message);
+        nuke.recordToNuke(channel, username, message);
     }
 
     var command = fn.getNthWord(message, 1).toLowerCase();
@@ -114,6 +115,9 @@ function adminCommands(channel, username, message, whisper)
     switch(command) {
         case '!status':
             status.statusBot(channel, username, message, whisper);
+            break;
+        case '!nuke':
+            nuke.nuke(channel, username, message);
             break;
         case '!admin':
             config.admin(channel, username, message, whisper);
