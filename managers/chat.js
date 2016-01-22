@@ -38,7 +38,7 @@ function eventHandler(channel, username, message, whisper, user, isWhisper)
         logs.channelLogs(channel, username, message);
         logs.userLogs(channel, username, message);
         chatters.recordChatters(channel, username, message);
-        nuke.recordToNuke(channel, username, message);
+        nuke.recordToNuke(channel, user, message);
     }
 
     var command = fn.getNthWord(message, 1).toLowerCase();
