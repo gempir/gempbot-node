@@ -2,9 +2,14 @@ var fn = require('./functions');
 var output = require('./../connection/output');
 
 
+global.nukeLength = 10;
 
 function recordToNuke(channel, user, message)
 {
+    if (!global.NukeMode) {
+        return false;
+    }
+
     if (user['user-type'] === 'mod') {
         return false;
     }
@@ -21,27 +26,33 @@ function recordToNuke(channel, user, message)
 
 	setTimeout(function() {
 		global.toNuke.splice(index, 1);
-	}, 10000);
+	}, global.nukeLength * 1000);
 }
 
 function nuke(channel, username, message)
 {
+    global.NukeMode = true;
     var nukeTime = 1;
 
     if (message != '!nuke') {
         nukeTime = fn.getNthWord(message, 2);
     }
+    if (typeof fn.getNthWord(message, 3) != 'undefined') {
+        global.nukeLength = fn.getNthWord(message, 3);
+    }
 
-    output.sayNoCD(channel, 'VaultBoy THIS CHAT WILL BE NUKED IN 10 SECONDS', true);
+    output.sayNoCD(channel, 'VaultBoy THIS CHAT WILL BE NUKED IN ' + global.nukeLength + ' SECONDS VaultBoy', true);
 
     setTimeout(function() {
         for (index = 0; index < global.toNuke.length; index++) {
             output.sayNoCD(channel, '/timeout ' + global.toNuke[index] + ' ' + nukeTime);
         }
         console.log('[LOG] nuking:' + global.toNuke);
-        output.sayNoCD(channel, 'VaultBoy NUKED ' + global.toNuke.length + ' CHATTERS', true);
+        output.sayNoCD(channel, 'VaultBoy NUKED ' + global.toNuke.length + ' CHATTERS VaultBoy', true);
+        global.NukeMode = false;
         global.toNuke = [];
-    }, 10000);
+        global.nukeLength = 10;
+    }, global.nukeLength * 1000);
 }
 
 
