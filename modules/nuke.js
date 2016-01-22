@@ -3,6 +3,7 @@ var output = require('./../connection/output');
 
 
 global.nukeLength = 10;
+global.toNuke = [];
 
 function recordToNuke(channel, user, message)
 {
@@ -42,6 +43,14 @@ function nuke(channel, username, message)
     }
 
     output.sayNoCD(channel, 'VaultBoy THIS CHAT WILL BE NUKED IN ' + global.nukeLength + ' SECONDS VaultBoy', true);
+
+    for (var x = 0; x < (global.nukeLength - 1) ; x++) {
+        (function(index) {
+            setTimeout(function() {
+                output.sayNoCD(channel, index % 2 == 0 ? 'Tick...' : 'Tock...');
+            }, index*1000)
+        })(x);
+    }
 
     setTimeout(function() {
         for (index = 0; index < global.toNuke.length; index++) {
