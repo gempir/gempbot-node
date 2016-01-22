@@ -71,7 +71,7 @@ function votingSkip(channel, username, message) {
 }
 
 function votingSkipController(channel, username, message) {
-	output.sayNoCD(channel, 'A skip or stay voting has been started type [ !vote skip ] or [ !vote stay ] to vote on the current content. The voting is over after 45 seconds ');
+	output.sayNoCD(channel, 'A skip or stay voting has been started type [ !vote skip ] or [ !vote stay ] to vote on the current content. The voting ends in 45 seconds ');
 
 	setTimeout(function(){
 		console.log(global.votes[0], global.votes[1]);
@@ -83,7 +83,7 @@ function votingSkipController(channel, username, message) {
 }
 
 function votingRateController(channel, username, message) {
-	output.sayNoCD(channel, 'A rating voting has been started type [ !vote 5 ] (number from 0-10 with decimals) to rate the current content. The voting ends in 45 seconds.');
+	output.sayNoCD(channel, 'A rating voting has been started type E.g. [ !vote 5 ] to rate the current content. The voting ends in 45 seconds.');
 
 	setTimeout(function(){
 		var totalRatings = 0;

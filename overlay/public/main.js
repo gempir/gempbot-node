@@ -2,10 +2,10 @@ $(document).ready(function(){
 	var socket = io.connect('46.101.195.112:3000');
 	socket.on('votes', function (data) {
 	if (data.indexOf('startSkip') > -1) {
-	  var text = 'A voting has been started type <span class="skip">!vote skip</span> or <span class="stay">!vote stay</span> to vote on the current content.  <br> The voting is over after 45 seconds';
+	  var text = 'A voting has been started type <span class="skip">!vote skip</span> or <span class="stay">!vote stay</span> to vote on the current content.  <br> The voting ends in 45 seconds';
 	}
 	else if (data.indexOf('startRate') > -1) {
-	  var text = 'A rating voting has been started type <span class="rate">[ !vote 5 ]</span> (number from 0-10 with decimals) to rate the current content. The voting ends in 45 seconds.';
+	  var text = 'A rating voting has been started type E.g. <span class="rate">[ !vote 5 ]</span> to rate the current content. The voting ends in 45 seconds.';
 	}
 	else if (data.indexOf('resultsRate') > -1) {
 	  data = data.replace('resultsRate','');
