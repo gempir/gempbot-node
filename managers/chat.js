@@ -132,11 +132,11 @@ function adminCommands(channel, username, message, whisper)
 
 function trustedCommands(channel, username, message, whisper)
 {
-    if (message.substr(0,7).toLowerCase() === '!voting') {
-        voting.startVoting(channel, username, message, null);
-    }
     if (message.substr(0,5).toLowerCase() === '!nuke') {
         nuke.nuke(channel, username, message);
+    }
+    if (message.substr(0,7).toLowerCase() === '!voting') {
+        voting.startVoting(channel, username, message, null);
     }
     if (message.substr(0,12).toLowerCase() === '!command add') {
 		commands.addMessageCommand(channel, username, message, true);
