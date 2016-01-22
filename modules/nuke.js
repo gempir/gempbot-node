@@ -1,5 +1,6 @@
 var fn = require('./functions');
 var output = require('./../connection/output');
+var mysql = require('./../DB/mysql');
 
 
 global.nukeLength = 10;
@@ -67,6 +68,9 @@ function nuke(channel, username, message)
         }
         console.log('[LOG] nuking:' + global.toNuke);
         output.sayNoCD(channel, 'VaultBoy NUKED ' + global.toNuke.length + ' CHATTERS VaultBoy', true);
+        mysql.db.query('UPDATE totals SET count = count + ? WHERE command = ?',[global.toNuke.length, '!nuke'], function(){
+            console.log('[DB] updated nuke')
+        });
         global.NukeMode = false;
         global.toNuke = [];
         global.nukeLength = 10;
