@@ -46,7 +46,7 @@ function nuke(channel, username, message)
         nukeTime = 10;
         output.whisper(username, 'Don\'t make nuke timeouts so long. Timeout will be 10 seconds instead.');
     }
-    if (nukeLength >= 30) {
+    if (nukeLength > 30) {
         nukeLength = 30;
         output.whisper(username, 'Don\'t make nukes so long. Nuke will be 30 seconds instead.');
     }
