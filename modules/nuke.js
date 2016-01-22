@@ -37,9 +37,10 @@ function nuke(channel, username, message)
     setTimeout(function() {
         for (index = 0; index < global.toNuke.length; index++) {
             output.sayNoCD(channel, '/timeout ' + global.toNuke[index] + ' ' + nukeTime);
-            output.sayNoCD(channel, 'VaultBoy NUKED ' + global.toNuke.length + ' CHATTERS', true);
-            global.toNuke = [];
         }
+        console.log('[LOG] nuking:' + global.toNuke);
+        output.sayNoCD(channel, 'VaultBoy NUKED ' + global.toNuke.length + ' CHATTERS', true);
+        global.toNuke = [];
     }, 10000);
 }
 
