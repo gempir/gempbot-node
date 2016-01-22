@@ -42,6 +42,15 @@ function nuke(channel, username, message)
         global.nukeLength = fn.getNthWord(message, 3);
     }
 
+    if (nukeTime > 10) {
+        nukeTime = 10;
+        output.whisper(username, 'Don\'t make nuke timeouts so long. Timeout will be 10 seconds instead.');
+    }
+    if (nukeLength >= 60) {
+        nukeLength = 60;
+        output.whisper(username, 'Don\'t make nukes so long. Nuke will be 60 seconds instead.');
+    }
+
     output.sayNoCD(channel, 'VaultBoy THIS CHAT WILL BE NUKED IN ' + global.nukeLength + ' SECONDS VaultBoy', true);
 
     for (var x = 0; x < (global.nukeLength - 1) ; x++) {
