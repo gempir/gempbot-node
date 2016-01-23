@@ -1,6 +1,7 @@
 var output = require('./../connection/output');
 var fs = require('graceful-fs');
 var fn = require('./functions');
+var mysql = require('./../DB/mysql');
 
 
 function countMe(channel, username, message, whisper)
@@ -25,6 +26,40 @@ function countMe(channel, username, message, whisper)
     });
 }
 
+
+function countCommandHandler(channel, username, message, whisper)
+{
+    if (message === '!count') {
+        return false;
+    }
+
+    var command = fn.getNthWord(message, 2);
+
+    switch (command) {
+        case 'nuked':
+            getCountForCommand(channel, username, message, whisper);
+            break;
+    }
+
+}
+
+function getCountForCommand(channel, username, message, whisper)
+{
+    mysql.db.query('SELECT count FROM totals WHERE command = ?', ['nuked'], function(err, rows) {
+
+        var count = rows[0].count;
+
+        if (whisper) {
+            output.whisper(username, count + ' chatters have been nuked in total');
+        }
+        else {
+            output.say(channel, count + ' chatters have been nuked in total');
+        }
+    });
+}
+
+
+
 function occurrences(haystack, needle)
 {
     var count = 0;
@@ -44,5 +79,6 @@ function occurrences(haystack, needle)
 
 module.exports =
 {
-    countMe
+    countMe,
+    countCommandHandler
 }

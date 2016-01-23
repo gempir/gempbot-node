@@ -96,6 +96,9 @@ function eventHandler(channel, username, message, whisper, user, isWhisper)
 	else if (command === '!countme') {
 		count.countMe(channel, username, message, whisper);
 	}
+    else if (command === '!count') {
+		count.countCommandHandler(channel, username, message, whisper);
+	}
 	else if (command === '!randomquote') {
 		quote.getQuote(channel, username, message, whisper);
 	}
