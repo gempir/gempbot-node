@@ -17,6 +17,7 @@ var chatters    = require('./../modules/chatters');
 var config      = require('./../managers/config');
 var commands    = require('./../managers/commands');
 var nuke        = require('./../modules/nuke');
+var ccount      = require('./../modules/ccount');
 
 channel.client.on('chat', function(channel, user, message, self) {
     eventHandler(channel, user.username, message, false, user, false);
@@ -76,7 +77,7 @@ function eventHandler(channel, username, message, whisper, user, isWhisper)
 		return false;
 	}
 
-    count.countCommandUsage(command);
+    ccount.countCommandUsage(command);
 
     // normal stuff
 
@@ -98,8 +99,8 @@ function eventHandler(channel, username, message, whisper, user, isWhisper)
 	else if (command === '!countme') {
 		count.countMe(channel, username, message, whisper);
 	}
-    else if (command === '!count') {
-		count.countCommandHandler(channel, username, message, whisper);
+    else if (command === '!ccount') {
+		ccount.countCommandHandler(channel, username, message, whisper);
 	}
 	else if (command === '!randomquote') {
 		quote.getQuote(channel, username, message, whisper);
