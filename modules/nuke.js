@@ -68,7 +68,7 @@ function nuke(channel, username, message)
         }
         console.log('[LOG] nuking:' + global.toNuke);
         output.sayNoCD(channel, 'VaultBoy NUKED ' + global.toNuke.length + ' CHATTERS VaultBoy', true);
-        mysql.db.query('UPDATE totals SET count = count + ? WHERE key = ?',[global.toNuke.length, 'nuked'], function(){
+        mysql.db.query('UPDATE totals SET count = count + ? WHERE command = ?',[global.toNuke.length, 'nuked'], function(){
             console.log('[DB] updated nuke')
         });
         global.NukeMode = false;

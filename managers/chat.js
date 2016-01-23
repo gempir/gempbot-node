@@ -76,6 +76,8 @@ function eventHandler(channel, username, message, whisper, user, isWhisper)
 		return false;
 	}
 
+    count.countCommandUsage(command);
+
     // normal stuff
 
     if (command === '!followage') {

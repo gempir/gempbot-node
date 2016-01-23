@@ -26,6 +26,13 @@ function countMe(channel, username, message, whisper)
     });
 }
 
+function countCommandUsage(command)
+{
+    mysql.db.query('UPDATE totals SET count = count + 1 WHERE command = ?', [command], function(err) {
+        if (err) console.log(err);
+        return true;
+    });
+}
 
 function countCommandHandler(channel, username, message, whisper)
 {
@@ -80,5 +87,6 @@ function occurrences(haystack, needle)
 module.exports =
 {
     countMe,
-    countCommandHandler
+    countCommandHandler,
+    countCommandUsage
 }
