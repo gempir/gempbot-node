@@ -8,14 +8,14 @@
     display: none;
 }
 
-.skip {
+.red {
 	color: #e74c3c;
 }
 
-.stay {
+.green {
 	color: #2ecc71;
 }
 
-.rate {
+.yellow {
 	color: #f1c40f;
 }

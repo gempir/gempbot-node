@@ -16,15 +16,13 @@ app.get('/', function (req, res) {
 });
 
 
-function emit(data)
+function emit(event, data)
 {
   console.log('emit:' + data);
-  io.emit('votes', data);
+  io.emit(event, data);
 }
 
-module.exports = 
+module.exports =
 {
   emit
 }
-
-

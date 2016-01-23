@@ -1,29 +1,27 @@
-$(document).ready(function(){
-	var socket = io.connect('46.101.195.112:3000');
-	socket.on('votes', function (data) {
-	if (data.indexOf('startSkip') > -1) {
-	  var text = 'A voting has been started type <span class="skip">!vote skip</span> or <span class="stay">!vote stay</span> to vote on the current content.  <br> The voting ends in 45 seconds';
-	}
-	else if (data.indexOf('startRate') > -1) {
-	  var text = 'A rating voting has been started type E.g. <span class="rate">[ !vote 5 ]</span> to rate the current content. The voting ends in 45 seconds.';
-	}
-	else if (data.indexOf('resultsRate') > -1) {
-	  data = data.replace('resultsRate','');
-	  ratings = data.split(',');
-	  var text = '<span class="rate"> average rating: ' + ratings[0] + '</span><br>votes: ' + ratings[1];
-	}
-	else if (data.indexOf('resultsSkip') > -1 ) {
-	  data = data.replace('resultsSkip','');
-	  var votes = data.split(',');
-	  var totalVotes = Number(votes[0]) + Number(votes[1]);
-	  var text = '<span class="skip"> skip: ' + votes[0] + '</span><br><span class="stay">stay: ' + votes[1] + '</span><br>votes: ' + totalVotes;
-	}
 
-	$('.popup').html(text).animate({width: [ "toggle", "swing" ], height: [ "toggle", "swing" ], opacity: "toggle"});
+var socket = io.connect();
 
-	setTimeout(function() {
-	  $('.popup').animate({width: [ "toggle", "swing" ], height: [ "toggle", "swing" ], opacity: "toggle"});
-  	}, 25000);
-
-	});
+socket.on('startSkip', function() {
+	showData('A voting has been started type <span class="red">!vote skip</span> or <span class="green">!vote stay</span> to vote on the current content.  <br> The voting ends in 45 seconds')
 });
+
+socket.on('startRate', function() {
+	showData('A rate voting has been started type E.g. <span class="rate">[ !vote 5 ]</span> to rate the current content. The voting ends in 45 seconds.')
+});
+
+socket.on('resultsSkip', function(data) {
+	showData('<span class="red">skip: ' + data.skip + '</span><br><span class="green"> stay: ' + data.stay + '</span><br>votes: ' + (data.skip+data.stay));
+});
+
+socket.on('resultsRate', function(data) {
+	showData('<span class="yellow"> average rating: ' + data.avgRating  + '</span><br>votes: ' + data.votes');
+});
+
+
+function showData(data)
+{
+	$('.popup').html(data).animate({width: [ "toggle", "swing" ], height: [ "toggle", "swing" ], opacity: "toggle"});
+	setTimeout(function() {
+		$('.popup').animate({width: [ "toggle", "swing" ], height: [ "toggle", "swing" ], opacity: "toggle"});
+	}, 20000);
+}
