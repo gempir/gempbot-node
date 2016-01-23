@@ -6,7 +6,7 @@ socket.on('startSkip', function() {
 });
 
 socket.on('startRate', function() {
-	showData('A rate voting has been started type E.g. <span class="rate">[ !vote 5 ]</span> to rate the current content. The voting ends in 45 seconds.')
+	showData('A rate voting has been started type E.g. <span class="yellow">[ !vote 5 ]</span> to rate the current content. The voting ends in 45 seconds.')
 });
 
 socket.on('resultsSkip', function(data) {
