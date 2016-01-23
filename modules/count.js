@@ -42,15 +42,16 @@ function countCommandHandler(channel, username, message, whisper)
 
     var command = fn.getNthWord(message, 2);
 
-    switch (command) {
-        case 'nuked':
-            getCountForCommand(channel, username, message, whisper);
-            break;
+    if (command === 'nuked') {
+        getCountForNuked(channel, username, message, whisper);
+    }
+    else {
+        getCountForCommand(channel, username, message, whisper);
     }
 
 }
 
-function getCountForCommand(channel, username, message, whisper)
+function getCountForNuked(channel, username, message, whisper)
 {
     mysql.db.query('SELECT count FROM totals WHERE command = ?', ['nuked'], function(err, rows) {
 
@@ -65,6 +66,23 @@ function getCountForCommand(channel, username, message, whisper)
     });
 }
 
+
+function getCountForCommand(channel, username, message, whisper)
+{
+    var command = fn.getNthWord(message, 2);
+
+    mysql.db.query('SELECT count FROM totals WHERE command = ?', [command], function(err, rows) {
+
+        var count = rows[0].count;
+
+        if (whisper) {
+            output.whisper(username, command + ' has been used ' + count + ' times');
+        }
+        else {
+            output.say(channel, command + ' has been used ' + count + ' times');
+        }
+    });
+}
 
 
 function occurrences(haystack, needle)
