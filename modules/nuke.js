@@ -1,5 +1,6 @@
 var fn = require('./functions');
 var output = require('./../connection/output');
+var mysql = require('./../DB/mysql');
 
 
 global.nukeLength = 10;
@@ -42,6 +43,15 @@ function nuke(channel, username, message)
         global.nukeLength = fn.getNthWord(message, 3);
     }
 
+    if (nukeTime > 10) {
+        nukeTime = 10;
+        output.whisper(username, 'Don\'t make nuke timeouts so long. Timeout will be 10 seconds instead.');
+    }
+    if (nukeLength > 30) {
+        nukeLength = 30;
+        output.whisper(username, 'Don\'t make nukes so long. Nuke will be 30 seconds instead.');
+    }
+
     output.sayNoCD(channel, 'VaultBoy THIS CHAT WILL BE NUKED IN ' + global.nukeLength + ' SECONDS VaultBoy', true);
 
     for (var x = 0; x < (global.nukeLength - 1) ; x++) {
@@ -58,6 +68,9 @@ function nuke(channel, username, message)
         }
         console.log('[LOG] nuking:' + global.toNuke);
         output.sayNoCD(channel, 'VaultBoy NUKED ' + global.toNuke.length + ' CHATTERS VaultBoy', true);
+        mysql.db.query('UPDATE totals SET count = count + ? WHERE command = ?',[global.toNuke.length, '!nuke'], function(){
+            console.log('[DB] updated nuke')
+        });
         global.NukeMode = false;
         global.toNuke = [];
         global.nukeLength = 10;

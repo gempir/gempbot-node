@@ -176,7 +176,7 @@ function refreshTrusted()
         }
         global.trusted = [];
         for (i = 0, len = rows.length; i < len; i++) {
-            global.trusted.push(rows[i].username);
+            global.trusted.push(rows[i].username.toLowerCase());
         }
         console.log('[LOG] trusted: ' + global.trusted);
     });
