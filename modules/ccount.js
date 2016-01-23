@@ -2,7 +2,7 @@ var output = require('./../connection/output');
 var fn = require('./functions');
 var mysql = require('./../DB/mysql');
 
-function countCommandUsage(command)
+function ccountCommandUsage(command)
 {
     mysql.db.query('UPDATE totals SET count = count + 1 WHERE command = ?', [command], function(err) {
         if (err) console.log(err);
@@ -10,12 +10,12 @@ function countCommandUsage(command)
     });
 }
 
-function countCommandHandler(channel, username, message, whisper)
+function ccountCommandHandler(channel, username, message, whisper)
 {
     if (message === '!ccount') {
         return false;
     }
-
+    console.log(whisper);
     var command = fn.getNthWord(message, 2);
 
     if (command === 'nuked') {
@@ -62,6 +62,6 @@ function getCountForCommand(channel, username, message, whisper)
 
 module.exports =
 {
-    countCommandHandler,
-    countCommandUsage
+    ccountCommandHandler,
+    ccountCommandUsage
 }

@@ -6,7 +6,8 @@ var mysql = require('./../DB/mysql');
 
 function countMe(channel, username, message, whisper)
 {
-    var searchPhrase = message.replace('!countme','');
+    var searchPhrase = message.substr(8);
+
     fs.readFile('logs/' + channel.substr(1) + '/' + username +'.txt', function (err, data) {
         var emoteCount = occurrences(data, searchPhrase);
         emoteCount = fn.numberFormatted(emoteCount);

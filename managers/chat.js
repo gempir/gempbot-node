@@ -77,7 +77,7 @@ function eventHandler(channel, username, message, whisper, user, isWhisper)
 		return false;
 	}
 
-    ccount.countCommandUsage(command);
+    ccount.ccountCommandUsage(command);
 
     // normal stuff
 
@@ -100,7 +100,7 @@ function eventHandler(channel, username, message, whisper, user, isWhisper)
 		count.countMe(channel, username, message, whisper);
 	}
     else if (command === '!ccount') {
-		ccount.countCommandHandler(channel, username, message, whisper);
+		ccount.ccountCommandHandler(channel, username, message, whisper);
 	}
 	else if (command === '!randomquote') {
 		quote.getQuote(channel, username, message, whisper);
