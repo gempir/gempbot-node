@@ -15,8 +15,12 @@ function ccountCommandHandler(channel, username, message, whisper)
     if (message === '!ccount') {
         return false;
     }
-    console.log(whisper);
+
     var command = fn.getNthWord(message, 2);
+
+    if (global.loggedCommands.indexOf(command) === -1) {
+        return false;
+    }
 
     if (command === 'nuked') {
         getCountForNuked(channel, username, message, whisper);

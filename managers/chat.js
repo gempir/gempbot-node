@@ -128,6 +128,9 @@ function adminCommands(channel, username, message, whisper)
         case '!command':
             commands.admin(channel, username, message, whisper);
             break;
+        case '!refresh':
+            commands.refreshDB();
+            break;
         case '!say':
             var toSay = message.substr(5);
             output.sayNoCD(channel, toSay);

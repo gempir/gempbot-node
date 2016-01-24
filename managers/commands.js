@@ -11,8 +11,26 @@ function refreshActiveCommands()
         }
         console.log('[LOG] active commands: ' + global.activeCommands);
     });
-
 }
+
+function refreshLoggedCommands()
+{
+    mysql.db.query('SELECT command FROM totals', function(err,rows) {
+        global.loggedCommands = [];
+        for (i = 0, len = rows.length; i < len; i++) {
+            global.loggedCommands.push(rows[i].command.toLowerCase());
+        }
+        console.log('[LOG] logged commands: ' + global.activeCommands);
+    });
+}
+
+
+function refreshDB()
+{
+    refreshLoggedCommands();
+    refreshActiveCommands();
+}
+
 
 function getActiveCommands(channel, username, message, whisper)
 {
@@ -158,5 +176,7 @@ module.exports =
     getMessageCommand,
     addMessageCommand,
     removeMessageCommand,
-    getActiveCommands
+    getActiveCommands,
+    refreshLoggedCommands,
+    refreshDB
 }

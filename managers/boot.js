@@ -11,6 +11,7 @@ var output  = require('./../connection/output');
 config.refreshTrusted();
 config.setCooldowns();
 commands.refreshActiveCommands();
+commands.refreshLoggedCommands();
 
 channel.client.on("connected", function (address, port) {
 	console.log('[BOOT] connected to chat');
