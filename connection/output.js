@@ -1,10 +1,26 @@
 var channelModule = require('./channel');
 var whisperModule = require('./whisper');
-
-
+var cfg           = require('./../cfg');
 
 chat = channelModule.client;
 group = whisperModule.group;
+
+function sayAllChannels(message, action)
+{
+    action = action || false;
+    var channels = cfg.options.channels;
+
+    for (var i = 0; i <= channels.length; i++) {
+        if (action) {
+            chat.action(channels[i], message);
+            console.log('[GLOBAL][SAY] /me' + message);
+        }
+        else {
+            chat.say(channels[i], message);
+            console.log('[GLOBAL][SAY] ' + message);
+        }
+    }
+}
 
 function say(channel, message, action)
 {
@@ -76,5 +92,6 @@ module.exports =
 	say,
 	sayNoCD,
 	whisper,
-	sayPriority
+	sayPriority,
+    sayAllChannels
 }
