@@ -33,14 +33,6 @@ function userLogs(channel, username, message)
     fs.appendFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + username + ': ' + message + '\n', function(){});
 }
 
-
-function channelLogs(channel, username, message)
-{
-    var file = 'logs/' + channel.substr(1) +'.txt';
-    fs.appendFile(file, username + ': ' + message + '\n', function(){});
-}
-
-
 function uploadLogs(channel, username, message)
 {
     if (message.toLowerCase() === '!logs') {
@@ -130,7 +122,6 @@ function logsSize(channel, username, message)
 
 module.exports =
 {
-    channelLogs,
     userLogs,
     logsCommandHandler
 }
