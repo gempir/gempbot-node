@@ -13,33 +13,30 @@ config.setCooldowns();
 commands.refreshActiveCommands();
 commands.refreshLoggedCommands();
 
-function bootUp()
+
+var group = false;
+var chat  = false;
+
+channel.client.on("connected", function (address, port) {
+    console.log('[BOOT] connected to chat');
+    chat = true;
+    bootComplete();
+});
+
+whisper.group.on("connected", function (address, port, err) {
+    console.log('[BOOT] Connected to group servers on ' + address + ':' + port);
+    group = true;
+    bootComplete();
+});
+
+whisper.group.on("disconnected", function (reason) {
+    process.exit(); // restart bot when not connected to group servers, because whispers won't work otherwise
+});
+
+
+function bootComplete()
 {
-    var group = false;
-    var chat  = false;
-
-    channel.client.on("connected", function (address, port) {
-	    console.log('[BOOT] connected to chat');
-        chat = true;
-        bootComplete();
-    });
-
-    whisper.group.on("connected", function (address, port, err) {
-	    console.log('[BOOT] Connected to group servers on ' + address + ':' + port);
-        group = true;
-        bootComplete();
-    });
-
-    whisper.group.on("disconnected", function (reason) {
-        process.exit(); // restart bot when not connected to group servers, because whispers won't work otherwise
-    });
-
-
-    function bootComplete()
-    {
-        if (group && chat) {
-            output.whisper(cfg.admin, 'Bot started | branch: ' + git.branch() + ' (' + git.short() + ')');
-        }
+    if (group && chat) {
+        output.sayAllChannels('Bot started | branch: ' + git.branch() + ' (' + git.short() + ')');
     }
-
 }
