@@ -14,7 +14,7 @@ function lineCount(file, username)
     return lineCount;
 }
 
-function stats(channel, username, message, whisper)
+function stats(channel, username, message)
 {
     if (message === '!lines') { // make sure a username is actually specified
         var linesFor = username;
@@ -28,12 +28,7 @@ function stats(channel, username, message, whisper)
     }
     var lines = lineCount(file, linesFor);
 
-    if (whisper) {
-        output.whisper(username, linesFor + ' has written ' + lines + ' lines');
-    }
-    else {
-        output.say(channel, '@' + username + ', ' + linesFor + ' has written ' + lines + ' lines');
-    }
+    output.say(channel, '@' + username + ', ' + linesFor + ' has written ' + lines + ' lines');
 }
 
 

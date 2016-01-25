@@ -23,23 +23,23 @@ function recordChatters(channel, username, message)
 }
 
 
-function chattersCommandHandler(channel, username, message, whisper)
+function chattersCommandHandler(channel, username, message)
 {
 	switch(message.toLowerCase()) {
 		case '!chatters':
-			getChatters(channel, username, message, whisper);
+			getChatters(channel, username, message);
 			break;
 		case '!chatters staff':
-			getStaff(channel, username, message, whisper);
+			getStaff(channel, username, message);
 			break;
 		case '!chatters mods':
-			getMods(channel, username, message, whisper);
+			getMods(channel, username, message);
 			break;
 	}
 }
 
 
-function getStaff(channel, username, message, whisper)
+function getStaff(channel, username, message)
 {
 	var channelSub = channel.substr(1);
 	var chattersJsonURL = 'https://tmi.twitch.tv/group/user/' + channelSub + '/chatters';
@@ -56,18 +56,14 @@ function getStaff(channel, username, message, whisper)
 	    	else {
 	    		var response = 'current staff in chat: ' + staff;
 	    	}
-	    	if (whisper){
-	    		output.whisper(username, response);
-	    	}
-	    	else {
-	    		output.say(channel, '@' + username + ', ' + response);
-	    	}
-	  	}
+	    	
+            output.say(channel, '@' + username + ', ' + response);
+	 	}
 	});
 }
 
 
-function getMods(channel, username, message, whisper)
+function getMods(channel, username, message)
 {
 	if (!(global.trusted.indexOf(username) > -1)) {
 		return false;
@@ -91,24 +87,15 @@ function getMods(channel, username, message, whisper)
 	    	else {
 	    		var response = 'current mods in chat: ' + mods;
 	    	}
-	    	if (whisper){
-	    		output.whisper(username, response);
-	    	}
-	    	else {
-	    		output.say(channel, '@' + username + ', ' + response);
-	    	}
+	    
+	    	output.say(channel, '@' + username + ', ' + response);	
 	  	}
 	});
 }
 
-function getChatters(channel, username, message, whisper)
-{
-	if (whisper) {
-		output.whisper(username, 'There were ' + global.chatters.length + ' chatters in the last 15mins');
-	}
-	else {
-		output.say(channel, 'There were ' + global.chatters.length + ' chatters in the last 15mins');
-	}
+function getChatters(channel, username, message)
+{		
+	output.say(channel, 'There were ' + global.chatters.length + ' chatters in the last 15mins');
 }
 
 module.exports =

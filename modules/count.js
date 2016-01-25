@@ -4,7 +4,7 @@ var fn = require('./functions');
 var mysql = require('./../DB/mysql');
 
 
-function countMe(channel, username, message, whisper)
+function countMe(channel, username, message)
 {
     var searchPhrase = message.substr(8);
 
@@ -18,12 +18,8 @@ function countMe(channel, username, message, whisper)
         else {
             var phrase = searchPhrase;
         }
-        if (whisper) {
-            output.whisper(username, 'You used ' + phrase + ' ' + emoteCount + ' times');
-        }
-        else {
-            output.say(channel, '@' + username + ', you used ' + phrase + ' ' + emoteCount + ' times');
-        }
+
+        output.say(channel, '@' + username + ', you used ' + phrase + ' ' + emoteCount + ' times');    
     });
 }
 

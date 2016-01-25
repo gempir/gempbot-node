@@ -1,6 +1,6 @@
-var channel = require('./../connection/channel');
-var whisper = require('./../connection/whisper');
-var cfg     = require('./../cfg');
+var channel     = require('./../connection/channel');
+var whisper     = require('./../connection/whisper');
+var cfg         = require('./../cfg');
 var logs        = require('./../modules/logs.js');
 var fn          = require('./../modules/functions');
 var combo       = require('./../modules/combo');
@@ -20,36 +20,33 @@ var nuke        = require('./../modules/nuke');
 var ccount      = require('./../modules/ccount');
 
 channel.client.on('chat', function(channel, user, message, self) {
-    eventHandler(channel, user.username, message, false, user, false);
+    eventHandler(channel, user, message);
 });
 
 channel.client.on('action', function(channel, user, message, self) {
-    eventHandler(channel, user.username, message, false, user, false);
+    eventHandler(channel, user, message);
 });
 
-whisper.group.on('whisper', function (username, message) {
-	eventHandler(cfg.options.channels[0], username, message, true, null, true);
-});
-
-
-function eventHandler(channel, username, message, whisper, user, isWhisper)
+function eventHandler(channel, user, message)
 {
-    if (!isWhisper) {
-        combo.count(channel, user, message);
-        logs.channelLogs(channel, username, message);
-        logs.userLogs(channel, username, message);
-        chatters.recordChatters(channel, username, message);
-        nuke.recordToNuke(channel, user, message);
-    }
+    var username = user.username;
+
+    combo.count(channel, user, message);
+    logs.channelLogs(channel, username, message);
+    logs.userLogs(channel, username, message);
+    chatters.recordChatters(channel, username, message);
+    nuke.recordToNuke(channel, user, message);
+ 
 
     var command = fn.getNthWord(message, 1).toLowerCase();
 
     if (username.toLowerCase() === cfg.admin.toLowerCase()) {
-        adminCommands(channel, username, message, whisper);
+        adminCommands(channel, username, message);
     }
     if (global.trusted.indexOf(username.toLowerCase()) > -1) {
-        trustedCommands(channel, username, message, whisper);
+        trustedCommands(channel, username, message);
     }
+
     if (user != null) {
         if (user['user-type'] === 'mod') {
             // mod stuff
@@ -82,51 +79,51 @@ function eventHandler(channel, username, message, whisper, user, isWhisper)
     // normal stuff
 
     if (command === '!followage') {
-		followage.followageCommandHandler(channel, username, message, whisper);
+		followage.followageCommandHandler(channel, username, message);
 	}
     else if (command === '!commands') {
-        commands.getActiveCommands(channel, username, message, whisper);
+        commands.getActiveCommands(channel, username, message);
     }
 	else if (command === '!chatters') {
-		chatters.chattersCommandHandler(channel, username, message, whisper);
+		chatters.chattersCommandHandler(channel, username, message);
 	}
 	else if (command === '!logs') {
-		logs.logsCommandHandler(channel, username, message, whisper);
+		logs.logsCommandHandler(channel, username, message);
 	}
 	else if (command === '!lines') {
-		lines.stats(channel, username, message, whisper);
+		lines.stats(channel, username, message);
 	}
 	else if (command === '!countme') {
-		count.countMe(channel, username, message, whisper);
+		count.countMe(channel, username, message);
 	}
     else if (command === '!ccount') {
-		ccount.ccountCommandHandler(channel, username, message, whisper);
+		ccount.ccountCommandHandler(channel, username, message);
 	}
 	else if (command === '!randomquote') {
-		quote.getQuote(channel, username, message, whisper);
+		quote.getQuote(channel, username, message);
 	}
 	else if (command === '!lastmessage') {
-		lastmessage.lastMessage(channel, username, message, whisper);
+		lastmessage.lastMessage(channel, username, message);
 	}
 	else if (command.substr(0,1) === '!') {
-		commands.getMessageCommand(channel, username, message, whisper);
+		commands.getMessageCommand(channel, username, message);
 	}
 
 }
 
 
-function adminCommands(channel, username, message, whisper)
+function adminCommands(channel, username, message)
 {
     var command = fn.getNthWord(message, 1).toLowerCase();
     switch(command) {
         case '!status':
-            status.statusBot(channel, username, message, whisper);
+            status.statusBot(channel, username, message);
             break;
         case '!admin':
-            config.admin(channel, username, message, whisper);
+            config.admin(channel, username, message);
             break;
         case '!command':
-            commands.admin(channel, username, message, whisper);
+            commands.admin(channel, username, message);
             break;
         case '!refresh':
             commands.refreshDB();
@@ -139,18 +136,18 @@ function adminCommands(channel, username, message, whisper)
 }
 
 
-function trustedCommands(channel, username, message, whisper)
+function trustedCommands(channel, username, message)
 {
     if (message.substr(0,5).toLowerCase() === '!nuke') {
         nuke.nuke(channel, username, message);
     }
     if (message.substr(0,7).toLowerCase() === '!voting') {
-        voting.startVoting(channel, username, message, null);
+        voting.startVoting(channel, username, message);
     }
     if (message.substr(0,12).toLowerCase() === '!command add') {
-		commands.addMessageCommand(channel, username, message, true);
+		commands.addMessageCommand(channel, username, message);
 	}
 	if (message.substr(0,15).toLowerCase() === '!command remove') {
-		commands.removeMessageCommand(channel, username, message, true);
+		commands.removeMessageCommand(channel, username, message);
 	}
 }

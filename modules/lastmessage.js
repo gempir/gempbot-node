@@ -5,7 +5,7 @@ var fs        = require('fs'),
     readline  = require('readline');
 
 
-function lastMessage(channel, username, message, whisper) {
+function lastMessage(channel, username, message) {
 	if (message === '!lastmessage') {
 		return false;
 	}
@@ -21,15 +21,9 @@ function lastMessage(channel, username, message, whisper) {
         data = data.toString();
         var lines = data.split('\n');
         lastLine = lines[lines.length-2];
-        lastLine = lastLine.split(']');
-	    if (whisper) {
-	    	output.whisper(username, '" ' + lastLine[1] + ' "');
-	    }
-	    else {
-	    	output.say(channel, '" ' + lastLine[1] + ' "');
-	    }
-    })
-
+        lastLine = lastLine.split(']');   
+	    output.say(channel, '" ' + lastLine[1] + ' "');
+    });
 }
 
 module.exports =

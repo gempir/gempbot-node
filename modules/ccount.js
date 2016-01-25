@@ -10,7 +10,7 @@ function ccountCommandUsage(command)
     });
 }
 
-function ccountCommandHandler(channel, username, message, whisper)
+function ccountCommandHandler(channel, username, message)
 {
     if (message === '!ccount') {
         return false;
@@ -23,44 +23,34 @@ function ccountCommandHandler(channel, username, message, whisper)
     }
 
     if (command === 'nuked') {
-        getCountForNuked(channel, username, message, whisper);
+        getCountForNuked(channel, username, message);
     }
     else {
-        getCountForCommand(channel, username, message, whisper);
+        getCountForCommand(channel, username, message);
     }
 
 }
 
-function getCountForNuked(channel, username, message, whisper)
+function getCountForNuked(channel, username, message)
 {
     mysql.db.query('SELECT count FROM totals WHERE command = ?', ['nuked'], function(err, rows) {
 
         var count = rows[0].count;
-
-        if (whisper) {
-            output.whisper(username, count + ' chatters have been nuked in total');
-        }
-        else {
-            output.say(channel, count + ' chatters have been nuked in total');
-        }
+        output.say(channel, count + ' chatters have been nuked in total');
+        
     });
 }
 
 
-function getCountForCommand(channel, username, message, whisper)
+function getCountForCommand(channel, username, message)
 {
     var command = fn.getNthWord(message, 2);
 
     mysql.db.query('SELECT count FROM totals WHERE command = ?', [command], function(err, rows) {
 
         var count = rows[0].count;
-
-        if (whisper) {
-            output.whisper(username, command + ' has been used ' + count + ' times');
-        }
-        else {
-            output.say(channel, command + ' has been used ' + count + ' times');
-        }
+        output.say(channel, command + ' has been used ' + count + ' times');
+        
     });
 }
 

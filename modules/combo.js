@@ -1,7 +1,6 @@
 var fn     = require('./functions');
 var output = require('./../connection/output');
 
-
 var lastMessage = '';
 var currentMessage = '';
 var counter = 1;

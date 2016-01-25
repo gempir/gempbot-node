@@ -4,17 +4,12 @@ var git    = require('git-rev-sync');
 var output = require('./../connection/output');
 
 
-function statusBot(channel, username, message, whisper)
+function statusBot(channel, username, message)
 {
 	var time = process.uptime();
 	var uptime = fn.secsToTime((time + ""));
-
-	if (whisper) {
-		output.whisper(username, 'Bot uptime: ' + uptime + ' | branch: ' + git.branch() + ' (' + git.short() + ')');
-	}
-    else {
-    	output.sayNoCD(channel, '@' + username + ', bot uptime: ' + uptime + ' | branch: ' + git.branch() + ' (' + git.short() + ')');
-    }
+    output.sayNoCD(channel, '@' + username + ', bot uptime: ' + uptime + ' | branch: ' + git.branch() + ' (' + git.short() + ')');
+    
 }
 
 module.exports =

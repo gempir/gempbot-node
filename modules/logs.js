@@ -16,14 +16,14 @@ cfg.options.channels.forEach(function(channel) {
   }
 });
 
-function logsCommandHandler(channel, user, message, whisper)
+function logsCommandHandler(channel, user, message)
 {
     bigCommand = fn.getNthWord(message, 1) + ' ' + fn.getNthWord(message, 2);
     if (bigCommand === '!logs size') {
-        logsSize(channel, user, message, whisper);
+        logsSize(channel, user, message);
     }
     else if (fn.getNthWord(message, 1) === '!logs') {
-        uploadLogs(channel, user, message); // logs are always whispered!
+        uploadLogs(channel, user, message);
     }
 }
 
@@ -91,7 +91,7 @@ function uploadLogs(channel, username, message)
     }
 }
 
-function logsSize(channel, username, message, whisper)
+function logsSize(channel, username, message)
 {
     var messageStart = message.substr(0,12).toLowerCase();
     var name = fn.getNthWord(message, 3);
@@ -113,12 +113,7 @@ function logsSize(channel, username, message, whisper)
                 fileSize = fn.getFilesizeInMegabytes(file).toFixed(2);
                 extension = ' MB';
             }
-            if (whisper) {
-                output.whisper(username, 'Log file for channel ' + channel.substr(1) + ' is ' + fileSize + extension);
-            }
-            else {
-                output.say(channel, '@' + username + ', ' + 'log file for channel ' + channel.substr(1) + ' is ' + fileSize + extension);
-            }
+            output.say(channel, '@' + username + ', ' + 'log file for channel ' + channel.substr(1) + ' is ' + fileSize + extension);
         }
         else {
             var file = 'logs/' + channel.substr(1) + '/' + name +  '.txt'
@@ -128,12 +123,7 @@ function logsSize(channel, username, message, whisper)
                 fileSize = fn.getFilesizeInMegabytes(file).toFixed(2);
                 extension = ' MB';
             }
-            if (whisper) {
-                output.whisper(username, 'Log file for ' + name + ' is ' + fileSize + extension);
-            }
-            else {
-                output.say(channel, '@' + username + ', ' + 'log file for ' + name + ' is ' + fileSize + extension);
-            }
+            output.say(channel, '@' + username + ', ' + 'log file for ' + name + ' is ' + fileSize + extension);
         }
     }
 }
