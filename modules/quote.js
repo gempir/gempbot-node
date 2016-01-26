@@ -41,7 +41,7 @@ function getQuote(channel, username, message)
         	}
         	console.log('[LOG] skipped user quote');
             global.quoteSkip += 1;
-        	getQuote(channel, username, message, whisper);
+        	getQuote(channel, username, message);
         	return false;
         }
         	output.say(channel, '"' + quote + ' "');
