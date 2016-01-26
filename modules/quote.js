@@ -26,7 +26,10 @@ function getQuote(channel, username, message)
 			return false;
 		}
     	logsSplit = data.toString().split("\n");
-        quote = logsSplit[Math.floor(Math.random()*logsSplit.length)];
+        var quote = logsSplit[Math.floor(Math.random()*logsSplit.length)];
+		if (typeof quote === 'undefined') {
+			return false;
+		}
         quote = quote.split(']');
         quote = quote[1];
 
