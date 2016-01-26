@@ -27,11 +27,12 @@ function getQuote(channel, username, message)
 		}
     	logsSplit = data.toString().split("\n");
         var quote = logsSplit[Math.floor(Math.random()*logsSplit.length)];
+        quote = quote.split(']');
+        quote = quote[1];
+
 		if (typeof quote === 'undefined') {
 			return false;
 		}
-        quote = quote.split(']');
-        quote = quote[1];
 
         if (quote.length < 10 || quote.length > 150 || fn.stringContainsUrl(quote)) {
         	global.quoteCounter++;
