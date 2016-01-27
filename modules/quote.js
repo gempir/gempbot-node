@@ -2,7 +2,7 @@ var fs     = require('graceful-fs');
 var fn     = require('./functions');
 var output = require('./../connection/output');
 
-global.quoteCounter = 0;
+var quoteSkip = 0;
 
 function getQuote(channel, username, message)
 {
@@ -16,9 +16,6 @@ function getQuote(channel, username, message)
 	if (!fn.fileExists(userFile)) {
     	console.log('[LOG] ' + userToQuote + ' has no logs');
     	return false;
-    }
-    if (global.quoteSkip > 20) {
-        return false;
     }
 
     fs.readFile(userFile, function (err, data) {
@@ -34,14 +31,13 @@ function getQuote(channel, username, message)
 			return false;
 		}
 
-        if (quote.length < 10 || quote.length > 150 || fn.stringContainsUrl(quote)) {
-        	global.quoteCounter++;
-        	if (global.quoteCounter > 9) {
-        		global.quoteCounter = 0;
+        if (quote.length > 200 || fn.stringContainsUrl(quote)) {
+			console.log('[LOG] skipped user quote');
+			quoteSkip++;
+        	if (quoteSkip > 10) {
+        		quoteSkip = 0;
         		return false;
         	}
-        	console.log('[LOG] skipped user quote');
-            global.quoteSkip += 1;
         	getQuote(channel, username, message);
         	return false;
         }
