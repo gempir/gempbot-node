@@ -3,12 +3,13 @@ var output = require('./../connection/output');
 var mysql = require('./../DB/mysql');
 
 
-global.nukeLength = 10;
-global.toNuke = [];
+var nukeLength = 10;
+var toNuke = [];
+var nukeMode = false;
 
 function recordToNuke(channel, user, message)
 {
-    if (!global.NukeMode) {
+    if (!nukeMode) {
         return false;
     }
 
@@ -16,31 +17,31 @@ function recordToNuke(channel, user, message)
         return false;
     }
 
-    if (typeof global.toNuke === 'undefined') {
-		global.toNuke = [];
+    if (typeof toNuke === 'undefined') {
+		toNuke = [];
 	}
 
-	var index = global.toNuke.indexOf(user.username);
+	var index = toNuke.indexOf(user.username);
 	if (index > -1) {
 		return false;
 	}
-	global.toNuke.push(user.username);
+	toNuke.push(user.username);
 
 	setTimeout(function() {
-		global.toNuke.splice(index, 1);
-	}, global.nukeLength * 1000);
+		toNuke.splice(index, 1);
+	}, nukeLength * 1000);
 }
 
 function nuke(channel, username, message)
 {
-    global.NukeMode = true;
+    nukeMode = true;
     var nukeTime = 1;
 
     if (message != '!nuke') {
         nukeTime = fn.getNthWord(message, 2);
     }
     if (typeof fn.getNthWord(message, 3) != 'undefined') {
-        global.nukeLength = fn.getNthWord(message, 3);
+        nukeLength = fn.getNthWord(message, 3);
     }
 
     if (nukeTime > 10) {
@@ -52,12 +53,12 @@ function nuke(channel, username, message)
         output.whisper(username, 'Don\'t make nukes so long. Nuke will be 30 seconds instead.');
     }
 
-    output.sayNoCD(channel, 'VaultBoy THIS CHAT WILL BE NUKED IN ' + global.nukeLength + ' SECONDS VaultBoy', true);
+    output.sayNoCD(channel, 'VaultBoy THIS CHAT WILL BE NUKED IN ' + nukeLength + ' SECONDS VaultBoy', true);
 
-    for (var x = 0; x < (global.nukeLength - 1) ; x++) {
+    for (var x = 0; x < (nukeLength - 1) ; x++) {
         (function(index) {
             setTimeout(function() {
-                if ((index / global.nukeLength) > 0.68) {
+                if ((index / nukeLength) > 0.68) {
                     output.sayNoCD(channel, index % 2 == 0 ? 'Tock...' : 'Tick...');
                 }
             }, index*1000)
@@ -65,18 +66,18 @@ function nuke(channel, username, message)
     }
 
     setTimeout(function() {
-        for (index = 0; index < global.toNuke.length; index++) {
-            output.sayNoCD(channel, '/timeout ' + global.toNuke[index] + ' ' + nukeTime);
+        for (index = 0; index < toNuke.length; index++) {
+            output.sayNoCD(channel, '/timeout ' + toNuke[index] + ' ' + nukeTime);
         }
-        console.log('[LOG] nuking:' + global.toNuke);
-        output.sayNoCD(channel, 'VaultBoy NUKED ' + global.toNuke.length + ' CHATTERS VaultBoy', true);
-        mysql.db.query('UPDATE totals SET count = count + ? WHERE command = ?',[global.toNuke.length, 'nuked'], function(){
+        console.log('[LOG] nuking:' + toNuke);
+        output.sayNoCD(channel, 'VaultBoy NUKED ' + toNuke.length + ' CHATTERS VaultBoy', true);
+        mysql.db.query('UPDATE totals SET count = count + ? WHERE command = ?',[toNuke.length, 'nuked'], function(){
             console.log('[DB] updated nuke')
         });
-        global.NukeMode = false;
-        global.toNuke = [];
-        global.nukeLength = 10;
-    }, global.nukeLength * 1000);
+        nukeMode = false;
+        toNuke = [];
+        nukeLength = 10;
+    }, nukeLength * 1000);
 }
 
 
