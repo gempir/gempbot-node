@@ -2,8 +2,8 @@ var channelModule = require('./channel');
 var whisperModule = require('./whisper');
 var cfg           = require('./../cfg');
 
-chat = channelModule.client;
-group = whisperModule.group;
+var chat = channelModule.client;
+var group = whisperModule.group;
 
 function sayAllChannels(message, action)
 {

@@ -1,2 +1,6 @@
-require('./overlay/overlay');
-require('./managers/boot');
+require('strict-mode')(function () {
+
+    require('./overlay/overlay');
+    require('./managers/boot');
+
+});
