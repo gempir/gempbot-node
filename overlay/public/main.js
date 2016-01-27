@@ -1,5 +1,5 @@
 
-var socket = io.connect('46.101.195.112:3000');
+var socket = io.connect();
 
 socket.on('startSkip', function() {
 	showData('A voting has been started type <span class="red">!vote skip</span> or <span class="green">!vote stay</span> to vote on the current content.  <br> The voting ends in 45 seconds')

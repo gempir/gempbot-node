@@ -58,9 +58,7 @@ function eventHandler(channel, user, message)
     // no CD
     switch (command) {
 		case '!vote':
-			if (global.voting) {
-				voting.voteCommandHandler(channel, username, message);
-			}
+			voting.voteCommandHandler(channel, username, message);
 			break;
 		case '!timer':
 			timer.setTimer(channel, username, message);
