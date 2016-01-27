@@ -4,21 +4,18 @@ var fs 	    = require('graceful-fs');
 var request = require('request');
 var cfg     = require('./../cfg');
 
+var chatters = [];
 
 function recordChatters(channel, username, message)
 {
-	if (typeof global.chatters === 'undefined') {
-		global.chatters = [];
-	}
-
-	var index = global.chatters.indexOf(username);
+	var index = chatters.indexOf(username);
 	if (index > -1) {
 		return false;
 	}
-	global.chatters.push(username);
+	chatters.push(username);
 
 	setTimeout(function() {
-		global.chatters.splice(index, 1);
+		chatters.splice(index, 1);
 	}, 900000);
 }
 
@@ -56,7 +53,7 @@ function getStaff(channel, username, message)
 	    	else {
 	    		var response = 'current staff in chat: ' + staff;
 	    	}
-	    	
+
             output.say(channel, '@' + username + ', ' + response);
 	 	}
 	});
@@ -87,15 +84,15 @@ function getMods(channel, username, message)
 	    	else {
 	    		var response = 'current mods in chat: ' + mods;
 	    	}
-	    
-	    	output.say(channel, '@' + username + ', ' + response);	
+
+	    	output.say(channel, '@' + username + ', ' + response);
 	  	}
 	});
 }
 
 function getChatters(channel, username, message)
-{		
-	output.say(channel, 'There were ' + global.chatters.length + ' chatters in the last 15mins');
+{
+	output.say(channel, 'There were ' + chatters.length + ' chatters in the last 15mins');
 }
 
 module.exports =
