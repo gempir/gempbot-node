@@ -43,43 +43,24 @@ function uploadLogs(channel, username, message)
     var logFile = 'logs/' + channel.substr(1) + '/' + logsFor + '.txt';
     var logFileChannel = 'logs/' + channel.substr(1) + '.txt';
     var logsShort = null;
-
-    if (logsFor === 'channel') {
-        fs.readFile(logFileChannel, function(err,data) {
-            var shortLogs = data.toString()
-            shortLogs = shortLogs.substr(shortLogs.length - 20000);
-            cfg.pastebin.createPaste(shortLogs, 'short logs for channel ' + channel.substr(1),null,0, '10M')
-                    .then(function (data) {
-                        console.log('Pastebin created: ' + data);
-                        console.log(logsFor, logFileChannel);
-                        output.whisper(username, 'short logs for channel '+ channel.substr(1) + ' pastebin.com/' + data);
-                    })
-                    .fail(function (err) {
-                            output.say(channel, err);
-                            console.log(err);
-            });
-        });
-    }
-    else {
-        if (fn.fileExists(logFile)) {
-                fs.readFile(logFile, function(err,data) {
-                    var shortLogs = data.toString()
-                    shortLogs = shortLogs.substr(shortLogs.length - 20000);
-                    cfg.pastebin.createPaste(shortLogs, 'short logs for channel ' + username,null,0, '10M')
-                            .then(function (data) {
-                                console.log('Pastebin created: ' + data);
-                                console.log(logsFor, logFile);
-                                output.whisper(username, 'short logs for '+ logsFor + ' pastebin.com/' + data);
-                            })
-                            .fail(function (err) {
-                                    output.say(channel, err);
-                                    console.log(err);
-                    });
+    if (fn.fileExists(logFile)) {
+            fs.readFile(logFile, function(err,data) {
+                var shortLogs = data.toString()
+                shortLogs = shortLogs.substr(shortLogs.length - 20000);
+                cfg.pastebin.createPaste(shortLogs, 'short logs for channel ' + username,null,0, '10M')
+                        .then(function (data) {
+                            console.log('Pastebin created: ' + data);
+                            console.log(logsFor, logFile);
+                            output.whisper(username, 'short logs for '+ logsFor + ' pastebin.com/' + data);
+                        })
+                        .fail(function (err) {
+                                output.say(channel, err);
+                                console.log(err);
                 });
-            }
-        else {
-            console.log('[LOG] ' + logsFor + ' has no log here');
+            });
         }
+    else {
+        console.log('[LOG] ' + logsFor + ' has no log here');
     }
 }
 
