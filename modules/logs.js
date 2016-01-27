@@ -70,12 +70,13 @@ function logsSize(channel, username, message)
     var name = fn.getNthWord(message, 3);
 
     name = name.toLowerCase();
-    if (!fn.fileExists('logs/' + channel.substr(1) + '/' + name +  '.txt') && name != 'channel') {
+    if (!fn.fileExists('logs/' + channel.substr(1) + '/' + name +  '.txt')) {
 
         if (fn.stringIsLongerThan(name, 20)) {
             name = 'the user';
         }
         console.log('[LOG] ' + name + ' has no log here');
+        return false;
     }
     else {
         var file = 'logs/' + channel.substr(1) + '/' + name +  '.txt'
