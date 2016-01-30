@@ -18,6 +18,7 @@ var config      = require('./../managers/config');
 var commands    = require('./../managers/commands');
 var nuke        = require('./../modules/nuke');
 var ccount      = require('./../modules/ccount');
+var oddshots    = require('./../modules/oddshots');
 
 channel.client.on('chat', function(channel, user, message, self) {
     eventHandler(channel, user, message);
@@ -31,6 +32,7 @@ function eventHandler(channel, user, message)
 {
     var username = user.username;
 
+    oddshots.saveChannelOddshots(channel, username, message);
     combo.count(channel, user, message);
     logs.userLogs(channel, username, message);
     chatters.recordChatters(channel, username, message);
