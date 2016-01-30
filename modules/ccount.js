@@ -37,7 +37,7 @@ function getCountForNuked(channel, username, message)
 
         var count = rows[0].count;
         output.say(channel, count + ' chatters have been nuked in total');
-        
+
     });
 }
 
@@ -50,7 +50,7 @@ function getCountForCommand(channel, username, message)
 
         var count = rows[0].count;
         output.say(channel, command + ' has been used ' + count + ' times');
-        
+
     });
 }
 
