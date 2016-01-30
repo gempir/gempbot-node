@@ -8,10 +8,17 @@ var output = require('./../connection/output');
 function saveChannelOddshots(channel, username, message)
 {
     var file = 'logs/' + channel.substr(1) + '/oddshots.txt';
+    var oddshotChannel = channel;
+
+    if (channel.indexOf('_') > -1) {
+        var channelSplit = channel.split('_');
+        oddshotChannel = channelSplit[0] + '-' + channelSplit[1];
+    }
+
     if (!fn.fileExists(file)) {
         fs.appendFile(file, '=== Oddshots for ' + channel + ' ===\n', function(){});
     }
-    else if (message.indexOf('http://oddshot.tv/shot/nymn-hs-') > -1) {
+    else if (message.indexOf('http://oddshot.tv/shot/') > -1) {
         parseOddshots(channel, username, message);
     }
 }
@@ -19,21 +26,16 @@ function saveChannelOddshots(channel, username, message)
 function parseOddshots(channel, username, message)
 {
     var file = 'logs/' + channel.substr(1) + '/oddshots.txt';
-    var regex = 'http://oddshot\.tv\/shot\/nymn-hs-';
-    var shot = message.match(regex)
-    var oddshot = message.substr(shot.index, shot.index + 39);
+    var messageSplit = message.split(' ');
 
-    fs.readFile(file, function(err,data) {
-        if  (data.indexOf(oddshot) > -1) {
-            return false;
-        }
-        else {
-            fs.appendFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + username + ': ' + message + '\n', function(){})
-        }
-    });
-    ;
+    for (var i = 0; i < (messageSplit.length -1); i++) {
+        fs.readFile(file, function(err,data) {
+            if  (data.toString().indexOf(messageSplit[i]) === -1 && messageSplit[i].indexOf('http://oddshot.tv/shot/') === -1) {
+                fs.appendFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + username + ': ' + message + '\n', function(){})
+            }
+        });
+    }
 }
-
 
 module.exports =
 {
