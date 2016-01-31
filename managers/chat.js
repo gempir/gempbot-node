@@ -38,6 +38,10 @@ function eventHandler(channel, user, message)
     chatters.recordChatters(channel, username, message);
     nuke.recordToNuke(channel, user, message);
 
+    if (channel === '#hanningerc') {
+        return false;
+    }
+
     var command = fn.getNthWord(message, 1).toLowerCase();
 
     if (username.toLowerCase() === cfg.admin.toLowerCase()) {
