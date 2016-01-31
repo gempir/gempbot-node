@@ -32,11 +32,6 @@ function refreshDB()
 }
 
 
-function getActiveCommands(channel, username, message, whisper)
-{
-    output.whisper(username, 'active commands in ' + channel + ': ' + global.activeCommands);
-}
-
 function admin(channel, username, message, whisper)
 {
     var command = fn.getNthWord(message, 2);
@@ -176,7 +171,6 @@ module.exports =
     getMessageCommand,
     addMessageCommand,
     removeMessageCommand,
-    getActiveCommands,
     refreshLoggedCommands,
     refreshDB
 }

@@ -79,9 +79,6 @@ function eventHandler(channel, user, message)
     if (command === '!followage') {
 		followage.followageCommandHandler(channel, username, message);
 	}
-    else if (command === '!commands') {
-        commands.getActiveCommands(channel, username, message);
-    }
 	else if (command === '!chatters') {
 		chatters.chattersCommandHandler(channel, username, message);
 	}
