@@ -8,7 +8,7 @@ var output = require('./../connection/output');
 function saveChannelOddshots(channel, username, message)
 {
     var file = 'logs/' + channel.substr(1) + '/oddshots.txt';
-    var oddshotChannel = channel;
+    var oddshotChannel = channel.substr(1);
 
     if (channel.indexOf('_') > -1) {
         var channelSplit = channel.split('_');
