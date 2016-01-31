@@ -11,7 +11,7 @@ function saveChannelOddshots(channel, username, message)
     var oddshotChannel = channel.substr(1);
 
     if (channel.indexOf('_') > -1) {
-        var channelSplit = channel.split('_');
+        var channelSplit = channel.substr(1).split('_');
         oddshotChannel = channelSplit[0] + '-' + channelSplit[1];
     }
 
