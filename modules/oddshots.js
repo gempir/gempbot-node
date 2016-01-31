@@ -18,7 +18,7 @@ function saveChannelOddshots(channel, username, message)
     if (!fn.fileExists(file)) {
         fs.appendFile(file, '=== Oddshots for ' + channel + ' ===\n', function(){});
     }
-    else if (message.indexOf('http://oddshot.tv/shot/') > -1) {
+    else if (message.indexOf('http://oddshot.tv/shot/' + oddshotChannel) > -1) {
         parseOddshots(channel, username, message);
     }
 }
