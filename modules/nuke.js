@@ -5,7 +5,7 @@ var mysql = require('./../DB/mysql');
 
 var nukeLength = 10;
 var toNuke = [];
-global.nukeMode = false;
+var nukeMode = false;
 
 function recordToNuke(channel, user, message)
 {
@@ -34,10 +34,10 @@ function recordToNuke(channel, user, message)
 
 function nuke(channel, username, message)
 {
-    if (global.nukeMode) {
+    if (nukeMode) {
         return false;
     }
-    global.nukeMode = true;
+    nukeMode = true;
     var nukeTime = 1;
 
     if (message != '!nuke') {
