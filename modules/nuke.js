@@ -34,6 +34,9 @@ function recordToNuke(channel, user, message)
 
 function nuke(channel, username, message)
 {
+    if (nukeMode) {
+        return false;
+    }
     nukeMode = true;
     var nukeTime = 1;
 
