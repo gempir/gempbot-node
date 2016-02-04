@@ -30,7 +30,7 @@ function lastMessage(channel, username, message) {
             return false;
         }
         if (response.length > 150) {
-            response = response.substring(0, 150) + '...';
+            response = response.substring(0, 150) + ' [...]';
         }
 	    output.say(channel, '" ' + response + ' "');
     });
