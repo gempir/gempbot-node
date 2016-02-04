@@ -15,6 +15,14 @@ function isBroadcaster(channel, user)
 	return isBroadcaster = channel.replace('#', '') == user.username;
 }
 
+function containsASCII(data)
+{
+    if (data.indexOf('▓') > -1) {
+        return true;
+    }
+    return false;
+}
+
 function isMod(channel, username)
 {
     if (chat.isMod(channel, username) || username.toLowerCase() === channel.substr(1) || cfg.admin.toLowerCase() === username) {
@@ -120,5 +128,6 @@ module.exports =
     secsToTime,
     getRandomInt,
     countWords,
-    isMod
+    isMod,
+    containsASCII
 };
