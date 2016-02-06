@@ -1,7 +1,5 @@
 var fn = require('./functions');
 var output = require('./../connection/output');
-var mysql = require('./../DB/mysql');
-
 
 var nukeLength = 10;
 var toNuke = [];

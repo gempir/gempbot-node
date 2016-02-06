@@ -6,7 +6,7 @@ var server = app.listen(3000, function () {
   var port = server.address().port;
 });
 
-console.log('connect on port 3000');
+console.log('[express] connected on port 3000');
 var io = require('socket.io').listen(server);
 
 app.use(express.static(__dirname + '/public'));

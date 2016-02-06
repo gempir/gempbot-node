@@ -14,10 +14,8 @@ var timer       = require('./../modules/timer');
 var voting      = require('./../modules/voting');
 var followage   = require('./../modules/followage');
 var chatters    = require('./../modules/chatters');
-var config      = require('./../managers/config');
-var commands    = require('./../managers/commands');
+var config      = require('./../controllers/config');
 var nuke        = require('./../modules/nuke');
-var ccount      = require('./../modules/ccount');
 var oddshots    = require('./../modules/oddshots');
 
 channel.client.on('chat', function(channel, user, message, self) {
@@ -43,19 +41,17 @@ function eventHandler(channel, user, message)
     if (username.toLowerCase() === cfg.admin.toLowerCase()) {
         adminCommands(channel, username, message);
     }
-    if (global.trusted.indexOf(username.toLowerCase()) > -1) {
-        trustedCommands(channel, username, message);
-    }
+    config.getTrusted(channel, function(trusted){
+        if (trusted.indexOf(username) > -1) {
+            trustedCommands(channel, username, message);
+        }
+    });
 
     if (user != null) {
         if (user['user-type'] === 'mod') {
             // mod stuff
         }
     }
-
-    if (!(global.activeCommands.indexOf(command.toLowerCase()) > -1)) {
-		return false;
-	}
 
     // no CD
     switch (command) {
@@ -67,14 +63,25 @@ function eventHandler(channel, user, message)
 			break;
 	}
 
-    if (global.cooldown) {
+    if (global.globalcooldown) {
         console.log('[LOG] global cooldown');
 		return false;
 	}
 
-    ccount.ccountCommandUsage(command);
+    config.getActiveCommands(channel, function(activeCommands){
+        if (!(activeCommands.indexOf(command) > -1)) {
+            return false;
+        }
+        normalCommands(channel, username, message)
+    });
 
     // normal stuff
+
+}
+
+
+function normalCommands(channel, username, message) {
+    var command = fn.getNthWord(message, 1).toLowerCase();
 
     if (command === '!followage') {
 		followage.followageCommandHandler(channel, username, message);
@@ -101,9 +108,20 @@ function eventHandler(channel, user, message)
 		lastmessage.lastMessage(channel, username, message);
 	}
 	else if (command.substr(0,1) === '!') {
-		commands.getMessageCommand(channel, username, message);
+		config.getCommand(channel, command, function(commandObj) {
+            if (commandObj === null || typeof commandObj === 'undefined') {
+                return false;
+            }
+            console.log(commandObj);
+            if (response.indexOf('--response') > -1) {
+                response = response.replace('--response', '');
+                output.say(channel, '@' + username + ', ' + response);
+            }
+            else {
+                output.say(channel, response);
+            }
+        });
 	}
-
 }
 
 
@@ -115,10 +133,10 @@ function adminCommands(channel, username, message)
             status.statusBot(channel, username, message);
             break;
         case '!admin':
-            config.admin(channel, username, message);
+            adminController(channel, username, message);
             break;
         case '!command':
-            commands.admin(channel, username, message);
+            commandsController(channel, username, message);
             break;
         case '!refresh':
             commands.refreshDB();
@@ -130,6 +148,67 @@ function adminCommands(channel, username, message)
     }
 }
 
+function adminController(channel, username, message)
+{
+    if (fn.countWords(message) <= 2) {
+        return false;
+    }
+    var command = fn.getNthWord(message, 2).toLowerCase();
+    switch(command) {
+        case 'trusted':
+            switchTrusted(channel, username, message);
+    }
+    function switchTrusted(channel, username, message) {
+        if (fn.countWords(message) <= 3) {
+            return false;
+        }
+        var command = fn.getNthWord(message, 3).toLowerCase();
+        var trusted = fn.getNthWord(message, 4).toLowerCase();
+        switch(command) {
+            case 'add':
+                config.setTrusted(channel, trusted);
+                output.sayNoCD(channel, 'added ' + trusted + ' to trusted');
+                break;
+            case 'remove':
+                config.removeTrusted(channel, trusted);
+                output.sayNoCD(channel, 'removed ' + trusted + ' from trusted');
+                break;
+        }
+    }
+}
+
+function commandsController(channel, username, message)
+{
+    if (fn.countWords(message) <= 3) {
+        return false;
+    }
+    var command = fn.getNthWord(message, 2).toLowerCase();
+    var commandName = fn.getNthWord(message, 3).toLowerCase();
+    var commandMessage = fn.getNthWord(message, 4).toLowerCase();
+    var messageArray = message.split(' ');
+    if (typeof messageArray[3] != 'undefined') {
+        var description = messageArray[3];
+    }
+    switch(command) {
+        case 'add':
+            addCommand(channel, commandName, commandMessage, description);
+            break;
+        case 'remove':
+            break;
+    }
+}
+
+function addCommand(channel, command, response, description) {
+    description = description || '';
+
+    var commandObj = {
+        command: command,
+        response: response,
+        description: description,
+        enabled: true
+    }
+    config.setCommand(channel, commandObj);
+}
 
 function trustedCommands(channel, username, message)
 {

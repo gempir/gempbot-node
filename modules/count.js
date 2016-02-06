@@ -1,8 +1,6 @@
 var output = require('./../connection/output');
 var fs = require('graceful-fs');
 var fn = require('./functions');
-var mysql = require('./../DB/mysql');
-
 
 function countMe(channel, username, message)
 {
@@ -19,7 +17,7 @@ function countMe(channel, username, message)
             var phrase = searchPhrase;
         }
 
-        output.say(channel, '@' + username + ', you used ' + phrase + ' ' + emoteCount + ' times');    
+        output.say(channel, '@' + username + ', you used ' + phrase + ' ' + emoteCount + ' times');
     });
 }
 

@@ -3,7 +3,7 @@ var irc = require('tmi.js');
 
 var group = new irc.client({
         options: {
-            debug: true
+            debug: false
         },
         connection: {
             server: "group.tmi.twitch.tv",

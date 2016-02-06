@@ -31,32 +31,12 @@ function say(channel, message, action)
 	}
 
 	if (!action) {
-		global.cooldown = true;
+		global.globalcooldown = true;
 		chat.say(channel, message);
 		console.log('[SAY] ' + message);
 	}
 	else if (action) {
-		global.cooldown = true;
-		chat.action(channel, message);
-		console.log('[SAY]' + '/me ' + message);
-	}
-}
-
-function sayPriority(channel, message, action)
-{
-	action = action || false;
-
-	if (global.priorityCooldown) {
-		return false;
-	}
-
-	if (!action) {
-		global.priorityCooldown = true;
-		chat.say(channel, message);
-		console.log('[SAY] ' + message);
-	}
-	else if (action) {
-		global.priorityCooldown = true;
+		global.globalcooldown = true;
 		chat.action(channel, message);
 		console.log('[SAY]' + '/me ' + message);
 	}
@@ -92,6 +72,5 @@ module.exports =
 	say,
 	sayNoCD,
 	whisper,
-	sayPriority,
     sayAllChannels
 }
