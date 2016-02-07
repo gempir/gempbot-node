@@ -15,7 +15,7 @@ function startVoting(channel, username, message) {
 		return false;
 	}
 	if (message.toLowerCase() === '!voting rate') {
-		overlay.emit('startRate',{});
+		overlay.emit('startRate',{ channel: channel});
 		voting = true;
 		votesRatings  = [];
 		voters = [];
@@ -24,7 +24,7 @@ function startVoting(channel, username, message) {
 	if (message.toLowerCase() === '!voting skip') {
 		voting = true;
 		voters = [];
-		overlay.emit('startSkip',{});
+		overlay.emit('startSkip',{ channel: channel});
 		votingSkipController(channel, username, message);
 	}
 	else {
@@ -79,7 +79,7 @@ function votingSkipController(channel, username, message) {
 	output.sayNoCD(channel, 'A skip or stay voting has been started type [ !vote skip ] or [ !vote stay ] to vote on the current content. The voting ends in 45 seconds ');
 
 	setTimeout(function(){
-		overlay.emit('resultsSkip', { stay: votesSkipStay.stay, skip: votesSkipStay.skip});
+		overlay.emit('resultsSkip', { stay: votesSkipStay.stay, skip: votesSkipStay.skip, channel: channel});
 		var totalVotes = Number(votesSkipStay.stay) + Number(votesSkipStay.skip);
 		voting = false;
 		output.sayNoCD(channel, '@' + username + ', The voting ended, skip: [ ' + votesSkipStay.skip + ' ] | stay: [ ' + votesSkipStay.stay + ' ] | votes: [ ' + totalVotes + ' ]');
@@ -97,7 +97,7 @@ function votingRateController(channel, username, message) {
 		var avgRating = (totalRatings / votesRatings.length).toFixed(1);
 		voting = false;
 		output.sayNoCD(channel, '@' + username + ', The voting ended, the average ratings is: [ ' + avgRating + ' ] | votes: [ ' + votesRatings.length + ' ]');
-		overlay.emit('resultsRate', { avgRating: avgRating, votes: votesRatings.length });
+		overlay.emit('resultsRate', { avgRating: avgRating, votes: votesRatings.length, channel: channel });
 	}, 45000);
 }
 

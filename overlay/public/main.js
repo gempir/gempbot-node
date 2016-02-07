@@ -1,26 +1,30 @@
 
 var socket = io.connect('46.101.195.112:3000');
 
-socket.on('startSkip', function() {
-	showData('A voting has been started type <span class="red">!vote skip</span> or <span class="green">!vote stay</span> to vote on the current content.  <br> The voting ends in 45 seconds')
+socket.on('startSkip', function(data) {
+	var channel = data.channel.substr(1);
+	showData('A voting has been started type <span class="red">!vote skip</span> or <span class="green">!vote stay</span> to vote on the current content.  <br> The voting ends in 45 seconds', channel)
 });
 
-socket.on('startRate', function() {
-	showData('A rate voting has been started type E.g. <span class="yellow">[ !vote 5 ]</span> to rate the current content. The voting ends in 45 seconds.')
+socket.on('startRate', function(data) {
+	var channel = data.channel.substr(1);
+	showData('A rate voting has been started type E.g. <span class="yellow">[ !vote 5 ]</span> to rate the current content. The voting ends in 45 seconds.', channel)
 });
 
 socket.on('resultsSkip', function(data) {
-	showData('<span class="red">skip: ' + data.skip + '</span><br><span class="green"> stay: ' + data.stay + '</span><br>votes: ' + (data.skip+data.stay));
+	var channel = data.channel.substr(1);
+	showData('<span class="red">skip: ' + data.skip + '</span><br><span class="green"> stay: ' + data.stay + '</span><br>votes: ' + (data.skip+data.stay), channel);
 });
 
 socket.on('resultsRate', function(data) {
-	showData('<span class="yellow"> average rating: ' + data.avgRating  + '</span><br>votes: ' + data.votes);
+	var channel = data.channel.substr(1);
+	showData('<span class="yellow"> average rating: ' + data.avgRating  + '</span><br>votes: ' + data.votes, channel);
 });
 
 
-function showData(data)
+function showData(data, channel)
 {
-	$('.popup').html(data).animate({width: [ "toggle", "swing" ], height: [ "toggle", "swing" ], opacity: "toggle"});
+	$('.popup.' + channel).html(data).animate({width: [ "toggle", "swing" ], height: [ "toggle", "swing" ], opacity: "toggle"});
 	setTimeout(function() {
 		$('.popup').animate({width: [ "toggle", "swing" ], height: [ "toggle", "swing" ], opacity: "toggle"});
 	}, 20000);
