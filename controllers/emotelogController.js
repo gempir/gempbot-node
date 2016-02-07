@@ -6,7 +6,7 @@ function incrementUserEmote(channel, username, emote, increase) {
 }
 
 function incrementEmote(channel, username, emote, increase) {
-    redis.hincrby(channel + ':emotelog:channel:' + emote, username, increase);
+    redis.hincrby(channel + ':emotelog:channel', emote, increase);
 }
 
 module.exports = {
