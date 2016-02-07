@@ -21,7 +21,7 @@ twitch.loadTwitchEmotes(function(){
 
 
     setTimeout(function() {
-        readFiles('logs/gempir/');
+        readFiles('logs/nymn_hs/');
     }, 5000);
 
 
@@ -33,15 +33,15 @@ twitch.loadTwitchEmotes(function(){
           var messageArr = content.split(' ');
           for (var i = 0; i < messageArr.length; i++) {
             // bttvemotes
-            if (bttv.BetterTTVEmotes.global.indexOf(messageArr[i]) > -1 || bttv.BetterTTVEmotes.channel['#gempir'].indexOf(messageArr[i]) > -1) {
-                  redis.hincrby('#gempir' + ':emotelog:user:' + messageArr[i], filename.substr(0, filename.length - 4), 1);
-                  redis.hincrby('#gempir' + ':emotelog:channel', messageArr[i], 1);
+            if (bttv.BetterTTVEmotes.global.indexOf(messageArr[i]) > -1 || bttv.BetterTTVEmotes.channel['#nymn_hs'].indexOf(messageArr[i]) > -1) {
+                  redis.hincrby('#nymn_hs' + ':emotelog:user:' + messageArr[i], filename.substr(0, filename.length - 4), 1);
+                  redis.hincrby('#nymn_hs' + ':emotelog:channel', messageArr[i], 1);
                   console.log(messageArr[i], filename);
             }
             // twitchemotes
             if (Object.keys(TEmotes).indexOf(messageArr[i]) > -1) {
-                redis.hincrby('#gempir' + ':emotelog:user:' + messageArr[i], filename.substr(0, filename.length - 4), 1);
-                redis.hincrby('#gempir' + ':emotelog:channel', messageArr[i], 1);
+                redis.hincrby('#nymn_hs' + ':emotelog:user:' + messageArr[i], filename.substr(0, filename.length - 4), 1);
+                redis.hincrby('#nymn_hs' + ':emotelog:channel', messageArr[i], 1);
                  console.log(messageArr[i], filename);
             }
           }

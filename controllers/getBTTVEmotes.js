@@ -30,7 +30,7 @@ function loadChannelBTTVEmotes() {
 
     for (var i = 0; i < channels.length; i++) {
         var channelCurrent =  channels[i];
-        request('https://api.betterttv.net/2/channels/gempir', function (error, response, body) {
+        request('https://api.betterttv.net/2/channels/nymn_hs', function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 var bttvObj = JSON.parse(body);
                 var emotes  = bttvObj.emotes;
