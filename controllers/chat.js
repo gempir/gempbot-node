@@ -62,12 +62,6 @@ function eventHandler(channel, user, message)
 			timer.setTimer(channel, username, message);
 			break;
 	}
-
-    if (global.globalcooldown) {
-        console.log('[LOG] global cooldown');
-		return false;
-	}
-
     config.getActiveCommands(channel, function(activeCommands){
         if (!(activeCommands.indexOf(command) > -1)) {
             return false;
@@ -81,6 +75,11 @@ function eventHandler(channel, user, message)
 
 
 function normalCommands(channel, username, message) {
+    if (global.globalcooldown) {
+        console.log('[LOG] global cooldown');
+		return false;
+	}
+
     var command = fn.getNthWord(message, 1).toLowerCase();
 
     if (command === '!followage') {
@@ -112,13 +111,12 @@ function normalCommands(channel, username, message) {
             if (commandObj === null || typeof commandObj === 'undefined') {
                 return false;
             }
-            console.log(commandObj);
-            if (response.indexOf('--response') > -1) {
-                response = response.replace('--response', '');
-                output.say(channel, '@' + username + ', ' + response);
+            var response = commandObj.response;
+            if (commandObj.response === true) {
+                output.say(channel, '@' + username + ', ' + commandObj.message);
             }
             else {
-                output.say(channel, response);
+                output.say(channel, commandObj.message);
             }
         });
 	}
@@ -179,35 +177,51 @@ function adminController(channel, username, message)
 
 function commandsController(channel, username, message)
 {
-    if (fn.countWords(message) <= 3) {
-        return false;
+    var messageArr     = message.split(' ');
+    var response       = false;
+    var command        = messageArr[1].toLowerCase() || '';
+    var commandName    = messageArr[2] || '';
+
+    if (command === 'add') {
+        var commandMessage = fn.getLastChunkOfMessage(message, commandName);
+        if (commandMessage === '' || commandName === '') {
+            return false;
+        }
+        if (commandName.substr(0,1) != '!') {
+            commandName = '!' + commandName;
+        }
+        if (commandMessage.indexOf('--response') > -1) {
+            response = true;
+            commandMessage = commandMessage.replace('--response', '');
+        }
+        addCommand(channel, commandName, commandMessage, response);
     }
-    var command = fn.getNthWord(message, 2).toLowerCase();
-    var commandName = fn.getNthWord(message, 3).toLowerCase();
-    var commandMessage = fn.getNthWord(message, 4).toLowerCase();
-    var messageArray = message.split(' ');
-    if (typeof messageArray[3] != 'undefined') {
-        var description = messageArray[3];
-    }
-    switch(command) {
-        case 'add':
-            addCommand(channel, commandName, commandMessage, description);
-            break;
-        case 'remove':
-            break;
+    else if (command === 'remove') {
+        if (commandName === '') {
+            return false;
+        }
+        removeCommand(channel, commandName);
     }
 }
 
-function addCommand(channel, command, response, description) {
-    description = description || '';
-
+function addCommand(channel, command, message, response) {
     var commandObj = {
         command: command,
-        response: response,
-        description: description,
-        enabled: true
+        message: message,
+        description: '',
+        enabled: true,
+        response: response
     }
     config.setCommand(channel, commandObj);
+    output.sayNoCD(channel, 'added command ' + commandObj.command);
+}
+
+function removeCommand(channel, command) {
+    if (command.substr(0,1) != '!') {
+        command = '!' + command;
+    }
+    config.removeCommand(channel, command);
+    output.sayNoCD(channel, 'removed command ' + command);
 }
 
 function trustedCommands(channel, username, message)

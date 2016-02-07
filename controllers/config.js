@@ -46,13 +46,17 @@ function setCommand(channel, commandObj) {
     redis.hset(channel + ':commands', commandObj.command, commandString);
 }
 
+function removeCommand(channel, command) {
+    redis.del(channel + ':commands', command);
+}
+
 function getCommand(channel, command, callback) {
     redis.hget(channel + ':commands', command, function (err, obj) {
         if (err) {
             console.log('[redis] ' + err);
             return [];
         }
-        return callback(obj);
+        return callback(JSON.parse(obj));
     });
 }
 
@@ -106,6 +110,7 @@ module.exports = {
     removeTrusted,
     setCommand,
     getCommand,
+    removeCommand,
     getActiveCommands,
     setGlobalCooldown,
     resetGlobalCooldown,

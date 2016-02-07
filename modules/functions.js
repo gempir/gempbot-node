@@ -15,6 +15,12 @@ function isBroadcaster(channel, user)
 	return isBroadcaster = channel.replace('#', '') == user.username;
 }
 
+function getLastChunkOfMessage(message, chunkToStartAt) {
+    var indexChunkStart = message.indexOf(chunkToStartAt);
+    var chunkStartLength = chunkToStartAt.length;
+    return message.substr(indexChunkStart + chunkStartLength);
+}
+
 function containsASCII(data)
 {
     if (data.indexOf('▓') > -1) {
@@ -129,5 +135,6 @@ module.exports =
     getRandomInt,
     countWords,
     isMod,
-    containsASCII
+    containsASCII,
+    getLastChunkOfMessage
 };

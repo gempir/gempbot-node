@@ -26,7 +26,7 @@ function say(channel, message, action)
 {
 	action = action || false;
 
-	if (global.cooldown) {
+	if (global.globalcooldown) {
 		return false;
 	}
 
