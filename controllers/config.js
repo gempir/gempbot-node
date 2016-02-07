@@ -10,7 +10,7 @@ function getTrusted(channel, callback) {
         }
         var trusted = [];
         for (var username in obj) {
-            trusted.push(username);
+            trusted.push(username.toLowerCase());
         }
         return callback(trusted);
     });
@@ -61,48 +61,6 @@ function getCommand(channel, command, callback) {
 }
 
 
-// globalcooldown
-function setGlobalCooldown(channel) {
-    redis.hget(channel + ':config', 'globalcooldown', function(err, obj){
-        if (err) {
-            console.log('[redis] ' + err);
-            return [];
-        }
-        global.globalcooldownInterval = setInterval(function() {
-            global.globalcooldown = false;
-        }, obj);
-    });
-}
-
-function resetGlobalCooldown(channel, cooldown) {
-    redis.hset(channel + ':config', 'globalcooldown', cooldown);
-    clearInterval(global.globalcooldownInterval);
-    global.globalcooldownInterval = setInterval(function() {
-        global.globalcooldown = false;
-    }, cooldown);
-}
-
-// whispercooldown
-function setWhisperCooldown(channel) {
-    redis.hget(channel + ':config', 'whispercooldown', function(err, obj){
-        if (err) {
-            console.log('[redis] ' + err);
-            return [];
-        }
-        global.whispercooldownInterval = setInterval(function() {
-            global.whispercooldown = false;
-        }, obj);
-    });
-}
-
-function resetWhisperCooldown(channel, cooldown) {
-    redis.hset(channel + ':config', 'whispercooldown', cooldown);
-    clearInterval(global.whispercooldownInterval);
-    global.whispercooldownInterval = setInterval(function() {
-        global.whispercooldown = false;
-    }, cooldown);
-}
-
 
 module.exports = {
     getTrusted,
@@ -111,9 +69,5 @@ module.exports = {
     setCommand,
     getCommand,
     removeCommand,
-    getActiveCommands,
-    setGlobalCooldown,
-    resetGlobalCooldown,
-    setWhisperCooldown,
-    resetWhisperCooldown
+    getActiveCommands
 };

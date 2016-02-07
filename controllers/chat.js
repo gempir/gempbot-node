@@ -17,6 +17,7 @@ var chatters    = require('./../modules/chatters');
 var config      = require('./../controllers/config');
 var nuke        = require('./../modules/nuke');
 var oddshots    = require('./../modules/oddshots');
+var colors      = require('colors');
 
 channel.client.on('chat', function(channel, user, message, self) {
     eventHandler(channel, user, message);
@@ -37,21 +38,17 @@ function eventHandler(channel, user, message)
     nuke.recordToNuke(channel, user, message);
 
     var command = fn.getNthWord(message, 1).toLowerCase();
-
+    if (command.substr(0,1) != '!') {
+        return false;
+    }
     if (username.toLowerCase() === cfg.admin.toLowerCase()) {
         adminCommands(channel, username, message);
     }
     config.getTrusted(channel, function(trusted){
-        if (trusted.indexOf(username) > -1) {
+        if (trusted.indexOf(username.toLowerCase()) > -1) {
             trustedCommands(channel, username, message);
         }
     });
-
-    if (user != null) {
-        if (user['user-type'] === 'mod') {
-            // mod stuff
-        }
-    }
 
     // no CD
     switch (command) {
@@ -62,6 +59,8 @@ function eventHandler(channel, user, message)
 			timer.setTimer(channel, username, message);
 			break;
 	}
+
+
     config.getActiveCommands(channel, function(activeCommands){
         if (!(activeCommands.indexOf(command) > -1)) {
             return false;
@@ -69,14 +68,13 @@ function eventHandler(channel, user, message)
         normalCommands(channel, username, message)
     });
 
-    // normal stuff
 
 }
 
 
 function normalCommands(channel, username, message) {
-    if (global.globalcooldown) {
-        console.log('[LOG] global cooldown');
+    if (output.cooldowns.indexOf(channel) > -1) {
+        console.log('[LOG] global cooldown'.gray);
 		return false;
 	}
 

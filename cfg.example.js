@@ -1,5 +1,7 @@
 var admin = 'gempir';
 
+var globalcooldown = 2000;
+
 var options = {
         options: {
             debug: false // for normal chat connection
@@ -36,5 +38,6 @@ module.exports =
     pastebin,
     admin,
     options,
-    redis
+    redis,
+    globalcooldown
 };

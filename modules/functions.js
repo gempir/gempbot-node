@@ -21,6 +21,15 @@ function getLastChunkOfMessage(message, chunkToStartAt) {
     return message.substr(indexChunkStart + chunkStartLength);
 }
 
+function removeFromArray(arr, what) {
+    var found = arr.indexOf(what);
+
+    while (found !== -1) {
+        arr.splice(found, 1);
+        found = arr.indexOf(what);
+    }
+}
+
 function containsASCII(data)
 {
     if (data.indexOf('▓') > -1) {
@@ -136,5 +145,6 @@ module.exports =
     countWords,
     isMod,
     containsASCII,
-    getLastChunkOfMessage
+    getLastChunkOfMessage,
+    removeFromArray
 };
