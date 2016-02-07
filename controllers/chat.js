@@ -17,7 +17,9 @@ var chatters    = require('./../modules/chatters');
 var config      = require('./../controllers/config');
 var nuke        = require('./../modules/nuke');
 var oddshots    = require('./../modules/oddshots');
+var emotelog    = require('./../modules/emotelog');
 var colors      = require('colors');
+var bttv        = require('./getBTTVEmotes');
 
 channel.client.on('chat', function(channel, user, message, self) {
     eventHandler(channel, user, message);
@@ -30,6 +32,9 @@ channel.client.on('action', function(channel, user, message, self) {
 function eventHandler(channel, user, message)
 {
     var username = user.username;
+
+    emotelog.incrementUserEmote(channel, user, message);
+    emotelog.incrementEmote(channel, user, message);
 
     oddshots.saveChannelOddshots(channel, username, message);
     combo.count(channel, user, message);
@@ -131,6 +136,9 @@ function adminCommands(channel, username, message)
         case '!say':
             var toSay = message.substr(5);
             output.sayNoCD(channel, toSay);
+            break;
+        case '!bttvreload':
+            bttv.loadBTTVEmotes();
             break;
     }
 }

@@ -5,9 +5,16 @@ var cfg     = require('./../cfg');
 var channel = require('./../connection/channel');
 var whisper = require('./../connection/whisper');
 var output  = require('./../connection/output');
-var colors = require('colors');
+var colors  = require('colors');
+var bttv    = require('./getBTTVEmotes');
+
 var group = false;
 var chat  = false;
+
+// boot
+(function(){
+    bttv.loadBTTVEmotes();
+})();
 
 channel.client.on("connected", function (address, port) {
     console.log('[boot] connected to chat'.green);
