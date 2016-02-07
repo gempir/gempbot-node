@@ -133,9 +133,6 @@ function adminCommands(channel, username, message)
         case '!admin':
             adminController(channel, username, message);
             break;
-        case '!command':
-            commandsController(channel, username, message);
-            break;
         case '!refresh':
             commands.refreshDB();
             break;
@@ -232,10 +229,7 @@ function trustedCommands(channel, username, message)
     if (message.substr(0,7).toLowerCase() === '!voting') {
         voting.startVoting(channel, username, message);
     }
-    if (message.substr(0,12).toLowerCase() === '!command add') {
-		commands.addMessageCommand(channel, username, message);
-	}
-	if (message.substr(0,15).toLowerCase() === '!command remove') {
-		commands.removeMessageCommand(channel, username, message);
-	}
+    if (message.substr(0,8).toLowerCase() === '!command') {
+        commandsController(channel, username, message);
+    }
 }
