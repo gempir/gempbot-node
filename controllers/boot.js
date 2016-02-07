@@ -30,5 +30,6 @@ function bootComplete()
 {
     if (group && chat) {
         output.sayAllChannels('Bot started | branch: ' + git.branch() + ' (' + git.short() + ')');
+        config.setGlobalCooldown('#nymn_hs');
     }
 }

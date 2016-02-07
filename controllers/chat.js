@@ -130,9 +130,6 @@ function adminCommands(channel, username, message)
         case '!admin':
             adminController(channel, username, message);
             break;
-        case '!refresh':
-            commands.refreshDB();
-            break;
         case '!say':
             var toSay = message.substr(5);
             output.sayNoCD(channel, toSay);
