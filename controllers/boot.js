@@ -7,6 +7,7 @@ var whisper = require('./../connection/whisper');
 var output  = require('./../connection/output');
 var colors  = require('colors');
 var bttv    = require('./getBTTVEmotes');
+var twitch  = require('./getTwitchEmotes');
 
 var group = false;
 var chat  = false;
@@ -14,6 +15,9 @@ var chat  = false;
 // boot
 (function(){
     bttv.loadBTTVEmotes();
+    twitch.loadTwitchEmotes(function(){
+        channel.client.connect();
+    });
 })();
 
 channel.client.on("connected", function (address, port) {

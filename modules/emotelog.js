@@ -1,11 +1,13 @@
 var emotelogController = require('./../controllers/emotelogController');
 var bttv               = require('./../controllers/getBTTVEmotes');
+var twitch             = require('./../controllers/getTwitchEmotes');
 
 function incrementUserEmote(channel, user, message)
 {
     if (user.emotes != null) {
         for (emote in user.emotes) {
-            emotelogController.incrementUserEmote(channel, user.username, emote, user.emotes[emote].length)
+            var emoteCode = twitch.TwitchEmotes[emote];
+            emotelogController.incrementUserEmote(channel, user.username, emoteCode, user.emotes[emote].length)
         }
     }
     countUserBTTVEmotes(channel, user, message);
@@ -27,7 +29,8 @@ function incrementEmote(channel, user, message)
 {
     if (user.emotes != null) {
         for (emote in user.emotes) {
-            emotelogController.incrementEmote(channel, user.username, emote, user.emotes[emote].length)
+            var emoteCode = twitch.TwitchEmotes[emote];
+            emotelogController.incrementEmote(channel, user.username, emoteCode, user.emotes[emote].length)
         }
     }
     countBTTVEmotes(channel, user, message);

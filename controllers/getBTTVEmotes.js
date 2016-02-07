@@ -9,6 +9,7 @@ var BetterTTVEmotes = {
 function loadBTTVEmotes() {
     loadGlobalBTTVEmotes();
     loadChannelBTTVEmotes();
+    console.log('[API] loading bttv emotes'.bgMagenta);
 }
 
 function loadGlobalBTTVEmotes() {
@@ -37,7 +38,6 @@ function loadChannelBTTVEmotes() {
                 for (var j = 0; j < emotes.length; j++) {
                     BetterTTVEmotes.channel[channelCurrent].push(emotes[j].code);
                 }
-                console.log(BetterTTVEmotes);
             }
         })
     }
