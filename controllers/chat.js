@@ -20,6 +20,7 @@ var oddshots    = require('./../modules/oddshots');
 var emotelog    = require('./../modules/emotelog');
 var colors      = require('colors');
 var bttv        = require('./getBTTVEmotes');
+var twitch      = require('./getTwitchEmotes');
 
 channel.client.on('chat', function(channel, user, message, self) {
     eventHandler(channel, user, message);
@@ -96,7 +97,7 @@ function normalCommands(channel, username, message) {
 		logs.logsCommandHandler(channel, username, message);
 	}
 	else if (command === '!lines') {
-		lines.stats(channel, username, message);
+		lines.lineCount(channel, username, message);
 	}
 	else if (command === '!countme') {
 		count.countMe(channel, username, message);
