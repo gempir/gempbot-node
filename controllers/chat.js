@@ -19,8 +19,7 @@ var nuke        = require('./../modules/nuke');
 var oddshots    = require('./../modules/oddshots');
 var emotelog    = require('./../modules/emotelog');
 var colors      = require('colors');
-var bttv        = require('./getBTTVEmotes');
-var twitch      = require('./getTwitchEmotes');
+var emotecache  = require('./../src/models/emotecache');
 
 channel.client.on('chat', function(channel, user, message, self) {
     eventHandler(channel, user, message);
@@ -142,12 +141,9 @@ function adminCommands(channel, username, message)
             var toSay = message.substr(5);
             output.sayNoCD(channel, toSay);
             break;
-        case '!bttvreload':
-            bttv.loadBTTVEmotes();
+        case '!emotecache':
+            emotecache();
             break;
-        case '!twitchreload':
-            twitch.loadTwitchEmotes();
-            break
     }
 }
 

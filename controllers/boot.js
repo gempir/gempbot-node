@@ -6,19 +6,10 @@ var channel = require('./../connection/channel');
 var whisper = require('./../connection/whisper');
 var output  = require('./../connection/output');
 var colors  = require('colors');
-var bttv    = require('./getBTTVEmotes');
-var twitch  = require('./getTwitchEmotes');
 
-var group = false;
+var groupConn = false;
 var chat  = false;
 
-// boot
-(function(){
-    bttv.loadBTTVEmotes();
-    twitch.loadTwitchEmotes(function(){
-        channel.client.connect();
-    });
-})();
 
 channel.client.on("connected", function (address, port) {
     console.log('[boot] connected to chat'.green);
@@ -28,19 +19,23 @@ channel.client.on("connected", function (address, port) {
 
 whisper.group.on("connected", function (address, port, err) {
     console.log(('[boot] Connected to group servers on ' + address + ':' + port).green);
-    group = true;
+    groupConn = true;
     bootComplete();
 });
 
 whisper.group.on("disconnected", function (reason) {
     console.log(('[boot] group server connection failed | ' + reason).bgRed)
-    process.exit(); // restart bot when not connected to group servers, because whispers won't work otherwise
+    whisper.group.connect();
 });
 
+channel.client.on("disconnected", function (reason) {
+    console.log(('[boot] chat server connection failed | ' + reason).bgRed)
+    channel.client.connect();
+});
 
 function bootComplete()
 {
-    if (group && chat) {
+    if (groupConn && chat) {
         output.sayAllChannels('Bot started | branch: ' + git.branch() + ' (' + git.short() + ')');
     }
 }
