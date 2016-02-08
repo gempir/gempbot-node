@@ -2,6 +2,7 @@ var cfg = require('../cfg');
 var fn = require('./functions');
 var fs = require('graceful-fs');
 var output = require('./../connection/output');
+var redis = require('./../controllers/redis');
 
 
 function lineCount(file, username)
@@ -31,9 +32,14 @@ function stats(channel, username, message)
     output.say(channel, '@' + username + ', ' + linesFor + ' has written ' + lines + ' lines');
 }
 
-
+function recordLines(channel, username, message)
+{
+    redis.hincrby(channel + ':linecount:channel', 'lines', 1);
+    redis.hincrby(channel + ':linecount:user', username, 1);
+}
 
 module.exports =
 {
-    stats
+    stats,
+    recordLines
 }

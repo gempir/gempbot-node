@@ -33,6 +33,7 @@ function eventHandler(channel, user, message)
 {
     var username = user.username;
 
+    lines.recordLines(channel, username, message);
     emotelog.incrementUserEmote(channel, user, message);
     emotelog.incrementEmote(channel, user, message);
 
@@ -144,7 +145,7 @@ function adminCommands(channel, username, message)
             bttv.loadBTTVEmotes();
             break;
         case '!twitchreload':
-            bttv.loadTwitchEmotes();
+            twitch.loadTwitchEmotes();
             break
     }
 }
