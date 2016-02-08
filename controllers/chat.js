@@ -140,6 +140,9 @@ function adminCommands(channel, username, message)
         case '!bttvreload':
             bttv.loadBTTVEmotes();
             break;
+        case '!twitchreload':
+            bttv.loadTwitchEmotes();
+            break
     }
 }
 

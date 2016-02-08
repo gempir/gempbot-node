@@ -1,42 +1,26 @@
 var output = require('./../connection/output');
 var fs = require('graceful-fs');
 var fn = require('./functions');
+var redis = require('./../controllers/redis');
 
 function countMe(channel, username, message)
 {
-    var searchPhrase = message.substr(8);
+    var emote = message.substr(8);
+    emote = emote.replace(' ', '');
 
-    fs.readFile('logs/' + channel.substr(1) + '/' + username +'.txt', function (err, data) {
-        var emoteCount = occurrences(data, searchPhrase);
-        emoteCount = fn.numberFormatted(emoteCount);
-
-        if (fn.stringContainsUrl(searchPhrase) || fn.stringIsLongerThan(searchPhrase, 20)) {
+    redis.hget(channel + ":emotelog:user:" + emote, username, function (err, obj) {
+        if (obj === null) {
+            return false;
+        }
+        if (fn.stringContainsUrl(emote) || fn.stringIsLongerThan(emote, 20)) {
             var phrase = 'the phrase';
         }
         else {
-            var phrase = searchPhrase;
+            var phrase = emote;
         }
-
-        output.say(channel, '@' + username + ', you used ' + phrase + ' ' + emoteCount + ' times');
+        output.say(channel, '@' + username + ', you used ' + phrase + ' ' + obj + ' times');
     });
-}
 
-
-function occurrences(haystack, needle)
-{
-    var count = 0;
-    var position = 0;
-    while(true) {
-        position = haystack.indexOf(needle, position);
-        if( position != -1) {
-            count++;
-            position += needle.length;
-        }
-    else{
-      break;
-    }
-  }
-  return count;
 }
 
 module.exports =
