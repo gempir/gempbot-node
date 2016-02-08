@@ -23,7 +23,29 @@ function countMe(channel, username, message)
 
 }
 
+
+function count(channel, username, message)
+{
+    var emote = message.substr(6);
+    emote = emote.replace(' ', '');
+
+    redis.hget(channel + ":emotelog:channel", emote, function (err, obj) {
+        if (obj === null) {
+            return false;
+        }
+        if (fn.stringContainsUrl(emote) || fn.stringIsLongerThan(emote, 20)) {
+            var phrase = 'the phrase';
+        }
+        else {
+            var phrase = emote;
+        }
+        output.say(channel, 'Chat used ' + phrase + ' ' + obj + ' times');
+    });
+
+}
+
 module.exports =
 {
     countMe,
+    count
 }

@@ -100,6 +100,9 @@ function normalCommands(channel, username, message) {
 	else if (command === '!countme') {
 		count.countMe(channel, username, message);
 	}
+    else if (command === '!count') {
+		count.count(channel, username, message);
+	}
 	else if (command === '!randomquote') {
 		quote.getQuote(channel, username, message);
 	}
