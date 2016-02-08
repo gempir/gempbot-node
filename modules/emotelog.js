@@ -6,8 +6,9 @@ function incrementUserEmote(channel, user, message)
 {
     if (user.emotes != null) {
         for (emote in user.emotes) {
+            var currentEmotes = user.emotes[emote];
             redis.hget('twitchemotesreverse', emote, function(err, reply) {
-                emotelogController.incrementUserEmote(channel, user.username.toLowerCase(), reply, user.emotes[emote].length);
+                emotelogController.incrementUserEmote(channel, user.username.toLowerCase(), reply, currentEmotes.length);
             });
         }
     }
@@ -31,8 +32,9 @@ function incrementEmote(channel, user, message)
 {
     if (user.emotes != null) {
         for (emote in user.emotes) {
+            var currentEmotes = user.emotes[emote];
             redis.hget('twitchemotesreverse', emote, function(err, reply) {
-                emotelogController.incrementEmote(channel, user.username.toLowerCase(), reply, user.emotes[emote].length);
+                emotelogController.incrementEmote(channel, user.username.toLowerCase(), reply, currentEmotes.length);
             });
 
         }
