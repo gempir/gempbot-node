@@ -1,41 +1,26 @@
 var config  = require('./config');
 require('./chat');
-var git     = require('git-rev-sync');
 var cfg     = require('./../cfg');
 var channel = require('./../connection/channel');
 var whisper = require('./../connection/whisper');
 var output  = require('./../connection/output');
-var colors  = require('colors');
-
-var groupConn = false;
-var chat  = false;
 
 
 channel.client.on("connected", function (address, port) {
-    console.log('[boot] connected to chat'.green);
-    chat = true;
-    bootComplete();
+    console.log('[boot] connected to chat');
+    output.sayAllChannels('Bot starting up');
 });
 
 whisper.group.on("connected", function (address, port, err) {
-    console.log(('[boot] Connected to group servers on ' + address + ':' + port).green);
-    groupConn = true;
-    bootComplete();
+    console.log('[boot] Connected to group servers on ' + address + ':' + port);
 });
 
 whisper.group.on("disconnected", function (reason) {
-    console.log(('[boot] group server connection failed | ' + reason).bgRed)
+    console.log('[boot] group server connection failed | ' + reason)
     whisper.group.connect();
 });
 
 channel.client.on("disconnected", function (reason) {
-    console.log(('[boot] chat server connection failed | ' + reason).bgRed)
+    console.log('[boot] chat server connection failed | ' + reason)
     channel.client.connect();
 });
-
-function bootComplete()
-{
-    if (groupConn && chat) {
-        output.sayAllChannels('Bot started | branch: ' + git.branch() + ' (' + git.short() + ')');
-    }
-}

@@ -7,9 +7,10 @@ function incrementUserEmote(channel, user, message)
     if (user.emotes != null) {
         for (emote in user.emotes) {
             var currentEmotes = user.emotes[emote];
-            redis.hget('twitchemotesreverse', emote, function(err, reply) {
-                emotelogController.incrementUserEmote(channel, user.username.toLowerCase(), reply, currentEmotes.length);
-            });
+            var emotePosition    = currentEmotes[0];
+            var emotePositionArr = emotePosition.split('-');
+            var emoteCode        = message.substring(+emotePositionArr[0], +emotePositionArr[1] + +1);
+            emotelogController.incrementUserEmote(channel, user.username.toLowerCase(), emoteCode, currentEmotes.length);
         }
     }
     countUserBTTVEmotes(channel, user, message);
@@ -33,10 +34,10 @@ function incrementEmote(channel, user, message)
     if (user.emotes != null) {
         for (emote in user.emotes) {
             var currentEmotes = user.emotes[emote];
-            redis.hget('twitchemotesreverse', emote, function(err, reply) {
-                emotelogController.incrementEmote(channel, user.username.toLowerCase(), reply, currentEmotes.length);
-            });
-
+            var emotePosition    = currentEmotes[0];
+            var emotePositionArr = emotePosition.split('-');
+            var emoteCode        = message.substring(+emotePositionArr[0], +emotePositionArr[1] + +1);
+            emotelogController.incrementEmote(channel, user.username.toLowerCase(), emoteCode, currentEmotes.length);
         }
     }
     countBTTVEmotes(channel, user, message);
