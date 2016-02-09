@@ -54,7 +54,7 @@ function cacheEmotes() {
             console.log('[redis] ' + err);
             return false;
         }
-        bttvemotes.global.push(Object.keys(reply));
+        bttvemotes.global = Object.keys(reply);
         var channels = cfg.options.channels;
         for (var i = 0; i < channels.length; i++) {
             var channelCurrent =  channels[i];
