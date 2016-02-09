@@ -1,7 +1,5 @@
-var emotelogController = require('./../controllers/emotelogController');
-var isBttvEmote        = require('./../src/controllers/isBttvEmote');
-var redis              = require('./../controllers/redis');
-var emotecache         = require('./../src/models/emotecache');
+var redis              = require('./../models/redis');
+var emotecache         = require('./../models/emotecache');
 
 function incrementUserEmote(channel, user, message)
 {
@@ -11,7 +9,7 @@ function incrementUserEmote(channel, user, message)
             var emotePosition    = currentEmotes[0];
             var emotePositionArr = emotePosition.split('-');
             var emoteCode        = message.substring(+emotePositionArr[0], +emotePositionArr[1] + +1);
-            emotelogController.incrementUserEmote(channel, user.username.toLowerCase(), emoteCode, currentEmotes.length);
+            redis.hincrby(channel + ':emotelog:user:' + emoteCode, user.username.toLowerCase(), currentEmotes.length);
         }
     }
     countUserBTTVEmotes(channel, user, message);
@@ -22,11 +20,14 @@ function countUserBTTVEmotes(channel, user, message) {
 
     for (var i = 0; i < messageArr.length; i++) {
         var currentEmote = messageArr[i];
-        isBttvEmote(channel, messageArr[i], function(isEmote) {
-            if (isEmote) {
-                emotelogController.incrementUserEmote(channel, user.username.toLowerCase(), currentEmote, 1);
-            }
-        });
+        var channelBttvEmotes = emotecache.bttvemotes.channel[channel];
+        var globalBttvEmotes = emotecache.bttvemotes.global;
+        if (Object.keys(emotecache.bttvemotes.channel).length === 0 || globalBttvEmotes.length === 0) {
+            return false;
+        }
+        if (globalBttvEmotes.indexOf(messageArr[i]) > -1 || channelBttvEmotes.indexOf(messageArr[i]) > -1) {
+            redis.hincrby(channel + ':emotelog:channel', currentEmote, 1);
+        }
     }
 }
 
@@ -38,7 +39,7 @@ function incrementEmote(channel, user, message)
             var emotePosition    = currentEmotes[0];
             var emotePositionArr = emotePosition.split('-');
             var emoteCode        = message.substring(+emotePositionArr[0], +emotePositionArr[1] + +1);
-            emotelogController.incrementEmote(channel, user.username.toLowerCase(), emoteCode, currentEmotes.length);
+            redis.hincrby(channel + ':emotelog:channel', emoteCode, currentEmotes.length);
         }
     }
     countBTTVEmotes(channel, user, message);
@@ -54,7 +55,7 @@ function countBTTVEmotes(channel, user, message) {
             return false;
         }
         if (globalBttvEmotes.indexOf(messageArr[i]) > -1 || channelBttvEmotes.indexOf(messageArr[i]) > -1) {
-            emotelogController.incrementEmote(channel, user.username.toLowerCase(), currentEmote, 1);
+            redis.hincrby(channel + ':emotelog:channel', currentEmote, 1);
         }
     }
 }

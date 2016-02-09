@@ -1,4 +1,4 @@
-var fn = require('./functions');
+var fn = require('./../controllers/functions');
 var output = require('./../connection/output');
 
 var nukeLength = 10;

@@ -1,3 +1,3 @@
 require('logtime');
-require('./overlay/overlay');
-require('./controllers/boot');
+require('./src/overlay/overlay');
+require('./src/controllers/boot');

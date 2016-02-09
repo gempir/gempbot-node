@@ -1,7 +1,7 @@
 
-var fn        = require('./functions');
+var fn        = require('./../controllers/functions');
 var output    = require('./../connection/output');
-var fs        = require('fs'),
+var fs        = require('graceful-fs'),
     readline  = require('readline');
 
 

@@ -1,6 +1,6 @@
-var fn    = require('./../modules/functions');
+var fn    = require('./functions');
 var output = require('./../connection/output');
-var redis  = require('./redis');
+var redis  = require('./../models/redis');
 
 function getTrusted(channel, callback) {
     redis.hgetall(channel + ':trusted', function (err, obj) {

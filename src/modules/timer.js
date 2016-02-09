@@ -1,5 +1,5 @@
 var output = require('./../connection/output');
-var fn     = require('./functions');
+var fn     = require('./../controllers/functions');
 
 function setTimer(channel, username, message)
 {

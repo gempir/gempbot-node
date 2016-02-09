@@ -1,8 +1,7 @@
 var channelModule = require('./channel');
 var whisperModule = require('./whisper');
-var cfg           = require('./../cfg');
-var colors        = require('colors');
-var fn            = require('./../modules/functions');
+var cfg           = require('./../../cfg');
+var fn            = require('./../controllers/functions');
 
 var chat = channelModule.client;
 var group = whisperModule.group;
@@ -22,7 +21,7 @@ function sayAllChannels(message, action)
             chat.say(channels[i], message);
         }
     }
-    console.log(('[GLOBAL][SAY] ' + message).bgBlue.white);
+    console.log('[GLOBAL][SAY] ' + message);
 }
 
 function say(channel, message, action)
@@ -36,7 +35,7 @@ function say(channel, message, action)
 	if (!action) {
 		cooldowns.push(channel);
 		chat.say(channel, message);
-		console.log(('[SAY] ' + message).yellow);
+		console.log('[SAY] ' + message);
         setTimeout(function(){
             fn.removeFromArray(cooldowns, channel);
         }, cfg.globalcooldown);
@@ -44,7 +43,7 @@ function say(channel, message, action)
 	else if (action) {
 		cooldowns.push(channel);
 		chat.action(channel, message);
-		console.log(('[SAY]' + '/me ' + message).yellow);
+		console.log('[SAY]' + '/me ' + message);
         setTimeout(function(){
             fn.removeFromArray(cooldowns, channel);
         }, cfg.globalcooldown);
@@ -57,11 +56,11 @@ function sayNoCD(channel, message, action)
 
 	if (!action) {
 		chat.say(channel, message);
-		console.log(('[SAY NoCD] ' + message).magenta);
+		console.log('[SAY NoCD] ' + message);
 	}
 	else if (action) {
 		chat.action(channel, message);
-		console.log(('[SAY NoCD]' + '/me ' + message).magenta);
+		console.log('[SAY NoCD]' + '/me ' + message);
 	}
 }
 

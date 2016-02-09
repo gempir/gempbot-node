@@ -1,5 +1,5 @@
 var fs     = require('graceful-fs');
-var fn     = require('./functions');
+var fn     = require('./../controllers/functions');
 var output = require('./../connection/output');
 
 var quoteSkip = 0;

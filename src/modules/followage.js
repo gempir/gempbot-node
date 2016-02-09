@@ -1,5 +1,5 @@
 var output  = require('./../connection/output');
-var fn      = require('./functions');
+var fn      = require('./../controllers/functions');
 var fs 	    = require('graceful-fs');
 var request = require('request');
 
@@ -31,7 +31,7 @@ function getUserLocalFollowage(channel, username, message)
 	}
 
 	request(followURL, function (error, response, body) {
-		console.log(('[GET] ' + followURL).bgMagenta);
+		console.log('[GET] ' + followURL);
 	  	if (!error && response.statusCode == 200) {
 	  		output.say(channel, '@' +  username + ', ' + following + ' has been following ' + channelSub + ' ' + body.toString());
 	  	}
@@ -49,7 +49,7 @@ function getLocalFollowage(channel, username, message)
 	var followURL = 'https://api.rtainc.co/twitch/followers/length?channel='+ channelSub +'&name=' + username;
 
 	request(followURL, function (error, response, body) {
-		console.log(('[GET] ' + followURL).bgMagenta);;
+		console.log('[GET] ' + followURL);;
 	  	if (!error && response.statusCode == 200) {
     		output.say(channel, '@' + username + ', you have been following ' + channelSub + ' ' + body.toString());
 	  	}
@@ -76,7 +76,7 @@ function getUserChannelFollowage(channel, username, message)
 	}
 
 	request(followURL, function (error, response, body) {
-		console.log(('[GET] ' + followURL).bgMagenta);
+		console.log('[GET] ' + followURL);
 	  	if (!error && response.statusCode == 200) {
 	  		output.say(channel, '@' + username + ', ' + userFollow + ' has been following ' + following + ' ' + body.toString());
 	  	}

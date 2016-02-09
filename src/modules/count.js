@@ -1,7 +1,7 @@
 var output = require('./../connection/output');
 var fs = require('graceful-fs');
-var fn = require('./functions');
-var redis = require('./../controllers/redis');
+var fn = require('./../controllers/functions');
+var redis = require('./../models/redis');
 
 function countMe(channel, username, message)
 {

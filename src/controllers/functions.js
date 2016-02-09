@@ -1,6 +1,6 @@
 var fs = require('graceful-fs')
 var channelModule = require('./../connection/channel');
-var cfg = require('./../cfg');
+var cfg = require('./../../cfg');
 
 var chat = channelModule.client;
 

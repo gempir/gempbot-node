@@ -1,13 +1,13 @@
 var channel     = require('./../connection/channel');
 var whisper     = require('./../connection/whisper');
-var cfg         = require('./../cfg');
+var cfg         = require('./../../cfg');
 var logs        = require('./../modules/logs.js');
-var fn          = require('./../modules/functions');
+var fn          = require('./functions');
 var combo       = require('./../modules/combo');
 var status      = require('./../modules/status');
 var count       = require('./../modules/count');
 var lines       = require('./../modules/lines');
-var output      = require('./../modules/../connection/output');
+var output      = require('./../connection/output');
 var quote       = require('./../modules/quote');
 var lastmessage = require('./../modules/lastmessage');
 var timer       = require('./../modules/timer');
@@ -18,8 +18,7 @@ var config      = require('./../controllers/config');
 var nuke        = require('./../modules/nuke');
 var oddshots    = require('./../modules/oddshots');
 var emotelog    = require('./../modules/emotelog');
-var colors      = require('colors');
-var emotecache  = require('./../src/models/emotecache');
+var emotecache  = require('./../models/emotecache');
 
 channel.client.on('chat', function(channel, user, message, self) {
     eventHandler(channel, user, message);
@@ -80,7 +79,7 @@ function eventHandler(channel, user, message)
 
 function normalCommands(channel, username, message) {
     if (output.cooldowns.indexOf(channel) > -1) {
-        console.log('[LOG] global cooldown'.gray);
+        console.log('[LOG] global cooldown');
 		return false;
 	}
 

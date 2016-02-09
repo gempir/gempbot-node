@@ -1,7 +1,7 @@
-var cfg = require('../cfg');
-var fn = require('./functions');
+var cfg = require('./../../cfg');
+var fn = require('./../controllers/functions');
 var output = require('./../connection/output');
-var redis = require('./../controllers/redis');
+var redis = require('./../models/redis');
 
 function lineCount(channel, username, message)
 {

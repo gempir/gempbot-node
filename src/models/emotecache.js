@@ -1,5 +1,5 @@
 var cfg   = require('./../../cfg');
-var redis = require('./../../controllers/redis');
+var redis = require('./redis');
 var request = require('request');
 
 var bttvemotes = {

@@ -1,8 +1,8 @@
 var output  = require('./../connection/output');
-var fn      = require('./functions');
+var fn      = require('./../controllers/functions');
 var fs 	    = require('graceful-fs');
 var request = require('request');
-var cfg     = require('./../cfg');
+var cfg     = require('./../../cfg');
 
 var chatters = [];
 

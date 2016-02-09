@@ -1,6 +1,6 @@
 var output = require('./../connection/output');
 var overlay = require('./../overlay/overlay');
-var fn 	    = require('./functions');
+var fn 	    = require('./../controllers/functions');
 
 var voting = false;
 var votesSkipStay = {};
