@@ -1,5 +1,6 @@
-var redis = require('./../../controllers/redis');
-
+var redis       = require('./../../controllers/redis');
+var emotecache  = require('./../models/emotecache');
+ 
 function isBttvEmote(channel, emote, callback) {
     redis.hexists('bttvemotes', emote, function(err, reply) {
         if (reply === 1) {

@@ -4,7 +4,10 @@ var cfg     = require('./../cfg');
 var channel = require('./../connection/channel');
 var whisper = require('./../connection/whisper');
 var output  = require('./../connection/output');
+var emotecache = require('./../src/models/emotecache');
 
+// boot
+emotecache.cacheEmotes();
 
 channel.client.on("connected", function (address, port) {
     console.log('[boot] connected to chat');

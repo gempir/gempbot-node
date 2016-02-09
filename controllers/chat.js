@@ -142,7 +142,9 @@ function adminCommands(channel, username, message)
             output.sayNoCD(channel, toSay);
             break;
         case '!emotecache':
-            emotecache();
+            emotecache.fetchEmotesFromBttv(function() {
+                emotecache.cacheEmotes();
+            });
             break;
     }
 }

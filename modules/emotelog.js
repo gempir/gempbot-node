@@ -1,6 +1,7 @@
 var emotelogController = require('./../controllers/emotelogController');
 var isBttvEmote        = require('./../src/controllers/isBttvEmote');
 var redis              = require('./../controllers/redis');
+var emotecache         = require('./../src/models/emotecache');
 
 function incrementUserEmote(channel, user, message)
 {
@@ -47,11 +48,14 @@ function countBTTVEmotes(channel, user, message) {
     var messageArr = message.split(' ');
     for (var i = 0; i < messageArr.length; i++) {
         var currentEmote = messageArr[i];
-        isBttvEmote(channel, messageArr[i], function(isEmote){
-            if (isEmote) {
-                emotelogController.incrementEmote(channel, user.username.toLowerCase(), currentEmote, 1);
-            }
-        });
+        var channelBttvEmotes = emotecache.bttvemotes.channel[channel];
+        var globalBttvEmotes = emotecache.bttvemotes.global;
+        if (Object.keys(emotecache.bttvemotes.channel).length === 0 || globalBttvEmotes.length === 0) {
+            return false;
+        }
+        if (globalBttvEmotes.indexOf(messageArr[i]) > -1 || channelBttvEmotes.indexOf(messageArr[i]) > -1) {
+            emotelogController.incrementEmote(channel, user.username.toLowerCase(), currentEmote, 1);
+        }
     }
 }
 
