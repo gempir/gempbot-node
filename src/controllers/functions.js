@@ -32,7 +32,7 @@ function removeFromArray(arr, what) {
 
 function containsASCII(data)
 {
-    if (data.indexOf('▓') > -1) {
+    if (data.indexOf('▓') > -1 || data.indexOf('█') || data.indexOf('░')) {
         return true;
     }
     return false;
