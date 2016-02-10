@@ -196,7 +196,14 @@ function commandsController(channel, username, message)
             response = true;
             commandMessage = commandMessage.replace('--response', '');
         }
-        addCommand(channel, commandName, commandMessage, response);
+        var cooldown = 5;
+        if (commandMessage.indexOf('--cd') > -1) {
+            var index      = commandMessage.indexOf('--cd');
+            cooldown       = commandMessage.substr(index+5, 7);
+            commandMessage = commandMessage.replace('--cd', '');
+            commandMessage = commandMessage.replace(cooldown, '');
+        }
+        addCommand(channel, commandName, commandMessage, response, cooldown);
     }
     else if (command === 'remove') {
         if (commandName === '') {
@@ -206,13 +213,14 @@ function commandsController(channel, username, message)
     }
 }
 
-function addCommand(channel, command, message, response) {
+function addCommand(channel, command, message, response, cooldown) {
     var commandObj = {
         command: command,
         message: message,
         description: '',
         enabled: true,
-        response: response
+        response: response,
+        cooldown: cooldown
     }
     config.setCommand(channel, commandObj);
     output.sayNoCD(channel, 'added command ' + commandObj.command);
