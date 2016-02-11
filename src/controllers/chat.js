@@ -84,42 +84,7 @@ function normalCommands(channel, username, message) {
         console.log('[LOG] global cooldown');
 		return false;
 	}
-<<<<<<< HEAD
-
-    redis.hgetall(channel + ':commands', function(err, reply) {
-        if (err) {
-            return false;
-        }
-        var commandsObjects = reply;
-
-        var command = fn.getNthWord(message, 1).toLowerCase();
-
-        if (command === '!followage') {
-    		followage.followageCommandHandler(channel, username, message);
-    	}
-    	else if (command === '!chatters') {
-    		chatters.chattersCommandHandler(channel, username, message, function(response) {
-                output.sayCommand(response.channel, response.message, commandsObjects.command);
-            });
-    	}
-    	else if (command === '!logs') {
-    		logs.logsCommandHandler(channel, username, message);
-    	}
-    	else if (command === '!lines') {
-    		lines.lineCount(channel, username, message);
-    	}
-    	else if (command === '!countme') {
-    		count.countMe(channel, username, message);
-    	}
-        else if (command === '!count') {
-    		count.count(channel, username, message);
-    	}
-    	else if (command === '!randomquote') {
-    		quote.getQuote(channel, username, message);
-    	}
-    	else if (command === '!lastmessage') {
-    		lastmessage.lastMessage(channel, username, message);
-=======
+    
     var command = fn.getNthWord(message, 1).toLowerCase();
     if (typeof output.commandCooldowns[channel] === 'undefined') {
         output.commandCooldowns[channel] = [];
@@ -175,7 +140,6 @@ function normalCommands(channel, username, message) {
     		lastmessage.lastMessage(channel, username, message, function(response) {
                 output.sayCommand(channel, username, response, commObj);
             });
->>>>>>> bd4cfd0e5097077cfc7b5189bece8f7de4758b7b
     	}
     	else if (command.substr(0,1) === '!') {
     		config.getCommand(channel, command, function(commandObj) {
