@@ -4,7 +4,7 @@ var output = require('./../connection/output');
 
 var quoteSkip = 0;
 
-function getQuote(channel, username, message)
+function getQuote(channel, username, message, callback)
 {
 	if (message.toLowerCase() === '!randomquote') {
         return false;
@@ -41,7 +41,10 @@ function getQuote(channel, username, message)
         	getQuote(channel, username, message);
         	return false;
         }
-        	output.say(channel, '"' + quote + ' "');
+    	return callback({
+			channeL: channel,
+			message: '"' + quote + ' "'
+		});
     });
 }
 

@@ -16,11 +16,13 @@ cfg.options.channels.forEach(function(channel) {
   }
 });
 
-function logsCommandHandler(channel, user, message)
+function logsCommandHandler(channel, user, message, callback)
 {
     bigCommand = fn.getNthWord(message, 1) + ' ' + fn.getNthWord(message, 2);
     if (bigCommand === '!logs size') {
-        logsSize(channel, user, message);
+        logsSize(channel, user, message, function(response) {
+            return callback(response);
+        });
     }
     else if (fn.getNthWord(message, 1) === '!logs') {
         uploadLogs(channel, user, message);
@@ -64,7 +66,7 @@ function uploadLogs(channel, username, message)
     }
 }
 
-function logsSize(channel, username, message)
+function logsSize(channel, username, message, callback)
 {
     var messageStart = message.substr(0,12).toLowerCase();
     var name = fn.getNthWord(message, 3);
@@ -86,7 +88,10 @@ function logsSize(channel, username, message)
             fileSize = fn.getFilesizeInMegabytes(file).toFixed(2);
             extension = ' MB';
         }
-        output.say(channel, '@' + username + ', ' + 'log file for ' + name + ' is ' + fileSize + extension);
+        return callback({
+            channel: channel,
+            message: 'log file for ' + name + ' is ' + fileSize + extension
+        });
     }
 }
 

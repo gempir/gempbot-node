@@ -51,48 +51,35 @@ function say(channel, message, action)
 	}
 }
 
-function sayCommand(channel, message, action, command)
+function sayCommand(channel, username, response, commObj)
 {
-	action = action || false;
-
 	if (cooldowns.indexOf(channel) > -1) {
 		return false;
 	}
-    if (typeof commandCooldowns.channel != 'undefined') {
-        if (commandCooldowns.channel.indexOf(command.command) > -1) {
-            return false;
-        }
+
+    if (typeof commandCooldowns[channel] === 'undefined') {
+        commandCooldowns[channel] = [];
     }
-    
-	if (!action) {
-        setCooldown(channel, command.command, command.cooldown);
-		chat.say(channel, message);
-		console.log('[COMMAND] ' + message);
 
-	}
-	else if (action) {
-        setCooldown(channel, command.command, command.cooldown);
-		chat.action(channel, message);
-		console.log('[COMMAND]' + '/me ' + message);
-	}
-}
-
-function constructObjectArray(object, key)
-{
-    if (typeof object.key === 'undefined') {
-        object.key = [];
+    if (commandCooldowns[channel].indexOf(commObj.command) > -1) {
+        console.log('[COMMAND] ' + commObj['command'] + ' cooldown');
+        return false;
     }
-    return object;
-}
+    if (commObj.response) {
+        response.message = '@' + username + ', ' + response.message;
+    }
 
+    setCooldown(channel, commObj.command, commObj['cooldown']);
+	chat.say(channel, response.message);
+	console.log('[COMMAND] ' + response.message);
+}
 
 function setCooldown(channel, command, time)
 {
-    constructObjectArray(commandCooldowns, channel);
     commandCooldowns[channel].push(command);
     setTimeout(function(){
-        fn.removeFromArray(coammandsCooldowns.channel, command);
-    }, time*1000);
+        fn.removeFromArray(commandCooldowns[channel], command);
+    }, time * 1000);
 }
 
 function sayNoCD(channel, message, action)
@@ -105,7 +92,7 @@ function sayNoCD(channel, message, action)
 	}
 	else if (action) {
 		chat.action(channel, message);
-		console.log('[SAY NoCD]' + '/me ' + message);
+		console.log('[SAY NoCD] ' + '/me ' + message);
 	}
 }
 
@@ -120,8 +107,9 @@ module.exports =
 {
 	say,
 	sayNoCD,
-	whisper,
+    sayCommand,
+    whisper,
     sayAllChannels,
     cooldowns,
-    sayCommand
+    commandCooldowns
 }

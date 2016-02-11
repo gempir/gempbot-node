@@ -3,7 +3,7 @@ var fs = require('graceful-fs');
 var fn = require('./../controllers/functions');
 var redis = require('./../models/redis');
 
-function countMe(channel, username, message)
+function countMe(channel, username, message, callback)
 {
     var emote = message.substr(8);
     emote = emote.replace(' ', '');
@@ -18,13 +18,16 @@ function countMe(channel, username, message)
         else {
             var phrase = emote;
         }
-        output.say(channel, '@' + username + ', you used ' + phrase + ' ' + obj + ' times');
+        return callback({
+            channel: channel,
+            message: '@' + username + ', you used ' + phrase + ' ' + obj + ' times'
+        });
     });
 
 }
 
 
-function count(channel, username, message)
+function count(channel, username, message, callback)
 {
     var emote = message.substr(6);
     emote = emote.replace(' ', '');
@@ -39,7 +42,10 @@ function count(channel, username, message)
         else {
             var phrase = emote;
         }
-        output.say(channel, 'Chat used ' + phrase + ' ' + obj + ' times');
+        return callback({
+            channel: channel,
+            message: 'Chat used ' + phrase + ' ' + obj + ' times'
+        });
     });
 
 }
