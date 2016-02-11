@@ -1,8 +1,9 @@
-var output  = require('./../connection/output');
-var fn      = require('./../controllers/functions');
-var fs 	    = require('graceful-fs');
-var request = require('request');
-var cfg     = require('./../../cfg');
+var output       = require('./../connection/output');
+var fn           = require('./../controllers/functions');
+var fs 	         = require('graceful-fs');
+var request      = require('request');
+var cfg          = require('./../../cfg');
+var commandCache = require('./../models/commandcache');
 
 var chatters = [];
 
@@ -20,23 +21,29 @@ function recordChatters(channel, username, message)
 }
 
 
-function chattersCommandHandler(channel, username, message)
+function chattersCommandHandler(channel, username, message, callback)
 {
 	switch(message.toLowerCase()) {
 		case '!chatters':
-			getChatters(channel, username, message);
+			getChatters(channel, username, message, function(response) {
+				return callback(response);
+			});
 			break;
 		case '!chatters staff':
-			getStaff(channel, username, message);
+			getStaff(channel, username, message, function(response) {
+				return callback(response);
+			});
 			break;
 		case '!chatters mods':
-			getMods(channel, username, message);
+			getMods(channel, username, message, function(response) {
+				return callback(response);
+			});
 			break;
 	}
 }
 
 
-function getStaff(channel, username, message)
+function getStaff(channel, username, message, callback)
 {
 	var channelSub = channel.substr(1);
 	var chattersJsonURL = 'https://tmi.twitch.tv/group/user/' + channelSub + '/chatters';
@@ -54,13 +61,16 @@ function getStaff(channel, username, message)
 	    		var response = 'current staff in chat: ' + staff;
 	    	}
 
-            output.say(channel, '@' + username + ', ' + response);
+            return callback({
+				channel: channel,
+				message: '@' + username + ', ' + response
+			});
 	 	}
 	});
 }
 
 
-function getMods(channel, username, message)
+function getMods(channel, username, message, callback)
 {
 	if (!(global.trusted.indexOf(username) > -1)) {
 		return false;
@@ -85,14 +95,20 @@ function getMods(channel, username, message)
 	    		var response = 'current mods in chat: ' + mods;
 	    	}
 
-	    	output.say(channel, '@' + username + ', ' + response);
+	    	return callback({
+				channel: channel,
+				message: '@' + username + ', ' + response
+			});
 	  	}
 	});
 }
 
-function getChatters(channel, username, message)
+function getChatters(channel, username, message, callback)
 {
-	output.say(channel, 'There were ' + chatters.length + ' chatters in the last 15mins');
+	return callback({
+		channel: channel,
+		message: 'There were ' + chatters.length + ' chatters in the last 15mins'
+	});
 }
 
 module.exports =

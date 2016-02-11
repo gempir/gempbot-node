@@ -1,13 +1,14 @@
 var config  = require('./config');
 require('./chat');
-var cfg     = require('./../../cfg');
-var channel = require('./../connection/channel');
-var whisper = require('./../connection/whisper');
-var output  = require('./../connection/output');
-var emotecache = require('./../models/emotecache');
-
+var cfg          = require('./../../cfg');
+var channel      = require('./../connection/channel');
+var whisper      = require('./../connection/whisper');
+var output       = require('./../connection/output');
+var emotecache   = require('./../models/emotecache');
+var commandcache = require('./../models/commandcache');
 // boot
 emotecache.cacheEmotes();
+commandcache.cacheCommands();
 
 channel.client.on("connected", function (address, port) {
     console.log('[boot] connected to chat');

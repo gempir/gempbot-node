@@ -4,23 +4,26 @@ var fs 	    = require('graceful-fs');
 var request = require('request');
 
 
-function followageCommandHandler(channel, username, message) {
+function followageCommandHandler(channel, username, message, callback) {
 	if (message.toLowerCase() === '!followage') {
-		getLocalFollowage(channel, username, message)
-		return;
+		getLocalFollowage(channel, username, message, function(response){
+			return callback(response);
+		});
 	}
-	if (fn.countWords(message) === 2) {
-		getUserLocalFollowage(channel, username, message);
-		return;
+	else if (fn.countWords(message) === 2) {
+		getUserLocalFollowage(channel, username, message, function(response) {
+			return callback(response);
+		});
 	}
-	if (fn.countWords(message) >= 3) {
-		getUserChannelFollowage(channel, username, message);
-		return;
+	else if (fn.countWords(message) >= 3) {
+		getUserChannelFollowage(channel, username, message, function(response) {
+			return callback(response);
+		});
 	}
 }
 
 
-function getUserLocalFollowage(channel, username, message)
+function getUserLocalFollowage(channel, username, message, callback)
 {
 	var following = fn.getNthWord(message, 2);
 	var channelSub = channel.substr(1);
@@ -33,17 +36,22 @@ function getUserLocalFollowage(channel, username, message)
 	request(followURL, function (error, response, body) {
 		console.log('[GET] ' + followURL);
 	  	if (!error && response.statusCode == 200) {
-	  		output.say(channel, '@' +  username + ', ' + following + ' has been following ' + channelSub + ' ' + body.toString());
+	  		return callback({
+				channel: channel,
+				message: following + ' has been following ' + channelSub + ' ' + body.toString()
+			});
 	  	}
 	  	else {
-	  		output.say(channel, '@' + username  + ', ' + following + ' is not following ' + channelSub + ' or the channel doesn\'t exist');
-	  		return false;
+	  		return callback({
+				channel: channel,
+				message: following + ' is not following ' + channelSub + ' or the channel doesn\'t exist'
+			});
 	  	}
 
 	});
 }
 
-function getLocalFollowage(channel, username, message)
+function getLocalFollowage(channel, username, message, callback)
 {
 	var channelSub = channel.substr(1);
 	var followURL = 'https://api.rtainc.co/twitch/followers/length?channel='+ channelSub +'&name=' + username;
@@ -51,17 +59,23 @@ function getLocalFollowage(channel, username, message)
 	request(followURL, function (error, response, body) {
 		console.log('[GET] ' + followURL);;
 	  	if (!error && response.statusCode == 200) {
-    		output.say(channel, '@' + username + ', you have been following ' + channelSub + ' ' + body.toString());
+    		return callback({
+				channel: channel,
+				message: username + ' has been following ' + channelSub + ' ' + body.toString()
+			});
 	  	}
 	  	else {
-	  		output.say(channel, '@' + username + ', you are not following ' + channelSub + ' or the channel doesn\'t exist');
+	  		return callback({
+				channel: channel,
+				message: username + ' is not following ' + channelSub + ' or the channel doesn\'t exist'
+			});
 	  		return false;
 	  	}
 
 	});
 }
 
-function getUserChannelFollowage(channel, username, message)
+function getUserChannelFollowage(channel, username, message, callback)
 {
 	var following = fn.getNthWord(message, 3);
 	var userFollow = fn.getNthWord(message, 2);
@@ -78,11 +92,16 @@ function getUserChannelFollowage(channel, username, message)
 	request(followURL, function (error, response, body) {
 		console.log('[GET] ' + followURL);
 	  	if (!error && response.statusCode == 200) {
-	  		output.say(channel, '@' + username + ', ' + userFollow + ' has been following ' + following + ' ' + body.toString());
+	  		return callback({
+				channel: channel,
+				message: userFollow + ' has been following ' + following + ' ' + body.toString()
+			});
 	  	}
 	  	else {
-	  		output.say(channel, '@' + username + ', ' + userFollow + ' is not following ' + following + ' or the channel doesn\'t exist');
-	  		return false;
+	  		return callback({
+				channel: channel,
+				message: userFollow + ' is not following ' + following + ' or the channel doesn\'t exist'
+			});
 	  	}
 
 	});

@@ -5,7 +5,7 @@ var fs        = require('graceful-fs'),
     readline  = require('readline');
 
 
-function lastMessage(channel, username, message) {
+function lastMessage(channel, username, message, callback) {
 	if (message === '!lastmessage') {
 		return false;
 	}
@@ -32,7 +32,10 @@ function lastMessage(channel, username, message) {
         if (response.length > 150) {
             response = response.substring(0, 150) + ' [...]';
         }
-	    output.say(channel, '" ' + response + ' "');
+	    return callback({
+            channel: channel,
+            message: '" ' + response + ' "'
+        });
     });
 }
 
