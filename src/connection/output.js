@@ -6,7 +6,8 @@ var fn            = require('./../controllers/functions');
 var chat = channelModule.client;
 var group = whisperModule.group;
 
-var cooldowns = [];
+var cooldowns        = [];
+var commandCooldowns = {};
 
 function sayAllChannels(message, action)
 {
@@ -50,6 +51,50 @@ function say(channel, message, action)
 	}
 }
 
+function sayCommand(channel, message, action, command)
+{
+	action = action || false;
+
+	if (cooldowns.indexOf(channel) > -1) {
+		return false;
+	}
+    if (typeof commandCooldowns.channel != 'undefined') {
+        if (commandCooldowns.channel.indexOf(command.command) > -1) {
+            return false;
+        }
+    }
+    
+	if (!action) {
+        setCooldown(channel, command.command, command.cooldown);
+		chat.say(channel, message);
+		console.log('[COMMAND] ' + message);
+
+	}
+	else if (action) {
+        setCooldown(channel, command.command, command.cooldown);
+		chat.action(channel, message);
+		console.log('[COMMAND]' + '/me ' + message);
+	}
+}
+
+function constructObjectArray(object, key)
+{
+    if (typeof object.key === 'undefined') {
+        object.key = [];
+    }
+    return object;
+}
+
+
+function setCooldown(channel, command, time)
+{
+    constructObjectArray(commandCooldowns, channel);
+    commandCooldowns[channel].push(command);
+    setTimeout(function(){
+        fn.removeFromArray(coammandsCooldowns.channel, command);
+    }, time*1000);
+}
+
 function sayNoCD(channel, message, action)
 {
 	action = action || false;
@@ -77,5 +122,6 @@ module.exports =
 	sayNoCD,
 	whisper,
     sayAllChannels,
-    cooldowns
+    cooldowns,
+    sayCommand
 }

@@ -19,6 +19,7 @@ var nuke        = require('./../modules/nuke');
 var oddshots    = require('./../modules/oddshots');
 var emotelog    = require('./../modules/emotelog');
 var emotecache  = require('./../models/emotecache');
+var redis       = require('./../models/redis');
 
 channel.client.on('chat', function(channel, user, message, self) {
     eventHandler(channel, user, message);
@@ -83,46 +84,55 @@ function normalCommands(channel, username, message) {
 		return false;
 	}
 
-    var command = fn.getNthWord(message, 1).toLowerCase();
+    redis.hgetall(channel + ':commands', function(err, reply) {
+        if (err) {
+            return false;
+        }
+        var commandsObjects = reply;
 
-    if (command === '!followage') {
-		followage.followageCommandHandler(channel, username, message);
-	}
-	else if (command === '!chatters') {
-		chatters.chattersCommandHandler(channel, username, message);
-	}
-	else if (command === '!logs') {
-		logs.logsCommandHandler(channel, username, message);
-	}
-	else if (command === '!lines') {
-		lines.lineCount(channel, username, message);
-	}
-	else if (command === '!countme') {
-		count.countMe(channel, username, message);
-	}
-    else if (command === '!count') {
-		count.count(channel, username, message);
-	}
-	else if (command === '!randomquote') {
-		quote.getQuote(channel, username, message);
-	}
-	else if (command === '!lastmessage') {
-		lastmessage.lastMessage(channel, username, message);
-	}
-	else if (command.substr(0,1) === '!') {
-		config.getCommand(channel, command, function(commandObj) {
-            if (commandObj === null || typeof commandObj === 'undefined') {
-                return false;
-            }
-            var response = commandObj.response;
-            if (commandObj.response === true) {
-                output.say(channel, '@' + username + ', ' + commandObj.message);
-            }
-            else {
-                output.say(channel, commandObj.message);
-            }
-        });
-	}
+        var command = fn.getNthWord(message, 1).toLowerCase();
+
+        if (command === '!followage') {
+    		followage.followageCommandHandler(channel, username, message);
+    	}
+    	else if (command === '!chatters') {
+    		chatters.chattersCommandHandler(channel, username, message, function(response) {
+                output.sayCommand(response.channel, response.message, commandsObjects.command);
+            });
+    	}
+    	else if (command === '!logs') {
+    		logs.logsCommandHandler(channel, username, message);
+    	}
+    	else if (command === '!lines') {
+    		lines.lineCount(channel, username, message);
+    	}
+    	else if (command === '!countme') {
+    		count.countMe(channel, username, message);
+    	}
+        else if (command === '!count') {
+    		count.count(channel, username, message);
+    	}
+    	else if (command === '!randomquote') {
+    		quote.getQuote(channel, username, message);
+    	}
+    	else if (command === '!lastmessage') {
+    		lastmessage.lastMessage(channel, username, message);
+    	}
+    	else if (command.substr(0,1) === '!') {
+    		config.getCommand(channel, command, function(commandObj) {
+                if (commandObj === null || typeof commandObj === 'undefined') {
+                    return false;
+                }
+                var response = commandObj.response;
+                if (commandObj.response === true) {
+                    output.say(channel, '@' + username + ', ' + commandObj.message);
+                }
+                else {
+                    output.say(channel, commandObj.message);
+                }
+            });
+    	}
+    });
 }
 
 
