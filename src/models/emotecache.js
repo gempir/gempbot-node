@@ -34,7 +34,7 @@ function cacheChannelBTTVEmotesToRedis(callback) {
     var channels = cfg.options.channels;
     for (var i = 0; i < channels.length; i++) {
         var channelCurrent =  channels[i];
-        request('https://api.betterttv.net/2/channels/nymn_hs', function (error, response, body) {
+        request('https://api.betterttv.net/2/channels/' + channelCurrent.substr(1), function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 var bttvObj = JSON.parse(body);
                 var emotes  = bttvObj.emotes;
@@ -59,7 +59,9 @@ function cacheEmotes() {
         for (var i = 0; i < channels.length; i++) {
             var channelCurrent =  channels[i];
             redis.hgetall(channelCurrent + ':bttvchannelemotes', function(err, reply) {
-                bttvemotes.channel[channelCurrent] = Object.keys(reply);
+                if (reply != null) {
+                    bttvemotes.channel[channelCurrent] = Object.keys(reply);
+                }
             });
         }
     });

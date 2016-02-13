@@ -1,22 +1,43 @@
 
-var socket = io.connect('46.101.195.112:3000');
+var socket = io.connect();
 
-socket.on('startSkip', function(data) {
+var currentURL = window.location.href;
+
+function getUrlParts(url) {
+    var a = document.createElement('a');
+    a.href = url;
+
+    return {
+        href: a.href,
+        host: a.host,
+        hostname: a.hostname,
+        port: a.port,
+        pathname: a.pathname,
+        protocol: a.protocol,
+        hash: a.hash,
+        search: a.search
+    };
+}
+
+var channelByURL = (getUrlParts(currentURL).pathname).substr(1);
+
+socket.on(channelByURL + ':startSkip', function(data) {
 	var channel = data.channel.substr(1);
 	showData('A voting has been started type <span class="red">!vote skip</span> or <span class="green">!vote stay</span> to vote on the current content.  <br> The voting ends in 45 seconds', channel)
 });
 
-socket.on('startRate', function(data) {
+socket.on(channelByURL + ':startRate', function(data) {
+
 	var channel = data.channel.substr(1);
 	showData('A rate voting has been started type E.g. <span class="yellow">[ !vote 5 ]</span> to rate the current content. The voting ends in 45 seconds.', channel)
 });
 
-socket.on('resultsSkip', function(data) {
+socket.on(channelByURL + ':resultsSkip', function(data) {
 	var channel = data.channel.substr(1);
 	showData('<span class="red">skip: ' + data.skip + '</span><br><span class="green"> stay: ' + data.stay + '</span><br>votes: ' + (data.skip+data.stay), channel);
 });
 
-socket.on('resultsRate', function(data) {
+socket.on(channelByURL + ':resultsRate', function(data) {
 	var channel = data.channel.substr(1);
 	showData('<span class="yellow"> average rating: ' + data.avgRating  + '</span><br>votes: ' + data.votes, channel);
 });

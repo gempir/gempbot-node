@@ -52,7 +52,7 @@ function eventHandler(channel, user, message)
         adminCommands(channel, username, message);
     }
     config.getTrusted(channel, function(trusted){
-        if (trusted.indexOf(username.toLowerCase()) > -1) {
+        if (trusted.indexOf(username.toLowerCase()) > -1 || cfg.admin.toLowerCase() === username.toLowerCase()) {
             trustedCommands(channel, username, message);
         }
     });
@@ -84,7 +84,7 @@ function normalCommands(channel, username, message) {
         console.log('[LOG] global cooldown');
 		return false;
 	}
-    
+
     var command = fn.getNthWord(message, 1).toLowerCase();
     if (typeof output.commandCooldowns[channel] === 'undefined') {
         output.commandCooldowns[channel] = [];

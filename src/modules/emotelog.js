@@ -22,6 +22,9 @@ function countUserBTTVEmotes(channel, user, message) {
         var currentEmote = messageArr[i];
         var channelBttvEmotes = emotecache.bttvemotes.channel[channel];
         var globalBttvEmotes = emotecache.bttvemotes.global;
+        if (typeof channelBttvEmotes === 'undefined') {
+            return false;
+        }
         if (Object.keys(emotecache.bttvemotes.channel).length === 0 || globalBttvEmotes.length === 0) {
             return false;
         }
@@ -51,6 +54,9 @@ function countBTTVEmotes(channel, user, message) {
         var currentEmote = messageArr[i];
         var channelBttvEmotes = emotecache.bttvemotes.channel[channel];
         var globalBttvEmotes = emotecache.bttvemotes.global;
+        if (typeof channelBttvEmotes === 'undefined') {
+            return false;
+        }
         if (Object.keys(emotecache.bttvemotes.channel).length === 0 || globalBttvEmotes.length === 0) {
             return false;
         }
