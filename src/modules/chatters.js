@@ -5,18 +5,21 @@ var request      = require('request');
 var cfg          = require('./../../cfg');
 var commandCache = require('./../models/commandcache');
 
-var chatters = [];
+var chatters = {};
 
 function recordChatters(channel, username, message)
 {
-	var index = chatters.indexOf(username);
-	if (index > -1) {
-		return false;
+	if (typeof chatters[channel] === 'undefined') {
+		chatters[channel] = [];
 	}
-	chatters.push(username);
+	if (chatters[channel].indexOf(username) > -1) {
+		return false;
+	};
+
+	chatters[channel].push(username);
 
 	setTimeout(function() {
-		chatters.splice(index, 1);
+		fn.removeFromArray(chatters[channel], username);
 	}, 900000);
 }
 
@@ -107,7 +110,7 @@ function getChatters(channel, username, message, callback)
 {
 	return callback({
 		channel: channel,
-		message: 'There were ' + chatters.length + ' chatters in the last 15mins'
+		message: 'There were ' + chatters[channel].length + ' chatters in the last 15mins'
 	});
 }
 
