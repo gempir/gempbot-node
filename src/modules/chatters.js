@@ -1,6 +1,6 @@
 var output       = require('./../connection/output');
 var fn           = require('./../controllers/functions');
-var fs 	         = require('graceful-fs');
+var fs 	         = require('fs');
 var request      = require('request');
 var cfg          = require('./../../cfg');
 var commandCache = require('./../models/commandcache');

@@ -1,4 +1,4 @@
-var fs = require('graceful-fs')
+var fs = require('fs')
 var channelModule = require('./../connection/channel');
 var cfg = require('./../../cfg');
 

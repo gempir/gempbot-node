@@ -1,5 +1,5 @@
 var cfg    = require('./../../cfg.js');
-var fs     = require('graceful-fs');
+var fs     = require('fs');
 var moment = require('moment');
 var fn     = require('./../controllers/functions');
 var output = require('./../connection/output');

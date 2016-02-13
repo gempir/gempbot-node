@@ -1,4 +1,4 @@
-var fs     = require('graceful-fs');
+var fs     = require('fs');
 var fn     = require('./../controllers/functions');
 var output = require('./../connection/output');
 

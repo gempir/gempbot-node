@@ -1,5 +1,5 @@
 var output = require('./../connection/output');
-var fs = require('graceful-fs');
+var fs = require('fs');
 var fn = require('./../controllers/functions');
 var redis = require('./../models/redis');
 
