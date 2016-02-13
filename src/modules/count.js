@@ -20,7 +20,7 @@ function countMe(channel, username, message, callback)
         }
         return callback({
             channel: channel,
-            message: '@' + username + ', you used ' + phrase + ' ' + obj + ' times'
+            message: 'you used ' + phrase + ' ' + obj + ' times'
         });
     });
 

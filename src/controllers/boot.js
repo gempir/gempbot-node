@@ -6,6 +6,7 @@ var whisper      = require('./../connection/whisper');
 var output       = require('./../connection/output');
 var emotecache   = require('./../models/emotecache');
 var commandcache = require('./../models/commandcache');
+
 // boot
 emotecache.cacheEmotes();
 commandcache.cacheCommands();
