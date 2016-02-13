@@ -34,7 +34,7 @@ function getQuote(channel, username, message, callback)
         if (quote.length > 200 || fn.stringContainsUrl(quote)) {
 			console.log('[LOG] skipped user quote');
 			quoteSkip++;
-        	if (quoteSkip > 10) {
+        	if (quoteSkip > 3) {
         		quoteSkip = 0;
         		return false;
         	}
