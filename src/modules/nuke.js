@@ -2,12 +2,12 @@ var fn = require('./../controllers/functions');
 var output = require('./../connection/output');
 
 var nukeLength = 10;
-var toNuke = [];
-var nukeMode = false;
+var activeNukes = [];
+var toNuke = {}
 
 function recordToNuke(channel, user, message)
 {
-    if (!nukeMode) {
+    if (!(activeNukes.indexOf(channel) > -1)) {
         return false;
     }
 
@@ -15,27 +15,23 @@ function recordToNuke(channel, user, message)
         return false;
     }
 
-    if (typeof toNuke === 'undefined') {
-		toNuke = [];
+    if (typeof toNuke[channel] === 'undefined') {
+		toNuke[channel] = [];
 	}
-
-	var index = toNuke.indexOf(user.username);
-	if (index > -1) {
-		return false;
-	}
-	toNuke.push(user.username);
-
-	setTimeout(function() {
-		toNuke.splice(index, 1);
-	}, nukeLength * 1000);
+    if (toNuke[channel].indexOf(user.username) > -1) {
+        return false;
+    }
+    toNuke[channel].push(user.username);
 }
 
 function nuke(channel, username, message)
 {
-    if (nukeMode) {
+    if (activeNukes.indexOf(channel) > -1) {
         return false;
     }
-    nukeMode = true;
+
+    activeNukes.push(channel);
+
     var nukeTime = 1;
 
     if (message != '!nuke') {
@@ -67,13 +63,18 @@ function nuke(channel, username, message)
     }
 
     setTimeout(function() {
-        for (index = 0; index < toNuke.length; index++) {
-            output.sayNoCD(channel, '/timeout ' + toNuke[index] + ' ' + nukeTime);
+        if (typeof toNuke[channel] === 'undefined') {
+            output.sayNoCD(channel, 'No targets found!');
+            return false;
         }
-        console.log('[LOG] nuking:' + toNuke);
-        output.sayNoCD(channel, 'VaultBoy NUKED ' + toNuke.length + ' CHATTERS VaultBoy', true);
-        nukeMode = false;
-        toNuke = [];
+
+        for (index = 0; index < toNuke[channel].length; index++) {
+            output.sayNoCD(channel, '/timeout ' + toNuke[channel][index] + ' ' + nukeTime);
+        }
+        console.log('[LOG] nuking:' + toNuke[channel]);
+        output.sayNoCD(channel, 'VaultBoy NUKED ' + toNuke[channel].length + ' CHATTERS VaultBoy', true);
+        fn.removeFromArray(activeNukes, channel);
+        toNuke[channel] = [];
         nukeLength = 10;
     }, nukeLength * 1000);
 }
