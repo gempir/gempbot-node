@@ -39,7 +39,6 @@ function getQuote(channel, username, message, callback)
         		return false;
         	}
         	getQuote(channel, username, message, callback);
-			});
         	return false;
         }
     	return callback({
