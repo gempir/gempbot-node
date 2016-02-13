@@ -20,7 +20,7 @@ function countMe(channel, username, message, callback)
         }
         return callback({
             channel: channel,
-            message: 'you used ' + phrase + ' ' + obj + ' times'
+            message: 'you used ' + phrase + ' ' + fn.numberFormatted(obj) + ' times'
         });
     });
 
@@ -44,7 +44,7 @@ function count(channel, username, message, callback)
         }
         return callback({
             channel: channel,
-            message: 'Chat used ' + phrase + ' ' + obj + ' times'
+            message: 'Chat used ' + phrase + ' ' + fn.numberFormatted(obj) + ' times'
         });
     });
 
