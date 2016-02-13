@@ -1,41 +1,71 @@
 var fn     = require('./../controllers/functions');
 var output = require('./../connection/output');
+var emotecache = require('./../models/emotecache');
+var cfg        = require('./../../cfg');
 
+var combos = {};
 var lastMessage = '';
-var currentMessage = '';
-var counter = 1;
-var skip = false;
+var lastEmote = '';
 
 function count(channel, user, message)
 {
-    currentMessage = message;
-    skip = false;
+    if (user.username.toLowerCase() === cfg.options.identity.username.toLowerCase()) {
+        return false;
+    }
+    if (typeof combos[channel] === 'undefined') {
+        combos[channel] = {};
+        combos[channel]['combo'] = 1;
+    }
+    
+    var currentMessage = message;
 
-    if (currentMessage != lastMessage) {
-        if ( counter > 2) {
+    if (currentMessage.indexOf(combos[channel]['lastEmote']) > -1) {
+        combos[channel]['combo']++;
+    }
+    else if (combos[channel]['lastEmote'] === '' && !getEmoteFromMessage(channel, user, currentMessage)) {
+        combos[channel]['combo']++;
+    }
+    else if (combos[channel]['combo'] > 2){
+        output.say(channel, combos[channel]['combo'] + 'x ' + combos[channel]['lastEmote']  + ' COMBO', true);
+        combos[channel]['combo'] = 1;
+        combos[channel]['lastEmote'] = '';
+    }
+    else {
+        combos[channel]['combo'] = 1;
+        combos[channel]['lastEmote'] = '';
+    }
+    combos[channel]['lastEmote'] = getEmoteFromMessage(channel, user, currentMessage);
+}
 
-            if (fn.stringContainsUrl(lastMessage)) {
-                skip = true;
-            }
-            if (fn.stringIsLongerThan(lastMessage, 30)) {
-                skip = true;
-            }
-            else {
-                var combo = lastMessage;
-            }
-            if (!skip) {
-                var comboTotal = counter;
-                counter = 1;
-                output.sayNoCD(channel, comboTotal + 'x ' + combo + ' COMBO', true);
-                return;
+function getEmoteFromMessage(channel, user, message)
+{
+    if (user.emotes != null) {
+        if (user.emotes.length > 1) {
+            return false;
+        }
+        else {
+            for (emote in user.emotes) {
+                var currentEmotes = user.emotes[emote];
+                var emotePosition    = currentEmotes[0];
+                var emotePositionArr = emotePosition.split('-');
+                var emoteCode        = message.substring(+emotePositionArr[0], +emotePositionArr[1] + +1);
+                return emoteCode;
             }
         }
-        counter = 1;
     }
-    else if (currentMessage === lastMessage) {
-        counter++;
+
+    var messageArr = message.split(' ');
+    for (var i = 0; i < messageArr.length; i++) {
+        if (emotecache.bttvemotes.global.indexOf(messageArr[i]) > -1) {
+            return messageArr[i];
+        }
+        if (typeof emotecache.bttvemotes['channel'][channel] != 'undefined') {
+            if (emotecache.bttvemotes['channel'][channel].indexOf(messageArr[i]) > 1) {
+                return messageArr[i];
+            }
+        }
     }
-    lastMessage = message;
+
 }
 
 
