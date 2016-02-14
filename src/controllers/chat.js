@@ -9,7 +9,6 @@ var count       = require('./../modules/count');
 var lines       = require('./../modules/lines');
 var quote       = require('./../modules/quote');
 var lastmessage = require('./../modules/lastmessage');
-var timer       = require('./../modules/timer');
 var voting      = require('./../modules/voting');
 var followage   = require('./../modules/followage');
 var chatters    = require('./../modules/chatters');
@@ -61,9 +60,6 @@ function eventHandler(channel, user, message)
     switch (command) {
 		case '!vote':
 			voting.voteCommandHandler(channel, username, message);
-			break;
-		case '!timer':
-			timer.setTimer(channel, username, message);
 			break;
 	}
 

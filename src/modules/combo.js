@@ -15,18 +15,27 @@ function count(channel, user, message)
     if (typeof combos[channel] === 'undefined') {
         combos[channel] = {};
         combos[channel]['combo'] = 1;
+        combos[channel]['comboStarter'] = 1;
     }
 
     var currentMessage = message;
 
+    if (combos[channel]['comboStarter'] < 2) {
+        combos[channel]['emote'] = combos[channel]['lastEmote'];
+    }
+
     if (currentMessage.indexOf(combos[channel]['lastEmote']) > -1) {
+        combos[channel]['comboStarter']++;
+    }
+
+    if (currentMessage.indexOf(combos[channel]['emote']) > -1) {
         combos[channel]['combo']++;
     }
     else if (combos[channel]['lastEmote'] === '' && !getEmoteFromMessage(channel, user, currentMessage)) {
         combos[channel]['combo']++;
     }
     else if (combos[channel]['combo'] > 2){
-        output.say(channel, combos[channel]['combo'] + 'x ' + combos[channel]['lastEmote']  + ' COMBO', true);
+        output.say(channel, combos[channel]['combo'] + 'x ' + combos[channel]['emote']  + ' COMBO', true);
         combos[channel]['combo'] = 1;
         combos[channel]['lastEmote'] = '';
     }
