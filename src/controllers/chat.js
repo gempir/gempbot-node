@@ -209,6 +209,9 @@ function adminController(channel, username, message)
 
 function commandsController(channel, username, message)
 {
+    if (countWords(message) === 1) {
+        return false;
+    }
     var messageArr     = message.split(' ');
     var response       = false;
     var command        = messageArr[1].toLowerCase() || '';
@@ -272,7 +275,7 @@ function trustedCommands(channel, username, message)
     if (message.substr(0,7).toLowerCase() === '!voting') {
         voting.startVoting(channel, username, message);
     }
-    if (message.substr(0,7).toLowerCase() === '!command') {
+    if (message.substr(0,8).toLowerCase() === '!command') {
         console.log('test');
         commandsController(channel, username, message);
     }
