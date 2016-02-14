@@ -1,6 +1,5 @@
 var fs = require('fs')
 var channelModule = require('./../connection/channel');
-var cfg = require('./../../cfg');
 
 var chat = channelModule.client;
 
@@ -39,7 +38,7 @@ function containsASCII(data)
 
 function isMod(channel, username)
 {
-    if (chat.isMod(channel, username) || username.toLowerCase() === channel.substr(1) || cfg.admin.toLowerCase() === username) {
+    if (chat.isMod(channel, username) || username.toLowerCase() === channel.substr(1)) {
         return true;
     }
     else {
