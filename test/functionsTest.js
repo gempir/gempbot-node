@@ -9,13 +9,6 @@ describe('functions', function() {
         });
     });
 
-    describe('getLastChunkOfMessage()', function () {
-        it('should return rest of message', function () {
-            var message = 'gempbot testing ongoing';
-            assert.equal(fn.getLastChunkOfMessage(message, 8), 'testing ongoing');
-        });
-    });
-
     describe('containsASCII()', function () {
         it('should return true when given string contains ASCII spam', function () {
             var message = 'ASCII ▓▓▓▓▓▓▓▓';
@@ -32,8 +25,7 @@ describe('functions', function() {
         });
     });
 
-
-    describe('getLastChunkOfMessage()', function () {
+    describe('countWords()', function () {
         it('should return the number of words in given string', function () {
             assert.equal(fn.countWords('Hello World'), 2);
         });

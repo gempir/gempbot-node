@@ -218,10 +218,9 @@ function commandsController(channel, username, message)
     var commandName    = messageArr[2] || '';
 
     if (command === 'add') {
-        var commandMessage = fn.getLastChunkOfMessage(message, commandName);
-        if (commandMessage === '' || commandName === '') {
-            return false;
-        }
+        var commandMessage = message.substr(12);
+            commandMessage = commandMessage.replace(commandName, '');
+
         if (commandName.substr(0,1) != '!') {
             commandName = '!' + commandName;
         }

@@ -14,11 +14,6 @@ function isBroadcaster(channel, user)
 	return isBroadcaster = channel.replace('#', '') == user.username;
 }
 
-function getLastChunkOfMessage(message, chunkToStartAt) {
-    var response = message.substr(chunkToStartAt);
-    return response;
-}
-
 function removeFromArray(arr, what) {
     var found = arr.indexOf(what);
 
@@ -143,6 +138,5 @@ module.exports =
     countWords,
     isMod,
     containsASCII,
-    getLastChunkOfMessage,
     removeFromArray
 };
