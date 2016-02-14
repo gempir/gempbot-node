@@ -19,7 +19,7 @@ function count(channel, user, message)
 
     var currentMessage = message;
 
-    if (currentMessage.indexOf(combos[channel]['lastEmote']) > -1) {
+    if (currentMessage.indexOf(combos[channel]['emote']) > -1) {
         if (combos[channel]['combo'] < 2) {
             combos[channel]['emote'] = combos[channel]['lastEmote'];
         }
