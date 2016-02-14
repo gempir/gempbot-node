@@ -4,7 +4,6 @@ var cfg         = require('./../../cfg');
 var logs        = require('./../modules/logs.js');
 var fn          = require('./functions');
 var combo       = require('./../modules/combo');
-var status      = require('./../modules/status');
 var count       = require('./../modules/count');
 var lines       = require('./../modules/lines');
 var quote       = require('./../modules/quote');
@@ -160,7 +159,9 @@ function adminCommands(channel, username, message)
     var command = fn.getNthWord(message, 1).toLowerCase();
     switch(command) {
         case '!status':
-            status.statusBot(channel, username, message);
+            var time = process.uptime();
+            var uptime = fn.secsToTime((time + ""));
+            output.sayNoCD(channel, '@' + username + ', bot uptime: ' + uptime);
             break;
         case '!admin':
             adminController(channel, username, message);
