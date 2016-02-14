@@ -209,7 +209,7 @@ function adminController(channel, username, message)
 
 function commandsController(channel, username, message)
 {
-    if (countWords(message) === 1) {
+    if (fn.countWords(message) === 1) {
         return false;
     }
     var messageArr     = message.split(' ');
