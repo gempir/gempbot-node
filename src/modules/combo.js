@@ -36,12 +36,16 @@ function count(channel, user, message)
     }
     else if (combos[channel]['combo'] > 2){
         output.say(channel, combos[channel]['combo'] + 'x ' + combos[channel]['emote']  + ' COMBO', true);
-        combos[channel]['combo'] = 1;
-        combos[channel]['lastEmote'] = '';
+        combos[channel]['combo']        = 1;
+        combos[channel]['comboStarter'] = 1;
+        combos[channel]['lastEmote']    = '';
+        combos[channel]['emote']        = '';
     }
     else {
-        combos[channel]['combo'] = 1;
-        combos[channel]['lastEmote'] = '';
+        combos[channel]['combo']        = 1;
+        combos[channel]['comboStarter'] = 1;
+        combos[channel]['lastEmote']    = '';
+        combos[channel]['emote']        = '';
     }
     combos[channel]['lastEmote'] = getEmoteFromMessage(channel, user, currentMessage);
     console.log(combos);
