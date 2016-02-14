@@ -1,10 +1,10 @@
 var admin = 'gempir';
 
-var globalcooldown = 2000;
+var globalcooldown = 800;
 
 var options = {
         options: {
-            debug: false // for normal chat connection
+            debug: false
         },
         connection: {
             random: 'chat',
@@ -14,7 +14,7 @@ var options = {
             username: 'gempbot',
             password: 'oauth:'
         },
-        channels: ['#gempir'] // do not put more than 1 here. This bot is not written for multiple channels
+        channels: ['#gempir']
 };
 
 var redis = {
