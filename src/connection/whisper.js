@@ -6,8 +6,6 @@ var group = new irc.client({
             debug: false
         },
         connection: {
-            server: "group.tmi.twitch.tv",
-            port: 80,
             reconnect: true
         },
         identity: {
