@@ -18,11 +18,10 @@ function count(channel, user, message)
     }
 
     var currentMessage = message;
-
-    if (currentMessage.indexOf(combos[channel]['emote']) > -1) {
-        if (combos[channel]['combo'] < 2) {
-            combos[channel]['emote'] = combos[channel]['lastEmote'];
-        }
+    if (combos[channel]['combo'] < 2) {
+        combos[channel]['emote'] = combos[channel]['lastEmote'];
+    }
+    if (currentMessage.indexOf(combos[channel]['emote']) > -1) {    
         combos[channel]['combo']++;
     }
     else if (combos[channel]['lastEmote'] === '' && !getEmoteFromMessage(channel, user, currentMessage)) {
