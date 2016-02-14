@@ -30,7 +30,7 @@ function parseOddshots(channel, username, message)
 
     for (var i = 0; i < (messageSplit.length -1); i++) {
         fs.readFile(file, function(err,data) {
-            if  (data.toString().indexOf(messageSplit[i]) === -1 && messageSplit[i].indexOf('http://oddshot.tv/shot/') === -1) {
+            if  (!(data.indexOf(messageSplit[i]) > -1)) {
                 fs.appendFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + username + ': ' + message + '\n', function(){})
             }
         });
