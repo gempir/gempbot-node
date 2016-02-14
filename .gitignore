@@ -1,7 +1,6 @@
 logs/
 junk.js
 node_modules/
-cfg.js
 
 # Windows image file caches
 Thumbs.db
