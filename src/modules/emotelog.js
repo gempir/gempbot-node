@@ -29,7 +29,7 @@ function countUserBTTVEmotes(channel, user, message) {
             return false;
         }
         if (globalBttvEmotes.indexOf(messageArr[i]) > -1 || channelBttvEmotes.indexOf(messageArr[i]) > -1) {
-            redis.hincrby(channel + ':emotelog:channel:user:' + messageArr[i], user.username.toLowerCase(), 1);
+            redis.hincrby(channel + ':emotelog:user:' + messageArr[i], user.username.toLowerCase(), 1);
         }
     }
 }

@@ -48,7 +48,6 @@ function count(channel, user, message)
         combos[channel]['emote']        = '';
     }
     combos[channel]['lastEmote'] = getEmoteFromMessage(channel, user, currentMessage);
-    console.log(combos);
 }
 
 function getEmoteFromMessage(channel, user, message)
