@@ -276,7 +276,6 @@ function trustedCommands(channel, username, message)
         voting.startVoting(channel, username, message);
     }
     if (message.substr(0,8).toLowerCase() === '!command') {
-        console.log('test');
         commandsController(channel, username, message);
     }
 }

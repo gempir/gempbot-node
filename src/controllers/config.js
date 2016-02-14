@@ -47,7 +47,7 @@ function setCommand(channel, commandObj) {
 }
 
 function removeCommand(channel, command) {
-    redis.del(channel + ':commands', command);
+    redis.hdel(channel + ':commands', command);
 }
 
 function getCommand(channel, command, callback) {
