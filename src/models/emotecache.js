@@ -67,6 +67,12 @@ function cacheEmotes() {
     });
 }
 
+(function emoteCacheInterval(){
+    setInterval(function(){
+        cacheEmotes();
+    }, 1800000);
+})();
+
 
 module.exports = {
     cacheEmotes,
