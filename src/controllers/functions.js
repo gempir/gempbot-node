@@ -16,9 +16,8 @@ function isBroadcaster(channel, user)
 }
 
 function getLastChunkOfMessage(message, chunkToStartAt) {
-    var indexChunkStart = message.indexOf(chunkToStartAt);
-    var chunkStartLength = chunkToStartAt.length;
-    return message.substr(indexChunkStart + chunkStartLength);
+    var response = message.substr(chunkToStartAt);
+    return response;
 }
 
 function removeFromArray(arr, what) {

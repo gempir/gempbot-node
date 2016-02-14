@@ -5,9 +5,11 @@
   "main": "gempbot.js",
   "dependencies": {
     "async": "*",
+    "chai": "^3.5.0",
     "express": "*",
     "jade": "*",
     "logtime": "*",
+    "mocha": "^2.4.5",
     "moment": "*",
     "pastebin-js": "*",
     "redis": "*",
