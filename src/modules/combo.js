@@ -18,25 +18,21 @@ function count(channel, user, message)
     }
 
     var currentMessage = message;
-    if (combos[channel]['combo'] < 2) {
-        combos[channel]['emote'] = combos[channel]['lastEmote'];
-    }
-    if (currentMessage.indexOf(combos[channel]['emote']) > -1) {
+
+    if (currentMessage.indexOf(combos[channel]['lastEmote']) > -1) {
         combos[channel]['combo']++;
     }
     else if (combos[channel]['lastEmote'] === '' && !getEmoteFromMessage(channel, user, currentMessage)) {
         combos[channel]['combo']++;
     }
     else if (combos[channel]['combo'] > 2){
-        output.say(channel, combos[channel]['combo'] + 'x ' + combos[channel]['emote']  + ' COMBO', true);
+        output.say(channel, combos[channel]['combo'] + 'x ' + combos[channel]['lastEmote']  + ' COMBO', true);
         combos[channel]['combo'] = 1;
         combos[channel]['lastEmote'] = '';
-        combos[channel]['emote'] = '';
     }
     else {
         combos[channel]['combo'] = 1;
         combos[channel]['lastEmote'] = '';
-        combos[channel]['emote'] = '';
     }
     combos[channel]['lastEmote'] = getEmoteFromMessage(channel, user, currentMessage);
 }
