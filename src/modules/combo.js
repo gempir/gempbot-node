@@ -73,6 +73,8 @@ function getEmoteFromMessage(channel, user, message)
             return messageArr[i];
         }
         if (typeof emotecache.bttvemotes['channel'][channel] != 'undefined') {
+            console.log(emotecache.bttvemotes['channel']);
+            console.log(emotecache.bttvemotes['channel'][channel].indexOf(messageArr[i]) > -1);
             if (emotecache.bttvemotes['channel'][channel].indexOf(messageArr[i]) > -1) {
                 return messageArr[i];
             }
