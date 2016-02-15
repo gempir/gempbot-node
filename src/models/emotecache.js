@@ -56,13 +56,17 @@ function cacheEmotes() {
         }
         bttvemotes.global = Object.keys(reply);
         var channels = cfg.options.channels;
-        for (var i = 0; i < channels.length; i++) {
-            var channelCurrent =  channels[i];
-            redis.hgetall(channelCurrent + ':bttvchannelemotes', function(err, reply) {
-                if (reply != null) {
-                    bttvemotes['channel'][channelCurrent] = Object.keys(reply);
-                }
-            });
+        for (var y = 0; y < channels.length; y++) {
+            (function(y) {
+                redis.hgetall(channels[y] + ':bttvchannelemotes', function(err, reply) {
+                    if (err) {
+                        return false;
+                    }
+                    if (reply != null) {
+                        bttvemotes.channel[channels[y]] = Object.keys(reply);
+                    }
+                });
+            })(y);
         }
     });
 }

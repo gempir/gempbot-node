@@ -7,13 +7,12 @@ var output       = require('./../connection/output');
 var emotecache   = require('./../models/emotecache');
 var commandcache = require('./../models/commandcache');
 
-// boot
 emotecache.cacheEmotes();
 commandcache.cacheCommands();
 
+
 channel.client.on("connected", function (address, port) {
     console.log('[boot] connected to chat');
-//    output.sayAllChannels('Bot starting up');
 });
 
 whisper.group.on("connected", function (address, port, err) {
