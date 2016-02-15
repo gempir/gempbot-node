@@ -13,7 +13,7 @@ commandcache.cacheCommands();
 
 channel.client.on("connected", function (address, port) {
     console.log('[boot] connected to chat');
-    output.sayAllChannels('Bot starting up');
+//    output.sayAllChannels('Bot starting up');
 });
 
 whisper.group.on("connected", function (address, port, err) {
