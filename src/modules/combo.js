@@ -67,15 +67,22 @@ function getEmoteFromMessage(channel, user, message)
         }
     }
 
+    if (typeof emotecache.bttvemotes['channel'][channel] === 'undefined' || typeof emotecache.bttvemotes.global === 'undefined') {
+        return false;
+    }
+
+
     var messageArr = message.split(' ');
     for (var i = 0; i < messageArr.length; i++) {
-        if (emotecache.bttvemotes.global.indexOf(messageArr[i]) > -1) {
-            return messageArr[i];
+        var globalBttv = emotecache.bttvemotes.global;
+        for (var j = 0; j < globalBttv.length; j++) {
+            if (globalBttv[j] === messageArr[i]) {
+                return messageArr[i];
+            }
         }
-        if (typeof emotecache.bttvemotes['channel'][channel] != 'undefined') {
-            console.log(emotecache.bttvemotes['channel']);
-            console.log(emotecache.bttvemotes['channel'][channel].indexOf(messageArr[i]) > -1);
-            if (emotecache.bttvemotes['channel'][channel].indexOf(messageArr[i]) > -1) {
+        var channelBttv = emotecache.bttvemotes['channel'][channel];
+        for (var k = 0; k < channelBttv.length; k++) {
+            if (channelBttv[k] === messageArr[i]) {
                 return messageArr[i];
             }
         }
