@@ -69,11 +69,11 @@ function getEmoteFromMessage(channel, user, message)
 
     var messageArr = message.split(' ');
     for (var i = 0; i < messageArr.length; i++) {
-        if (emotecache.bttvemotes.global.indexOf(messageArr[i] + ' ') > -1) {
+        if (emotecache.bttvemotes.global.indexOf(messageArr[i]) > -1) {
             return messageArr[i];
         }
         if (typeof emotecache.bttvemotes['channel'][channel] != 'undefined') {
-            if (emotecache.bttvemotes['channel'][channel].indexOf(messageArr[i] + ' ') > 1) {
+            if (emotecache.bttvemotes['channel'][channel].indexOf(messageArr[i]) > -1) {
                 return messageArr[i];
             }
         }

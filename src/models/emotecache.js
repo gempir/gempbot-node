@@ -60,7 +60,7 @@ function cacheEmotes() {
             var channelCurrent =  channels[i];
             redis.hgetall(channelCurrent + ':bttvchannelemotes', function(err, reply) {
                 if (reply != null) {
-                    bttvemotes.channel[channelCurrent] = Object.keys(reply);
+                    bttvemotes['channel'][channelCurrent] = Object.keys(reply);
                 }
             });
         }
