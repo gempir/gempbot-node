@@ -24,11 +24,11 @@ function count(channel, user, message)
         combos[channel]['emote'] = combos[channel]['lastEmote'];
     }
 
-    if (currentMessage.indexOf(combos[channel]['lastEmote']) > -1) {
+    if (currentMessage.indexOf(combos[channel]['lastEmote'] + ' ') > -1) {
         combos[channel]['comboStarter']++;
     }
 
-    if (currentMessage.indexOf(combos[channel]['emote']) > -1) {
+    if (currentMessage.indexOf(combos[channel]['emote'] + ' ') > -1) {
         combos[channel]['combo']++;
     }
     else if (combos[channel]['lastEmote'] === '' && !getEmoteFromMessage(channel, user, currentMessage)) {
