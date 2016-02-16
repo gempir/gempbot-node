@@ -75,8 +75,8 @@ function eventHandler(channel, user, message)
 
 
 function normalCommands(channel, username, message) {
-    if (output.cooldowns.indexOf(channel) > -1) {
-        console.log('[LOG] global cooldown');
+    if (output.userCooldowns.indexOf(user) > -1) {
+        console.log('[LOG] user cooldown');
 		return false;
 	}
 

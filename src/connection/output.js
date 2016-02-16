@@ -6,8 +6,8 @@ var fn            = require('./../controllers/functions');
 var chat = channelModule.client;
 var group = whisperModule.group;
 
-var cooldowns        = [];
 var commandCooldowns = {};
+var userCooldowns = [];
 
 function sayAllChannels(message, action)
 {
@@ -29,33 +29,21 @@ function say(channel, message, action)
 {
 	action = action || false;
 
-	if (cooldowns.indexOf(channel) > -1) {
-		return false;
-	}
-
 	if (!action) {
-		cooldowns.push(channel);
 		chat.say(channel, message);
 		console.log('[SAY] ' + message);
-        setTimeout(function(){
-            fn.removeFromArray(cooldowns, channel);
-        }, cfg.globalcooldown);
 	}
 	else if (action) {
-		cooldowns.push(channel);
 		chat.action(channel, message);
 		console.log('[SAY]' + '/me ' + message);
-        setTimeout(function(){
-            fn.removeFromArray(cooldowns, channel);
-        }, cfg.globalcooldown);
 	}
 }
 
 function sayCommand(channel, username, response, commObj)
 {
-	if (cooldowns.indexOf(channel) > -1) {
-		return false;
-	}
+    if (userCooldowns.indexOf(username) > -1) {
+        return false;
+    }
 
     if (typeof commandCooldowns[channel] === 'undefined') {
         commandCooldowns[channel] = [];
@@ -69,17 +57,18 @@ function sayCommand(channel, username, response, commObj)
         response.message = '@' + username + ', ' + response.message;
     }
 
-    setCooldown(channel, commObj.command, commObj['cooldown']);
 	chat.say(channel, response.message);
 	console.log('[COMMAND] ' + response.message);
-}
 
-function setCooldown(channel, command, time)
-{
-    commandCooldowns[channel].push(command);
+    commandCooldowns[channel].push(commObj.command);
     setTimeout(function(){
-        fn.removeFromArray(commandCooldowns[channel], command);
-    }, time * 1000);
+        fn.removeFromArray(commandCooldowns[channel], commObj.command);
+    }, commObj['cooldown'] * 1000);
+
+    userCooldowns.push(username);
+    setTimeout(function(){
+        fn.removeFromArray(userCooldowns, username);
+    }, 2000);
 }
 
 function sayNoCD(channel, message, action)
@@ -110,6 +99,6 @@ module.exports =
     sayCommand,
     whisper,
     sayAllChannels,
-    cooldowns,
-    commandCooldowns
+    commandCooldowns,
+    userCooldowns
 }
