@@ -32,6 +32,7 @@ function parseOddshots(channel, username, message)
         fs.readFile(file, function(err,data) {
             if  (!(data.indexOf(messageSplit[i]) > -1)) {
                 fs.appendFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + username + ': ' + message + '\n', function(){})
+                return true;
             }
         });
     }
