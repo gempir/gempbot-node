@@ -11,9 +11,6 @@ var commandCooldowns = {};
 
 function sayAllChannels(message, action)
 {
-    if (cfg.silent.indexOf(channel) > -1 ) {
-        return false;
-    }
     action = action || false;
     var channels = cfg.options.channels;
 
@@ -30,9 +27,6 @@ function sayAllChannels(message, action)
 
 function say(channel, message, action)
 {
-    if (cfg.silent.indexOf(channel) > -1 ) {
-        return false;
-    }
 	action = action || false;
 
 	if (cooldowns.indexOf(channel) > -1) {
@@ -59,9 +53,6 @@ function say(channel, message, action)
 
 function sayCommand(channel, username, response, commObj)
 {
-    if (cfg.silent.indexOf(channel) > -1 ) {
-        return false;
-    }
 	if (cooldowns.indexOf(channel) > -1) {
 		return false;
 	}
@@ -93,9 +84,6 @@ function setCooldown(channel, command, time)
 
 function sayNoCD(channel, message, action)
 {
-    if (cfg.silent.indexOf(channel) > -1 ) {
-        return false;
-    }
 	action = action || false;
 
 	if (!action) {
