@@ -9,6 +9,7 @@ var lastEmote = '';
 
 function count(channel, user, message)
 {
+    message = ' ' + message + ' ';
     if (user.username.toLowerCase() === cfg.options.identity.username.toLowerCase()) {
         return false;
     }
@@ -28,13 +29,13 @@ function count(channel, user, message)
         combos[channel]['comboStarter']++;
     }
 
-    if (currentMessage.indexOf(combos[channel]['emote']) > -1) {
+    if (currentMessage.indexOf(' ' + combos[channel]['emote'] + ' ') > -1) {
         combos[channel]['combo']++;
     }
     else if (combos[channel]['lastEmote'] === '' && !getEmoteFromMessage(channel, user, currentMessage)) {
         combos[channel]['combo']++;
     }
-    else if (combos[channel]['combo'] > 2){
+    else if (combos[channel]['combo'] > 4){
         output.say(channel, combos[channel]['combo'] + 'x ' + combos[channel]['emote']  + ' COMBO', true);
         combos[channel]['combo']        = 1;
         combos[channel]['comboStarter'] = 1;
@@ -48,6 +49,7 @@ function count(channel, user, message)
         combos[channel]['emote']        = '';
     }
     combos[channel]['lastEmote'] = getEmoteFromMessage(channel, user, currentMessage);
+    console.log(combos);
 }
 
 function getEmoteFromMessage(channel, user, message)
@@ -61,7 +63,7 @@ function getEmoteFromMessage(channel, user, message)
                 var currentEmotes = user.emotes[emote];
                 var emotePosition    = currentEmotes[0];
                 var emotePositionArr = emotePosition.split('-');
-                var emoteCode        = message.substring(+emotePositionArr[0], +emotePositionArr[1] + +1);
+                var emoteCode        = message.replace(' ', '').substring(+emotePositionArr[0], parseInt(emotePositionArr[1]) + 1);
                 return emoteCode;
             }
         }
@@ -70,7 +72,6 @@ function getEmoteFromMessage(channel, user, message)
     if (typeof emotecache.bttvemotes['channel'][channel] === 'undefined' || typeof emotecache.bttvemotes.global === 'undefined') {
         return false;
     }
-
 
     var messageArr = message.split(' ');
     for (var i = 0; i < messageArr.length; i++) {
