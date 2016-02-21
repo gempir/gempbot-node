@@ -10,7 +10,6 @@ var commandcache = require('./../models/commandcache');
 emotecache.cacheEmotes();
 commandcache.cacheCommands();
 
-
 channel.client.on("connected", function (address, port) {
     console.log('[boot] connected to chat');
 });

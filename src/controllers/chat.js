@@ -197,11 +197,11 @@ function adminController(channel, username, message)
         switch(command) {
             case 'add':
                 config.setTrusted(channel, trusted);
-                output.sayNoCD(channel, 'added ' + trusted + ' to trusted');
+                output.whisper(username, 'added ' + trusted + ' to trusted');
                 break;
             case 'remove':
                 config.removeTrusted(channel, trusted);
-                output.sayNoCD(channel, 'removed ' + trusted + ' from trusted');
+                output.whisper(username, 'removed ' + trusted + ' from trusted');
                 break;
         }
     }
@@ -228,7 +228,7 @@ function commandsController(channel, username, message)
             response = true;
             commandMessage = commandMessage.replace('--response', '');
         }
-        var cooldown = 10;
+        var cooldown = 5;
         if (commandMessage.indexOf('--cd') > -1) {
             var index      = commandMessage.indexOf('--cd');
             cooldown       = commandMessage.substr(index+5, 7);
