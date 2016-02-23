@@ -32,25 +32,7 @@ function nuke(channel, username, message)
 
     activeNukes.push(channel);
 
-    var nukeTime = 1;
-
-    if (message != '!nuke') {
-        nukeTime = fn.getNthWord(message, 2);
-    }
-    if (typeof fn.getNthWord(message, 3) != 'undefined') {
-        nukeLength = fn.getNthWord(message, 3);
-    }
-
-    if (nukeTime > 10) {
-        nukeTime = 10;
-        output.whisper(username, 'Don\'t make nuke timeouts so long. Timeout will be 10 seconds instead.');
-    }
-    if (nukeLength > 30) {
-        nukeLength = 30;
-        output.whisper(username, 'Don\'t make nukes so long. Nuke will be 30 seconds instead.');
-    }
-
-    output.sayNoCD(channel, 'VaultBoy THIS CHAT WILL BE NUKED IN ' + nukeLength + ' SECONDS VaultBoy', true);
+    output.sayNoCD(channel, 'VaultBoy THIS CHAT WILL BE NUKED IN 30 SECONDS VaultBoy', true);
 
     for (var x = 0; x < (nukeLength - 1) ; x++) {
         (function(index) {
@@ -69,7 +51,7 @@ function nuke(channel, username, message)
         }
 
         for (index = 0; index < toNuke[channel].length; index++) {
-            output.sayNoCD(channel, '/timeout ' + toNuke[channel][index] + ' ' + nukeTime);
+            output.sayNoCD(channel, '/timeout ' + toNuke[channel][index] + '1');
         }
         console.log('[LOG] nuking:' + toNuke[channel]);
         output.sayNoCD(channel, 'VaultBoy NUKED ' + toNuke[channel].length + ' CHATTERS VaultBoy', true);
