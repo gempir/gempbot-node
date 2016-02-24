@@ -37,7 +37,7 @@ function nuke(channel, username, message)
     for (var x = 0; x < (nukeLength - 1) ; x++) {
         (function(index) {
             setTimeout(function() {
-                if ((index / nukeLength) > 0.68) {
+                if ((index / nukeLength) > 0.80) {
                     output.sayNoCD(channel, index % 2 == 0 ? 'Tock...' : 'Tick...');
                 }
             }, index*1000)
