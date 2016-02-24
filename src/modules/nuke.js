@@ -1,7 +1,7 @@
 var fn = require('./../controllers/functions');
 var output = require('./../connection/output');
 
-var nukeLength = 10;
+var nukeLength = 30;
 var activeNukes = [];
 var toNuke = {}
 
@@ -57,7 +57,7 @@ function nuke(channel, username, message)
         output.sayNoCD(channel, 'VaultBoy NUKED ' + toNuke[channel].length + ' CHATTERS VaultBoy', true);
         fn.removeFromArray(activeNukes, channel);
         toNuke[channel] = [];
-        nukeLength = 10;
+        nukeLength = 30;
     }, nukeLength * 1000);
 }
 
