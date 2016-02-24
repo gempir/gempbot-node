@@ -51,7 +51,7 @@ function nuke(channel, username, message)
         }
 
         for (index = 0; index < toNuke[channel].length; index++) {
-            output.sayNoCD(channel, '/timeout ' + toNuke[channel][index] + '1');
+            output.sayNoCD(channel, '/timeout ' + toNuke[channel][index] + ' 1');
         }
         console.log('[LOG] nuking:' + toNuke[channel]);
         output.sayNoCD(channel, 'VaultBoy NUKED ' + toNuke[channel].length + ' CHATTERS VaultBoy', true);
