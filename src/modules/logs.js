@@ -53,7 +53,7 @@ function uploadLogs(channel, username, message)
                         .then(function (data) {
                             console.log('Pastebin created: ' + data);
                             console.log(logsFor, logFile);
-                            output.whisper(username, 'short logs for '+ logsFor + ' pastebin.com/' + data);
+                            output.whisper(username, 'Last 20k chars for '+ logsFor + ' pastebin.com/' + data);
                         })
                         .fail(function (err) {
                                 output.say(channel, err);
