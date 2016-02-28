@@ -95,6 +95,18 @@ function votingRateController(channel, username, message) {
 			totalRatings += Number(votings[channel]['votesRatings'][i]);
 		}
 		var avgRating = (totalRatings / votings[channel]['votesRatings'].length).toFixed(1);
+		totalRatings = 0;
+		var count    = 0;
+		for (var i = 0; i < votings[channel]['votesRatings'].length; i++) {
+			rating = Number(votings[channel]['votesRatings'][i]);
+			if (rating < avgRating * 0.2) {
+				continue;
+			}
+			totalRatings += rating;
+			count++;
+		}
+		avgRating = (totalRatings / count).toFixed(1);
+
 		fn.removeFromArray(activeVotings, channel);
 		output.sayNoCD(channel, '@' + username + ', The voting ended, the average ratings is: [ ' + avgRating + ' ] | votes: [ ' + votings[channel]['votesRatings'].length + ' ]');
 		overlay.emit(channel.substr(1) + ':resultsRate', { avgRating: avgRating, votes: votings[channel]['votesRatings'].length, channel: channel });
