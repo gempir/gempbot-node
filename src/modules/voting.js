@@ -95,6 +95,8 @@ function votingRateController(channel, username, message) {
 			totalRatings += Number(votings[channel]['votesRatings'][i]);
 		}
 		var avgRating = (totalRatings / votings[channel]['votesRatings'].length).toFixed(1);
+		var avgRatingsRaw = avgRating;
+		console.log('pre-weighted-algorithm: ' + avgRating);
 		totalRatings = 0;
 		var count    = 0;
 		for (var i = 0; i < votings[channel]['votesRatings'].length; i++) {
@@ -108,7 +110,7 @@ function votingRateController(channel, username, message) {
 		avgRating = (totalRatings / count).toFixed(1);
 
 		fn.removeFromArray(activeVotings, channel);
-		output.sayNoCD(channel, '@' + username + ', The voting ended, the average ratings is: [ ' + avgRating + ' ] | votes: [ ' + votings[channel]['votesRatings'].length + ' ]');
+		output.sayNoCD(channel, '@' + username + ', The voting ended, the average ratings is: [ ' + avgRating + ' ] | votes: [ ' + votings[channel]['votesRatings'].length + ' ]' + ' raw rating: [' + avgRatingsRaw + ']');
 		overlay.emit(channel.substr(1) + ':resultsRate', { avgRating: avgRating, votes: votings[channel]['votesRatings'].length, channel: channel });
 	}, 45000);
 }
