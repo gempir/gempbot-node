@@ -50,11 +50,11 @@ function uploadLogs(channel, username, message)
                 var shortLogs = data.toString()
                 shortLogs = shortLogs.substr(shortLogs.length - 20000);
 
-                cfg.pastebin.createPaste(shortLogs, 'short logs for channel ' + logsFor,null,0, '10M')
+                cfg.pastebin.createPaste(shortLogs, 'short logs for channel ' + logsFor,null,3, '10M')
                         .then(function (data) {
                             console.log('Pastebin created: ' + data);
                             console.log(logsFor, logFile);
-                            output.whisper(username, 'Last 20k chars for '+ logsFor + ' in ' + channel + 'pastebin.com/' + data);
+                            output.whisper(username, 'Last 20k chars for '+ logsFor + ' in ' + channel + ' pastebin.com/' + data);
                         })
                         .fail(function (err) {
                                 console.log(channel, err);
