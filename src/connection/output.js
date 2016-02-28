@@ -41,7 +41,7 @@ function say(channel, message, action)
 
 function sayCommand(channel, username, response, commObj)
 {
-    if (userCooldowns.indexOf(username) > -1) {
+    if (userCooldowns.indexOf(username.toLowerCase()) > -1) {
         return false;
     }
 
@@ -65,9 +65,9 @@ function sayCommand(channel, username, response, commObj)
         fn.removeFromArray(commandCooldowns[channel], commObj.command);
     }, commObj['cooldown'] * 1000);
 
-    userCooldowns.push(username);
+    userCooldowns.push(username.toLowerCase());
     setTimeout(function(){
-        fn.removeFromArray(userCooldowns, username);
+        fn.removeFromArray(userCooldowns, username.toLowerCase());
     }, 2000);
 }
 

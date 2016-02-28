@@ -4,6 +4,8 @@ var moment = require('moment');
 var fn     = require('./../controllers/functions');
 var output = require('./../connection/output');
 
+var userCooldowns = [];
+
 if (!fs.existsSync('logs')){
     fs.mkdirSync('logs');
     console.log('[LOG] Created folder: logs');
@@ -18,6 +20,13 @@ cfg.options.channels.forEach(function(channel) {
 
 function logsCommandHandler(channel, user, message, callback)
 {
+    if (userCooldowns.indexOf(user.toLowerCase()) > -1) {
+        return false;
+    }
+    userCooldowns.push(user.toLowerCase());
+    setTimeout(function() {
+        fn.removeFromArray(userCooldowns, user.toLowerCase());
+    }, 60000)
     bigCommand = fn.getNthWord(message, 1) + ' ' + fn.getNthWord(message, 2);
     if (bigCommand === '!logs size') {
         logsSize(channel, user, message, function(response) {
