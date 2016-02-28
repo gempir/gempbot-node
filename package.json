@@ -5,6 +5,7 @@
   "main": "gempbot.js",
   "dependencies": {
     "async": "*",
+    "better-pastebin": "^0.1.5",
     "chai": "^3.5.0",
     "express": "*",
     "jade": "*",
