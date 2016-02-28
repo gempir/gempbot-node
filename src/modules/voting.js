@@ -99,7 +99,7 @@ function votingRateController(channel, username, message) {
 		var count    = 0;
 		for (var i = 0; i < votings[channel]['votesRatings'].length; i++) {
 			rating = Number(votings[channel]['votesRatings'][i]);
-			if (rating < avgRating * 0.2) {
+			if (rating < avgRating * 0.125) {
 				continue;
 			}
 			totalRatings += rating;
