@@ -50,24 +50,14 @@ function uploadLogs(channel, username, message)
                 var shortLogs = data.toString()
                 shortLogs = shortLogs.substr(shortLogs.length - 20000);
 
-                cfg.paste.login(cfg.pastebin.username, cfg.pastebin.password, function(success, data) {
-                    if(!success) {
-                        console.log("Failed (" + data + ")");
-                        return false;
-                    }
-                    cfg.paste.create({
-                        contents: shortLogs,
-                        name: 'short logs for channel ' + logsFor,
-                        privacy: "0",
-                        expires: "10M"
-                    }, function(success, data) {
-                        if(success) {
+                cfg.pastebin.createPaste(shortLogs, 'short logs for channel ' + logsFor,null,0, '10M')
+                        .then(function (data) {
                             console.log('Pastebin created: ' + data);
-                            output.whisper(username, 'Last 20k chars for '+ logsFor + ' in ' + channel + ' ' + data);
-                        } else {
-                            console.log(data);
-                        }
-                    });
+                            console.log(logsFor, logFile);
+                            output.whisper(username, 'Last 20k chars for '+ logsFor + ' in ' + channel + 'pastebin.com/' + data);
+                        })
+                        .fail(function (err) {
+                                console.log(channel, err);
                 });
             });
         }
