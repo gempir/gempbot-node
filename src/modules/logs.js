@@ -49,14 +49,12 @@ function uploadLogs(channel, username, message)
             fs.readFile(logFile, function(err,data) {
                 var shortLogs = data.toString()
                 shortLogs = shortLogs.substr(shortLogs.length - 20000);
-                cfg.pastebin.createPaste(shortLogs, 'short logs for channel ' + logsFor,null,0, '10M')
-                        .then(function (data) {
-                            console.log('Pastebin created: ' + data);
-                            output.whisper(username, 'Last 20k chars for '+ logsFor + ' pastebin.com/' + data);
-                        })
-                        .fail(function (err) {
-                                output.say(channel, err);
-                                console.log(err);
+                cfg.pastebin.new({title: 'short logs for channel ' + logsFor, content: shortLogs, privacy: 0, expire: '10M'}, function (err, ret) {
+                    if (err)
+                        console.log(err);
+                    else
+                        console.log('Pastebin created: ' + ret);
+                        output.whisper(username, 'Last 20k chars for '+ logsFor + ' pastebin.com/' + ret);
                 });
             });
         }

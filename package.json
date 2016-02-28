@@ -11,6 +11,7 @@
     "logtime": "*",
     "mocha": "^2.4.5",
     "moment": "*",
+    "pastebin": "0.0.1",
     "pastebin-js": "*",
     "redis": "*",
     "request": "*",
