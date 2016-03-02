@@ -241,11 +241,11 @@ function commandsController(channel, username, message)
         if (commandName === '') {
             return false;
         }
-        removeCommand(channel, commandName);
+        removeCommand(username, channel, commandName);
     }
 }
 
-function addCommand(channel, command, message, response, cooldown) {
+function addCommand(username, channel, command, message, response, cooldown) {
     var commandObj = {
         command: command,
         message: message,
@@ -255,15 +255,15 @@ function addCommand(channel, command, message, response, cooldown) {
         cooldown: cooldown
     }
     config.setCommand(channel, commandObj);
-    output.sayNoCD(channel, 'added command ' + commandObj.command);
+    output.whisper(username, 'added command ' + commandObj.command);
 }
 
-function removeCommand(channel, command) {
+function removeCommand(username, channel, command) {
     if (command.substr(0,1) != '!') {
         command = '!' + command;
     }
     config.removeCommand(channel, command);
-    output.sayNoCD(channel, 'removed command ' + command);
+    output.whisper(username, 'removed command ' + command);
 }
 
 function trustedCommands(channel, username, message)

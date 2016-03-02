@@ -59,7 +59,7 @@ function uploadLogs(channel, username, message)
                 var shortLogs = data.toString()
                 shortLogs = shortLogs.substr(shortLogs.length - 20000);
 
-                cfg.pastebin.createPaste(shortLogs, 'short logs for channel ' + logsFor,null,3, '10M')
+                cfg.pastebin.createPaste(shortLogs, 'short logs for ' + logsFor + ' in ' + channel,null,3, '10M')
                         .then(function (data) {
                             console.log('Pastebin created: ' + data);
                             console.log(logsFor, logFile);
