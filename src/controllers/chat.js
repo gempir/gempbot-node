@@ -43,6 +43,7 @@ function eventHandler(channel, user, message)
     if (command.substr(0,1) != '!') {
         return false;
     }
+
     if (username.toLowerCase() === cfg.admin.toLowerCase()) {
         adminCommands(channel, username, message);
     }
@@ -78,6 +79,7 @@ function normalCommands(channel, username, message) {
 	}
 
     var command = fn.getNthWord(message, 1).toLowerCase();
+
     if (typeof irc.commandCooldowns[channel] === 'undefined') {
         irc.commandCooldowns[channel] = [];
     }
@@ -135,6 +137,7 @@ function normalCommands(channel, username, message) {
     	}
     	else if (command.substr(0,1) === '!') {
     		config.getCommand(channel, command, function(commandObj) {
+
                 if (commandObj === null || typeof commandObj === 'undefined') {
                     return false;
                 }
@@ -234,7 +237,7 @@ function commandsController(channel, username, message)
             commandMessage = commandMessage.replace('--cd', '');
             commandMessage = commandMessage.replace(cooldown, '');
         }
-        addCommand(username, commandName, commandMessage, response, cooldown);
+        addCommand(username, channel, commandName, commandMessage, response, cooldown);
     }
     else if (command === 'remove') {
         if (commandName === '') {
