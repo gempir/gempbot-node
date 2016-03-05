@@ -1,6 +1,7 @@
 var channel     = require('./../connection/channel');
 var whisper     = require('./../connection/whisper');
 var cfg         = require('./../../cfg');
+var irc         = require('./../connection/irc');
 var logs        = require('./../modules/logs.js');
 var fn          = require('./functions');
 var combo       = require('./../modules/combo');
@@ -20,13 +21,9 @@ var redis       = require('./../models/redis');
 var output      = require('./../connection/output');
 
 
-channel.client.on('chat', function(channel, user, message, self) {
+irc.event.on('message', function(channel, user, message) {
     eventHandler(channel, user, message);
-});
-
-channel.client.on('action', function(channel, user, message, self) {
-    eventHandler(channel, user, message);
-});
+})
 
 function eventHandler(channel, user, message)
 {
@@ -75,16 +72,16 @@ function eventHandler(channel, user, message)
 
 
 function normalCommands(channel, username, message) {
-    if (output.userCooldowns.indexOf(username) > -1) {
+    if (irc.userCooldowns.indexOf(username) > -1) {
         console.log('[LOG] user cooldown');
 		return false;
 	}
 
     var command = fn.getNthWord(message, 1).toLowerCase();
-    if (typeof output.commandCooldowns[channel] === 'undefined') {
-        output.commandCooldowns[channel] = [];
+    if (typeof irc.commandCooldowns[channel] === 'undefined') {
+        irc.commandCooldowns[channel] = [];
     }
-    if (output.commandCooldowns[channel].indexOf(command) > -1) {
+    if (irc.commandCooldowns[channel].indexOf(command) > -1) {
         console.log('[COMMAND] ' + command + ' cooldown');
         return false;
     }
@@ -98,42 +95,42 @@ function normalCommands(channel, username, message) {
 
         if (command === '!followage') {
     		followage.followageCommandHandler(channel, username, message, function(response) {
-                output.sayCommand(channel, username, response, commObj);
+                irc.sayCommand(channel, username, response, commObj);
             });
     	}
     	else if (command === '!chatters') {
     		chatters.chattersCommandHandler(channel, username, message, function(response) {
-                output.sayCommand(channel, username, response, commObj);
+                irc.sayCommand(channel, username, response, commObj);
             });
     	}
     	else if (command === '!logs') {
     		logs.logsCommandHandler(channel, username, message, function(response) {
-                output.sayCommand(channel, username, response, commObj);
+                irc.sayCommand(channel, username, response, commObj);
             });
     	}
     	else if (command === '!lines') {
     		lines.lineCount(channel, username, message, function(response) {
-                output.sayCommand(channel, username, response, commObj);
+                irc.sayCommand(channel, username, response, commObj);
             });
     	}
     	else if (command === '!countme') {
     		count.countMe(channel, username, message, function(response) {
-                output.sayCommand(channel, username, response, commObj);
+                irc.sayCommand(channel, username, response, commObj);
             });
     	}
         else if (command === '!count') {
     		count.count(channel, username, message, function(response) {
-                output.sayCommand(channel, username, response, commObj);
+                irc.sayCommand(channel, username, response, commObj);
             });
     	}
     	else if (command === '!randomquote') {
     		quote.getQuote(channel, username, message, function(response) {
-                output.sayCommand(channel, username, response, commObj);
+                irc.sayCommand(channel, username, response, commObj);
             });
     	}
     	else if (command === '!lastmessage') {
     		lastmessage.lastMessage(channel, username, message, function(response) {
-                output.sayCommand(channel, username, response, commObj);
+                irc.sayCommand(channel, username, response, commObj);
             });
     	}
     	else if (command.substr(0,1) === '!') {
@@ -143,10 +140,10 @@ function normalCommands(channel, username, message) {
                 }
                 var response = commandObj.response;
                 if (commandObj.response === true) {
-                    output.say(channel, '@' + username + ', ' + commandObj.message);
+                    irc.say(channel, '@' + username + ', ' + commandObj.message);
                 }
                 else {
-                    output.say(channel, commandObj.message);
+                    irc.say(channel, commandObj.message);
                 }
             });
     	}
@@ -161,14 +158,14 @@ function adminCommands(channel, username, message)
         case '!status':
             var time = process.uptime();
             var uptime = fn.secsToTime((time + ""));
-            output.sayNoCD(channel, '@' + username + ', bot uptime: ' + uptime);
+            irc.say(channel, '@' + username + ', bot uptime: ' + uptime);
             break;
         case '!admin':
             adminController(channel, username, message);
             break;
         case '!say':
             var toSay = message.substr(5);
-            output.sayNoCD(channel, toSay);
+            irc.say(channel, toSay);
             break;
         case '!emotecache':
             emotecache.fetchEmotesFromBttv(function() {

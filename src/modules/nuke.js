@@ -1,5 +1,6 @@
 var fn = require('./../controllers/functions');
 var output = require('./../connection/output');
+var irc    = require('./../connection/irc');
 
 var nukeLength = 30;
 var activeNukes = [];
@@ -32,13 +33,13 @@ function nuke(channel, username, message)
 
     activeNukes.push(channel);
 
-    output.sayNoCD(channel, 'VaultBoy THIS CHAT WILL BE NUKED IN 30 SECONDS VaultBoy', true);
+    irc.say(channel, 'VaultBoy THIS CHAT WILL BE NUKED IN 30 SECONDS VaultBoy', true);
 
     for (var x = 0; x < (nukeLength - 1) ; x++) {
         (function(index) {
             setTimeout(function() {
                 if ((index / nukeLength) > 0.80) {
-                    output.sayNoCD(channel, index % 2 == 0 ? 'Tock...' : 'Tick...');
+                    irc.say(channel, index % 2 == 0 ? 'Tock...' : 'Tick...');
                 }
             }, index*1000)
         })(x);
@@ -46,15 +47,15 @@ function nuke(channel, username, message)
 
     setTimeout(function() {
         if (typeof toNuke[channel] === 'undefined') {
-            output.sayNoCD(channel, 'No targets found!');
+            irc.say(channel, 'No targets found!');
             return false;
         }
 
         for (index = 0; index < toNuke[channel].length; index++) {
-            output.sayNoCD(channel, '/timeout ' + toNuke[channel][index] + ' 1');
+            irc.say(channel, '/timeout ' + toNuke[channel][index] + ' 1');
         }
         console.log('[LOG] nuking:' + toNuke[channel]);
-        output.sayNoCD(channel, 'VaultBoy NUKED ' + toNuke[channel].length + ' CHATTERS VaultBoy', true);
+        irc.say(channel, 'VaultBoy NUKED ' + toNuke[channel].length + ' CHATTERS VaultBoy', true);
         fn.removeFromArray(activeNukes, channel);
         toNuke[channel] = [];
         nukeLength = 30;

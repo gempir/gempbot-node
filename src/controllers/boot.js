@@ -2,6 +2,7 @@ var config  = require('./config');
 require('./chat');
 var cfg          = require('./../../cfg');
 var channel      = require('./../connection/channel');
+var irc          = require('./../connection/irc');
 var whisper      = require('./../connection/whisper');
 var output       = require('./../connection/output');
 var emotecache   = require('./../models/emotecache');

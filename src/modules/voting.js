@@ -1,4 +1,5 @@
 var output = require('./../connection/output');
+var irc = require('./../connection/irc');
 var overlay = require('./../overlay/overlay');
 var fn 	    = require('./../controllers/functions');
 
@@ -76,18 +77,18 @@ function votingSkip(channel, username, message) {
 }
 
 function votingSkipController(channel, username, message) {
-	output.sayNoCD(channel, 'A skip or stay voting has been started type [ !vote skip ] or [ !vote stay ] to vote on the current content. The voting ends in 45 seconds ');
+	irc.say(channel, 'A skip or stay voting has been started type [ !vote skip ] or [ !vote stay ] to vote on the current content. The voting ends in 45 seconds ');
 
 	setTimeout(function(){
 		fn.removeFromArray(activeVotings, channel);
 		var totalVotes = Number(votings[channel]['votesSkipStay']['stay']) + Number( votings[channel]['votesSkipStay']['skip']);
 		overlay.emit(channel.substr(1) + ':resultsSkip', { stay: votings[channel]['votesSkipStay']['stay'], skip: votings[channel]['votesSkipStay']['skip'], channel: channel});
-		output.sayNoCD(channel, '@' + username + ', The voting ended, skip: [ ' +  votings[channel]['votesSkipStay']['skip'] + ' ] | stay: [ ' +  votings[channel]['votesSkipStay']['stay'] + ' ] | votes: [ ' + totalVotes + ' ]');
+		irc.say(channel, '@' + username + ', The voting ended, skip: [ ' +  votings[channel]['votesSkipStay']['skip'] + ' ] | stay: [ ' +  votings[channel]['votesSkipStay']['stay'] + ' ] | votes: [ ' + totalVotes + ' ]');
 	}, 45000);
 }
 
 function votingRateController(channel, username, message) {
-	output.sayNoCD(channel, 'A rating voting has been started type E.g. [ !vote 5 ] to rate the current content. The voting ends in 45 seconds.');
+	irc.say(channel, 'A rating voting has been started type E.g. [ !vote 5 ] to rate the current content. The voting ends in 45 seconds.');
 
 	setTimeout(function(){
 		var totalRatings = 0;
@@ -110,7 +111,7 @@ function votingRateController(channel, username, message) {
 		avgRating = (totalRatings / count).toFixed(1);
 
 		fn.removeFromArray(activeVotings, channel);
-		output.sayNoCD(channel, '@' + username + ', The voting ended, the average ratings is: [ ' + avgRating + ' ] | votes: [ ' + votings[channel]['votesRatings'].length + ' ]' + ' raw rating: [' + avgRatingsRaw + ']');
+		irc.say(channel, '@' + username + ', The voting ended, the average ratings is: [ ' + avgRating + ' ] | votes: [ ' + votings[channel]['votesRatings'].length + ' ]' + ' raw rating: [' + avgRatingsRaw + ']');
 		overlay.emit(channel.substr(1) + ':resultsRate', { avgRating: avgRating, votes: votings[channel]['votesRatings'].length, channel: channel });
 	}, 45000);
 }

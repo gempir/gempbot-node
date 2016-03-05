@@ -2,6 +2,7 @@ var fn     = require('./../controllers/functions');
 var output = require('./../connection/output');
 var emotecache = require('./../models/emotecache');
 var cfg        = require('./../../cfg');
+var irc        = require('./../connection/irc');
 
 var combos = {};
 var lastMessage = '';
@@ -36,7 +37,7 @@ function count(channel, user, message)
         combos[channel]['combo']++;
     }
     else if (combos[channel]['combo'] > 4){
-        output.say(channel, combos[channel]['combo'] + 'x ' + combos[channel]['emote']  + ' COMBO', true);
+        irc.say(channel, combos[channel]['combo'] + 'x ' + combos[channel]['emote']  + ' COMBO', true);
         combos[channel]['combo']        = 1;
         combos[channel]['comboStarter'] = 1;
         combos[channel]['lastEmote']    = '';
