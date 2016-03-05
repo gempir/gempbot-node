@@ -75,6 +75,7 @@ function getTags(data) {
     for (var i = 0; i < tagsRaw.length; i++) {
         var tag = tagsRaw[i].split('=');
         tags[tag[0]] = tag[1];
+        tag[1] = tag[1] || '';
         if (tag[1].substr(0,1) == ' ') {
             tags[tag[0]] = '';
         }
