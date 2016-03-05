@@ -180,6 +180,7 @@ function adminController(channel, username, message)
     if (fn.countWords(message) <= 2) {
         return false;
     }
+
     var command = fn.getNthWord(message, 2).toLowerCase();
     switch(command) {
         case 'trusted':
@@ -209,6 +210,7 @@ function commandsController(channel, username, message)
     if (fn.countWords(message) === 1) {
         return false;
     }
+
     var messageArr     = message.split(' ');
     var response       = false;
     var command        = messageArr[1].toLowerCase() || '';
@@ -232,7 +234,7 @@ function commandsController(channel, username, message)
             commandMessage = commandMessage.replace('--cd', '');
             commandMessage = commandMessage.replace(cooldown, '');
         }
-        addCommand(channel, commandName, commandMessage, response, cooldown);
+        addCommand(username, commandName, commandMessage, response, cooldown);
     }
     else if (command === 'remove') {
         if (commandName === '') {
