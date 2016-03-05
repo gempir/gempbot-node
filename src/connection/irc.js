@@ -86,6 +86,7 @@ function getTags(data) {
                 var emote = emotesRaw[j].split(':');
                 var id    = emote[0];
                 var pos   = emote[1];
+                var pos = pos.split(',');
                 emotes[id] = pos;
             }
             tags[tag[0]] = emotes;

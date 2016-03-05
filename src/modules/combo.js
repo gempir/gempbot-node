@@ -60,6 +60,7 @@ function getEmoteFromMessage(channel, user, message)
         }
         else {
             for (emote in user.emotes) {
+
                 var currentEmotes = user.emotes[emote];
                 var emotePosition    = currentEmotes[0];
                 var emotePositionArr = emotePosition.split('-');
