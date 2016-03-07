@@ -70,10 +70,8 @@ function votingSkip(channel, username, message) {
 	else if (!(message.toLowerCase().match(regex)) === null || !(message.toLowerCase().match(regex2) === null) || !(message.toLowerCase().match(regex3) === null)) {
 		var voteValue = fn.getNthWord(message, 2).replace(',','.');
 		if (voteValue <= 10 && voteValue > 0) {
-			if (typeof votings[channel]['votesRatings'] != 'undefined' && typeof votings[channel]['voters'] != 'undefined') {
-				votings[channel]['voters'].push(username);
-				votings[channel]['votesRatings'].push(voteValue);
-			}
+			votings[channel]['voters'].push(username);
+			votings[channel]['votesRatings'].push(voteValue);
 		}
 	}
 }
