@@ -40,7 +40,6 @@ function logsCommandHandler(channel, user, message, callback)
 
 function userLogs(channel, username, message)
 {
-    console.log(channel + ' ::: ' + username + ' ::: ' + message);
     var file = 'logs/' + channel.substr(1) + '/' + username +'.txt';
     fs.appendFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + username + ': ' + message + '\n', function(){});
 }
