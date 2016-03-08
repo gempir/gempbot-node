@@ -40,6 +40,7 @@ function logsCommandHandler(channel, user, message, callback)
 
 function userLogs(channel, username, message)
 {
+    username = username.toLowerCase();
     var file = 'logs/' + channel.substr(1) + '/' + username +'.txt';
     fs.appendFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + username + ': ' + message + '\n', function(){});
 }
@@ -49,6 +50,7 @@ function uploadLogs(channel, username, message)
     if (message.toLowerCase() === '!logs') {
         return false;
     }
+    username = username.toLowerCase();
 
     var logsFor = (fn.getNthWord(message, 2)).toLowerCase();
     var logFile = 'logs/' + channel.substr(1) + '/' + logsFor + '.txt';
@@ -79,6 +81,7 @@ function logsSize(channel, username, message, callback)
 {
     var messageStart = message.substr(0,12).toLowerCase();
     var name = fn.getNthWord(message, 3);
+    username = username.toLowerCase();
 
     name = name.toLowerCase();
     if (!fn.fileExists('logs/' + channel.substr(1) + '/' + name +  '.txt')) {
