@@ -1,10 +1,10 @@
 var cfg    = require('./../../cfg');
 var net    = require('net');
 var redis  = require('./../models/redis');
-var irc   = {};
+var irc    = {};
 var events = require('events');
-var event    = new events.EventEmitter();
-var fn            = require('./../controllers/functions');
+var event  = new events.EventEmitter();
+var fn     = require('./../controllers/functions');
 
 
 irc.socket = new net.Socket();
@@ -12,6 +12,23 @@ irc.socket.setEncoding('utf-8');
 irc.socket.setNoDelay();
 irc.socket.connect(cfg.irc.port, cfg.irc.server);
 
+var channels = {};
+
+function channelCache()
+{
+    console.log('[cache] caching channels');
+    redis.hgetall('channels', function(err, results) {
+       if (err) {
+           console.log('[REDIS] ' + err);
+       } else {
+            for (var channel in results) {
+              if (results.hasOwnProperty(channel)) {
+                channels[channel] = results[channel];
+              }
+            }
+       }
+    });
+}
 
 irc.socket.on('connect', function () {
     event.emit('connected');
@@ -25,10 +42,9 @@ irc.socket.on('connect', function () {
        } else {
             for (var channel in results) {
               if (results.hasOwnProperty(channel)) {
-                if (results[channel] == 1) {
-                    irc.socket.write('JOIN ' + channel + '\r\n');
-                    event.emit('joined', channel);
-                }
+                irc.socket.write('JOIN ' + channel + '\r\n');
+                event.emit('joined', channel);
+                channels[channel] = results[channel];
               }
             }
        }
@@ -118,6 +134,10 @@ var commandCooldowns = {};
 var userCooldowns = [];
 
 function say(channel, message, action) {
+    if (channels[channel] == 0) {
+        return false;
+    }
+
     action = action || false;
     var prefix = '';
 
@@ -130,6 +150,10 @@ function say(channel, message, action) {
 
 function sayCommand(channel, username, response, commObj)
 {
+    if (channels[channel] == 0) {
+        return false;
+    }
+
     if (userCooldowns.indexOf(username.toLowerCase()) > -1) {
         return false;
     }
@@ -166,5 +190,7 @@ module.exports = {
     say,
     sayCommand,
     commandCooldowns,
-    userCooldowns
+    userCooldowns,
+    channels,
+    channelCache
 }

@@ -175,6 +175,9 @@ function adminCommands(channel, username, message)
                 emotecache.cacheEmotes();
             });
             break;
+        case '!channelcache':
+            irc.channelCache();
+            break;
     }
 }
 
