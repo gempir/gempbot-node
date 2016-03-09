@@ -26,7 +26,7 @@ function lastMessage(channel, username, message, callback) {
 
         var response = lastLine[1];
 
-        if (fn.containsASCII(response))  {
+        if (fn.containsASCII(response) || fn.stringContainsUrl(response))  {
             return false;
         }
         if (response.length > 150) {
