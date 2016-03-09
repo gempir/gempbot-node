@@ -55,7 +55,8 @@ irc.socket.on('data', function(data) {
             emotes: tags.emotes,
             subscriber: tags.subscriber,
             'user-type': tags['user-type'],
-            username: tags['display-name'],
+            username: tags['display-name'].toLowerCase(),
+            'display-name': tags['display-name'],
             action: tags.action
         },
         channel: channel,
