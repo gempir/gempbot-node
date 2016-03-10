@@ -38,6 +38,9 @@ function count(channel, user, message)
         combos[channel]['combo']++;
     }
     else if (combos[channel]['combo'] > 4){
+        if (typeof config.config[channel].combos == 'undefined') {
+            return false;
+        }
         if (config.config[channel].combos == 1) {
             irc.say(channel, combos[channel]['combo'] + 'x ' + combos[channel]['emote']  + ' COMBO', true);
         }
