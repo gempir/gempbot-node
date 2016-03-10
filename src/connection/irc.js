@@ -56,6 +56,10 @@ irc.socket.on('data', function(data) {
     if (data.substr(0,1) == ':') {
         return;
     }
+    if (data.indexOf('.tmi.twitch.tv WHISPER')) {
+        handleWhisper(data);
+        return;
+    }
     if (data.indexOf('PRIVMSG') === -1) {
         return;
     }
@@ -80,6 +84,11 @@ irc.socket.on('data', function(data) {
     }
     event.emit('message', messageObj.channel, messageObj.user, messageObj.message)
 });
+
+
+function handleWhisper(data) {
+    console.log(data);
+}
 
 function getTags(data) {
     var tags = {};
