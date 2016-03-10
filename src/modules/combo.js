@@ -38,7 +38,7 @@ function count(channel, user, message)
         combos[channel]['combo']++;
     }
     else if (combos[channel]['combo'] > 4){
-        if (config.config[channel] == 'undefined') {
+        if (typeof config.config[channel] == 'undefined') {
             return false;
         }
         if (config.config[channel].combos == 1) {
