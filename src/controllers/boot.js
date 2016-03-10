@@ -8,8 +8,9 @@ var output       = require('./../connection/output');
 var emotecache   = require('./../models/emotecache');
 var commandcache = require('./../models/commandcache');
 
-emotecache.cacheEmotes();
 commandcache.cacheCommands();
+emotecache.cacheEmotes();
+config.cacheConfig();
 
 channel.client.on("connected", function (address, port) {
     console.log('[boot] connected to chat');

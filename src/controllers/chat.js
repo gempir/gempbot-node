@@ -178,6 +178,9 @@ function adminCommands(channel, username, message)
         case '!channelcache':
             irc.channelCache();
             break;
+        case '!configcache':
+            config.cacheConfig();
+            break;
     }
 }
 
@@ -191,6 +194,9 @@ function adminController(channel, username, message)
     switch(command) {
         case 'trusted':
             switchTrusted(channel, username, message);
+        case 'config':
+            configController(channel, username, message);
+            break;
     }
     function switchTrusted(channel, username, message) {
         if (fn.countWords(message) <= 3) {
@@ -210,6 +216,19 @@ function adminController(channel, username, message)
         }
     }
 }
+
+function configController(channel, username, message) {
+    if (fn.countWords(message) < 4) {
+        return false;
+    }
+
+    var option = fn.getNthWord(message, 3);
+    var value = fn.getNthWord(message, 4);
+    config.setConfig(channel, option, value, function(message) {
+        output.whisper(username, message);
+    });
+}
+
 
 function commandsController(channel, username, message)
 {

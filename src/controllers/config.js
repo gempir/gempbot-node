@@ -1,6 +1,7 @@
 var fn    = require('./functions');
 var output = require('./../connection/output');
 var redis  = require('./../models/redis');
+var config = {};
 
 function getTrusted(channel, callback) {
     redis.hgetall(channel + ':trusted', function (err, obj) {
@@ -22,6 +23,30 @@ function setTrusted(channel, username) {
 
 function removeTrusted(channel, username) {
     redis.del(channel + ':trusted', username);
+}
+
+function cacheConfig() {
+    console.log('[redis] caching configs');
+    redis.hgetall('channels', function(err, results) {
+       if (err) {
+           console.log('[REDIS] ' + err);
+       } else {
+            for (var channel in results) {
+              if (results.hasOwnProperty(channel)) {
+                redis.hgetall(channel + ':config', function(err, results) {
+                    config[channel] = results;
+                });
+              }
+            }
+       }
+    });
+}
+
+function setConfig(channel, option, value, callback) {
+    redis.hset(channel + ":config", option, value, function() {
+        console.log('[redis] updated config');
+        return callback('updated ' + option + ' to ' + value);
+    });
 }
 
 function getActiveCommands(channel, callback) {
@@ -69,5 +94,8 @@ module.exports = {
     setCommand,
     getCommand,
     removeCommand,
-    getActiveCommands
+    getActiveCommands,
+    setConfig,
+    cacheConfig,
+    config
 };

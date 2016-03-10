@@ -3,6 +3,7 @@ var output = require('./../connection/output');
 var emotecache = require('./../models/emotecache');
 var cfg        = require('./../../cfg');
 var irc        = require('./../connection/irc');
+var config     = require('./../controllers/config');
 
 var combos = {};
 var lastMessage = '';
@@ -37,7 +38,9 @@ function count(channel, user, message)
         combos[channel]['combo']++;
     }
     else if (combos[channel]['combo'] > 4){
-        irc.say(channel, combos[channel]['combo'] + 'x ' + combos[channel]['emote']  + ' COMBO', true);
+        if (config.config[channel].combos == 1) {
+            irc.say(channel, combos[channel]['combo'] + 'x ' + combos[channel]['emote']  + ' COMBO', true);
+        }
         combos[channel]['combo']        = 1;
         combos[channel]['comboStarter'] = 1;
         combos[channel]['lastEmote']    = '';
