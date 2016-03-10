@@ -56,7 +56,7 @@ irc.socket.on('data', function(data) {
     if (data.substr(0,1) == ':') {
         return;
     }
-    if (data.indexOf('.tmi.twitch.tv WHISPER')) {
+    if (data.indexOf('.tmi.twitch.tv WHISPER') > -1) {
         handleWhisper(data);
         return;
     }
