@@ -154,7 +154,7 @@ function say(channel, message, action) {
         prefix = '/me ';
     }
     irc.socket.write('PRIVMSG ' + channel + ' :' + prefix + message +'\r\n');
-    console.log(channel + ' ' + prefix + message):
+    console.log(channel + ' ' + prefix + message);
 }
 
 
