@@ -207,11 +207,11 @@ function adminController(channel, username, message)
         switch(command) {
             case 'add':
                 config.setTrusted(channel, trusted);
-                output.whisper(username, 'added ' + trusted + ' to trusted');
+                irc.whisper(username, 'added ' + trusted + ' to trusted');
                 break;
             case 'remove':
                 config.removeTrusted(channel, trusted);
-                output.whisper(username, 'removed ' + trusted + ' from trusted');
+                irc.whisper(username, 'removed ' + trusted + ' from trusted');
                 break;
         }
     }
@@ -225,7 +225,7 @@ function configController(channel, username, message) {
     var option = fn.getNthWord(message, 3);
     var value = fn.getNthWord(message, 4);
     config.setConfig(channel, option, value, function(message) {
-        output.whisper(username, message);
+        irc.whisper(username, message);
     });
 }
 
@@ -279,7 +279,7 @@ function addCommand(username, channel, command, message, response, cooldown) {
         cooldown: cooldown
     }
     config.setCommand(channel, commandObj);
-    output.whisper(username, 'added command ' + commandObj.command);
+    irc.whisper(username, 'added command ' + commandObj.command);
 }
 
 function removeCommand(username, channel, command) {
@@ -287,7 +287,7 @@ function removeCommand(username, channel, command) {
         command = '!' + command;
     }
     config.removeCommand(channel, command);
-    output.whisper(username, 'removed command ' + command);
+    irc.whisper(username, 'removed command ' + command);
 }
 
 function trustedCommands(channel, username, message)

@@ -15,7 +15,7 @@ function startVoting(channel, username, message) {
 		return false;
 	}
 	if (message.toLowerCase() === '!voting') {
-		output.whisper(username, 'No voting option specified try [ !voting skip ]');
+		irc.whisper(username, 'No voting option specified try [ !voting skip ]');
 		return false;
 	}
 	if (message.toLowerCase() === '!voting rate') {

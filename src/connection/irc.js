@@ -142,6 +142,12 @@ function getMessage(data) {
 var commandCooldowns = {};
 var userCooldowns = [];
 
+function whisper(username, message)
+{
+    say('#jtv', '/w ' + username + ' ' + message);
+}
+
+
 function say(channel, message, action) {
     if (channels[channel] == 0) {
         return false;
@@ -202,5 +208,6 @@ module.exports = {
     commandCooldowns,
     userCooldowns,
     channels,
-    channelCache
+    channelCache,
+    whisper
 }

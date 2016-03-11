@@ -3,6 +3,7 @@ var fs     = require('fs');
 var moment = require('moment');
 var fn     = require('./../controllers/functions');
 var output = require('./../connection/output');
+var irc    = require('./../connection/irc');
 
 var userCooldowns = [];
 
@@ -65,7 +66,7 @@ function uploadLogs(channel, username, message)
                         .then(function (data) {
                             console.log('Pastebin created: ' + data);
                             console.log(logsFor, logFile);
-                            output.whisper(username, 'Last 20k chars for '+ logsFor + ' in ' + channel + ' pastebin.com/' + data);
+                            irc.whisper(username, 'Last 20k chars for '+ logsFor + ' in ' + channel + ' pastebin.com/' + data);
                         })
                         .fail(function (err) {
                                 console.log(channel, err);
