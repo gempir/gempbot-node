@@ -1,8 +1,7 @@
 var fn     = require('./../controllers/functions');
-var output = require('./../connection/output');
 var emotecache = require('./../models/emotecache');
 var cfg        = require('./../../cfg');
-var irc        = require('./../connection/irc');
+var irc        = require('./../controllers/irc');
 var config     = require('./../controllers/config');
 
 var combos = {};

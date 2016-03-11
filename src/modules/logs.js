@@ -2,8 +2,7 @@ var cfg    = require('./../../cfg.js');
 var fs     = require('fs');
 var moment = require('moment');
 var fn     = require('./../controllers/functions');
-var output = require('./../connection/output');
-var irc    = require('./../connection/irc');
+var irc    = require('./../controllers/irc');
 
 var userCooldowns = [];
 

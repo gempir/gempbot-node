@@ -1,5 +1,4 @@
 var fn    = require('./functions');
-var output = require('./../connection/output');
 var redis  = require('./../models/redis');
 var config = {};
 

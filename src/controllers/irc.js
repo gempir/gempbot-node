@@ -4,7 +4,7 @@ var redis  = require('./../models/redis');
 var irc    = {};
 var events = require('events');
 var event  = new events.EventEmitter();
-var fn     = require('./../controllers/functions');
+var fn     = require('./functions');
 
 
 irc.socket = new net.Socket();

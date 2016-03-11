@@ -1,7 +1,5 @@
-var channel     = require('./../connection/channel');
-var whisper     = require('./../connection/whisper');
 var cfg         = require('./../../cfg');
-var irc         = require('./../connection/irc');
+var irc         = require('./irc');
 var logs        = require('./../modules/logs.js');
 var fn          = require('./functions');
 var combo       = require('./../modules/combo');
@@ -18,7 +16,6 @@ var oddshots    = require('./../modules/oddshots');
 var emotelog    = require('./../modules/emotelog');
 var emotecache  = require('./../models/emotecache');
 var redis       = require('./../models/redis');
-var output      = require('./../connection/output');
 
 
 irc.event.on('message', function(channel, user, message) {

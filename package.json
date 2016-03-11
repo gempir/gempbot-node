@@ -17,8 +17,7 @@
     "pastebin-js": "^0.4.0",
     "redis": "*",
     "request": "*",
-    "socket.io": "*",
-    "tmi.js": "0.0.26"
+    "socket.io": "*"
   },
   "devDependencies": {},
   "scripts": {

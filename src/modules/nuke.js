@@ -1,6 +1,5 @@
 var fn = require('./../controllers/functions');
-var output = require('./../connection/output');
-var irc    = require('./../connection/irc');
+var irc    = require('./../controllers/irc');
 
 var nukeLength = 30;
 var activeNukes = [];

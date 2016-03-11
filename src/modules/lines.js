@@ -1,6 +1,5 @@
 var cfg = require('./../../cfg');
 var fn = require('./../controllers/functions');
-var output = require('./../connection/output');
 var redis = require('./../models/redis');
 
 function lineCount(channel, username, message, callback)

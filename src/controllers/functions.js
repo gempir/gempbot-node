@@ -1,7 +1,4 @@
 var fs = require('fs')
-var channelModule = require('./../connection/channel');
-
-var chat = channelModule.client;
 
 function getNthWord(string, n)
 {
@@ -29,16 +26,6 @@ function containsASCII(data)
         return true;
     }
     return false;
-}
-
-function isMod(channel, username)
-{
-    if (chat.isMod(channel, username) || username.toLowerCase() === channel.substr(1)) {
-        return true;
-    }
-    else {
-        return false;
-    }
 }
 
 function getFilesizeInMegabytes(filepath)
@@ -136,7 +123,6 @@ module.exports =
     secsToTime,
     getRandomInt,
     countWords,
-    isMod,
     containsASCII,
     removeFromArray
 };

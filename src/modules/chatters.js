@@ -1,4 +1,3 @@
-var output       = require('./../connection/output');
 var fn           = require('./../controllers/functions');
 var fs 	         = require('fs');
 var cfg          = require('./../../cfg');

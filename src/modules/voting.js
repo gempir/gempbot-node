@@ -1,5 +1,4 @@
-var output = require('./../connection/output');
-var irc = require('./../connection/irc');
+var irc     = require('./../controllers/irc');
 var overlay = require('./../overlay/overlay');
 var fn 	    = require('./../controllers/functions');
 

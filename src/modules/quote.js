@@ -1,6 +1,5 @@
 var fs     = require('fs');
 var fn     = require('./../controllers/functions');
-var output = require('./../connection/output');
 
 var quoteSkip = 0;
 
