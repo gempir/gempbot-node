@@ -43,6 +43,7 @@ irc.socket.on('connect', function () {
             for (var channel in results) {
               if (results.hasOwnProperty(channel)) {
                 irc.socket.write('JOIN ' + channel + '\r\n');
+                console.log('JOIN ' + channel);
                 event.emit('joined', channel);
                 channels[channel] = results[channel];
               }
