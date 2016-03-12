@@ -33,14 +33,12 @@ function cacheConfig() {
             for (var channel in results) {
                 setConfigForChannel(channel)
             }
-            console.log(config)
        }
     });
 }
 
 function setConfigForChannel(channel) {
     redis.hgetall(channel + ':config', function(err, results) {
-        console.log(channel)
         config[channel] = results;
     });
 }
