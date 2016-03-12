@@ -26,7 +26,7 @@ function logsCommandHandler(channel, user, message, callback)
     userCooldowns.push(user.toLowerCase());
     setTimeout(function() {
         fn.removeFromArray(userCooldowns, user.toLowerCase());
-    }, 60000)
+    }, 10000)
     bigCommand = fn.getNthWord(message, 1) + ' ' + fn.getNthWord(message, 2);
     if (bigCommand === '!logs size') {
         logsSize(channel, user, message, function(response) {
