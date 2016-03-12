@@ -194,6 +194,15 @@ function adminController(channel, username, message)
         case 'config':
             configController(channel, username, message);
             break;
+        case 'rejoin':
+            irc.updateChannelJoins();
+            break;
+        case 'join':
+            joinChannel(channel, username, message);
+            break;
+        case 'part':
+            partChannel(channel, username, message);
+            break;
     }
     function switchTrusted(channel, username, message) {
         if (fn.countWords(message) <= 3) {
@@ -211,6 +220,29 @@ function adminController(channel, username, message)
                 irc.whisper(username, 'removed ' + trusted + ' from trusted');
                 break;
         }
+    }
+
+    function joinChannel(channel, username, message) {
+        if (fn.countWords(message) < 3) {
+            return false;
+        }
+        var silent     = false;
+        var chanToJoin = fn.getNthWord(message, 3);
+
+        if (fn.countWords(message) < 4) {
+            if (fn.getNthWord(message, 4) == 'silent') {
+                silent = true;
+            }
+        }
+        irc.joinChannel(chanToJoin, silent);
+    }
+
+    function partChannel(channel, username, message) {
+        if (fn.countWords(message) < 3) {
+            return false;
+        }
+        var chanToPart = fn.getNthWord(message, 3);
+        irc.partChannel(chanToPart);
     }
 }
 

@@ -201,6 +201,40 @@ function sayCommand(channel, username, response, commObj)
     }, 2000);
 }
 
+function updateChannelJoins() {
+    redis.hgetall('channels', function(err, results) {
+        if (err) {
+            console.log(err);
+            return false;
+        }
+        for (channel in results) {
+            console.log(channel + ' ' + results.channel);
+            if (results.channel == 1) {
+                irc.socket.write('JOIN ' + channel + '\r\n');
+            }
+            if (results.channel == 0) {
+                irc.socket.write('PART ' + channel + '\r\n');
+            }
+        }
+    });
+}
+
+function joinChannel(channel, silent) {
+    var response = 1;
+    if (silent) {
+        response = 0;
+    }
+    irc.socket.write('JOIN ' + channel + '\r\n');
+    redis.hset('channels', channel, response);
+    console.log('[redis] ' + channel + ' ' + response)
+}
+
+function partChannel(channel) {
+    irc.socket.write('PART ' + channel + '\r\n');
+    redis.hdel('channels', channel);
+    console.log('[redis] PART ' + channel)
+}
+
 module.exports = {
     irc,
     event,
@@ -210,5 +244,8 @@ module.exports = {
     userCooldowns,
     channels,
     channelCache,
-    whisper
+    whisper,
+    updateChannelJoins,
+    joinChannel,
+    partChannel
 }

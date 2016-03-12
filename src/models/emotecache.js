@@ -54,6 +54,9 @@ function cacheEmotes() {
             console.log('[redis] ' + err);
             return false;
         }
+        if (reply == null) {
+            return false;
+        }
         bttvemotes.global = Object.keys(reply);
         var channels = cfg.options.channels;
         for (var y = 0; y < channels.length; y++) {
@@ -70,13 +73,6 @@ function cacheEmotes() {
         }
     });
 }
-
-(function emoteCacheInterval(){
-    setInterval(function(){
-        cacheEmotes();
-    }, 1800000);
-})();
-
 
 module.exports = {
     cacheEmotes,
