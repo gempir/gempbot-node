@@ -31,15 +31,20 @@ function cacheConfig() {
            console.log('[REDIS] ' + err);
        } else {
             for (var channel in results) {
-              if (results.hasOwnProperty(channel)) {
-                redis.hgetall(channel + ':config', function(err, results) {
-                    config[channel] = results;
-                });
-              }
+                setConfigForChannel(channel)
             }
+            console.log(config)
        }
     });
 }
+
+function setConfigForChannel(channel) {
+    redis.hgetall(channel + ':config', function(err, results) {
+        console.log(channel)
+        config[channel] = results;
+    });
+}
+
 
 function setConfig(channel, option, value, callback) {
     redis.hset(channel + ":config", option, value, function() {
