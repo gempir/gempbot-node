@@ -1,4 +1,5 @@
 var cfg    = require('./../../cfg.js');
+var config = require('./../controllers/config');
 var fs     = require('fs');
 var moment = require('moment');
 var fn     = require('./../controllers/functions');
@@ -11,7 +12,7 @@ if (!fs.existsSync('logs')){
     console.log('[LOG] Created folder: logs');
 }
 
-cfg.options.channels.forEach(function(channel) {
+config.channels.forEach(function(channel) {
   if (!fs.existsSync('logs/' + channel.substr(1))){
     fs.mkdirSync('logs/' + channel.substr(1));
     console.log('[LOG] Created folder: ' + channel.substr(1));

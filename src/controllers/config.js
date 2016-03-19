@@ -1,6 +1,7 @@
 var fn    = require('./functions');
 var redis  = require('./../models/redis');
 var config = {};
+var channels = [];
 
 function getTrusted(channel, callback) {
     redis.hgetall(channel + ':trusted', function (err, obj) {
@@ -31,6 +32,7 @@ function cacheConfig() {
            console.log('[REDIS] ' + err);
        } else {
             for (var channel in results) {
+                channels.push(channel);
                 setConfigForChannel(channel)
             }
        }
@@ -99,5 +101,6 @@ module.exports = {
     getActiveCommands,
     setConfig,
     cacheConfig,
-    config
+    config,
+    channels
 };

@@ -1,12 +1,12 @@
 var cfg   = require('./../../cfg');
 var redis = require('./redis');
-
+var config= require('./../controllers/config');
 
 var channelCommands = {};
 
 function cacheCommands()
 {
-    var channels = cfg.options.channels;
+    var channels = config.channels;
 
     for (var i = 0; i < channels.length; i++) {
         var currentChannel = channels[i];
