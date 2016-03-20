@@ -11,9 +11,7 @@ var lastEmote = '';
 function count(channel, user, message)
 {
     message = ' ' + message + ' ';
-    if (user.username.toLowerCase() === cfg.options.identity.username.toLowerCase()) {
-        return false;
-    }
+
     if (typeof combos[channel] === 'undefined') {
         combos[channel] = {};
         combos[channel]['combo'] = 1;
