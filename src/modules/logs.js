@@ -12,12 +12,13 @@ if (!fs.existsSync('logs')){
     console.log('[LOG] Created folder: logs');
 }
 
-config.channels.forEach(function(channel) {
-  if (!fs.existsSync('logs/' + channel.substr(1))){
-    fs.mkdirSync('logs/' + channel.substr(1));
-    console.log('[LOG] Created folder: ' + channel.substr(1));
-  }
-});
+function createFolder(channel) {
+    if (!fs.existsSync('logs/' + channel.substr(1))){
+      fs.mkdirSync('logs/' + channel.substr(1));
+      console.log('[LOG] Created folder: ' + channel.substr(1));
+    }
+}
+
 
 function logsCommandHandler(channel, user, message, callback)
 {
@@ -111,5 +112,6 @@ function logsSize(channel, username, message, callback)
 module.exports =
 {
     userLogs,
-    logsCommandHandler
+    logsCommandHandler,
+    createFolder
 }

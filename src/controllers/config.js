@@ -1,5 +1,6 @@
 var fn    = require('./functions');
 var redis  = require('./../models/redis');
+var logs  = require('./../modules/logs');
 var config = {};
 var channels = [];
 
@@ -33,7 +34,8 @@ function cacheConfig() {
        } else {
             for (var channel in results) {
                 channels.push(channel);
-                setConfigForChannel(channel)
+                logs.createFolder(channel);
+                setConfigForChannel(channel);
             }
        }
     });
