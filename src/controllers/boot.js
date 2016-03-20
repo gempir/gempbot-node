@@ -4,5 +4,7 @@ var emotecache   = require('./../models/emotecache');
 var commandcache = require('./../models/commandcache');
 
 commandcache.cacheCommands();
-emotecache.cacheEmotes();
+emotecache.fetchEmotesFromBttv(function() {
+    emotecache.cacheEmotes();
+});
 config.cacheConfig();

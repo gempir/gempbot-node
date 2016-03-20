@@ -1,4 +1,5 @@
 var cfg   = require('./../../cfg');
+var config = require('./../controllers/config');
 var redis = require('./redis');
 var request = require('request');
 
@@ -31,7 +32,7 @@ function cacheGlobalBTTVEmotesToRedis(callback) {
 }
 
 function cacheChannelBTTVEmotesToRedis(callback) {
-    var channels = cfg.options.channels;
+    var channels = config.channels;
     for (var i = 0; i < channels.length; i++) {
         var channelCurrent =  channels[i];
         request('https://api.betterttv.net/2/channels/' + channelCurrent.substr(1), function (error, response, body) {
@@ -58,7 +59,7 @@ function cacheEmotes() {
             return false;
         }
         bttvemotes.global = Object.keys(reply);
-        var channels = cfg.options.channels;
+        var channels = config.channels;
         for (var y = 0; y < channels.length; y++) {
             (function(y) {
                 redis.hgetall(channels[y] + ':bttvchannelemotes', function(err, reply) {
