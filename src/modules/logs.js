@@ -9,13 +9,13 @@ var userCooldowns = [];
 
 if (!fs.existsSync('logs')){
     fs.mkdirSync('logs');
-    console.log('[LOG] Created folder: logs');
+    console.log('[LOG] created folder: logs');
 }
 
 function createFolder(channel) {
     if (!fs.existsSync('logs/' + channel.substr(1))){
       fs.mkdirSync('logs/' + channel.substr(1));
-      console.log('[LOG] Created folder: ' + channel.substr(1));
+      console.log('[LOG] created folder: ' + channel.substr(1));
     }
 }
 

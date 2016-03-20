@@ -5,7 +5,7 @@ var irc    = {};
 var events = require('events');
 var event  = new events.EventEmitter();
 var fn     = require('./functions');
-
+var fs     = require('fs');
 
 irc.socket = new net.Socket();
 irc.socket.setEncoding('utf-8');
@@ -224,9 +224,17 @@ function joinChannel(channel, silent) {
     if (silent) {
         response = 0;
     }
+    createFolder(channel);
     irc.socket.write('JOIN ' + channel + '\r\n');
     redis.hset('channels', channel, response);
     console.log('[redis] ' + channel + ' ' + response)
+}
+
+function createFolder(channel) {
+    if (!fs.existsSync('logs/' + channel.substr(1))){
+      fs.mkdirSync('logs/' + channel.substr(1));
+      console.log('[LOG] created folder: ' + channel.substr(1));
+    }
 }
 
 function partChannel(channel) {
