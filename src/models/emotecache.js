@@ -33,20 +33,23 @@ function cacheGlobalBTTVEmotesToRedis(callback) {
 
 function cacheChannelBTTVEmotesToRedis(callback) {
     var channels = config.channels;
-    for (var i = 0; i < channels.length; i++) {
-        var channelCurrent =  channels[i];
-        request('https://api.betterttv.net/2/channels/' + channelCurrent.substr(1), function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                var bttvObj = JSON.parse(body);
-                var emotes  = bttvObj.emotes;
-                for (var j = 0; j < emotes.length; j++) {
-                    redis.hset(channelCurrent + ':bttvchannelemotes', emotes[j].code, emotes[j].id);
+        var channel  = '';
+        for (var i = 0; i < channels.length; i++) {
+            channelCurrent =  channels[i];
+            (function(channelCurrent) {
+                request('https://api.betterttv.net/2/channels/' + channelCurrent.substr(1), function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    var bttvObj = JSON.parse(body);
+                    var emotes  = bttvObj.emotes;
+                    for (var j = 0; j < emotes.length; j++) {
+                        redis.hset(channelCurrent + ':bttvchannelemotes', emotes[j].code, emotes[j].id);
+                    }
+                    return callback();
                 }
-                cacheEmotes();
-                return callback();
-            }
-        })
-    }
+                });
+            })(channelCurrent);
+        }
+    cacheEmotes();
 }
 
 function cacheEmotes() {
