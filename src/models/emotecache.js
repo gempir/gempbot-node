@@ -41,8 +41,8 @@ function cacheChannelBTTVEmotesToRedis(callback) {
                 var emotes  = bttvObj.emotes;
                 for (var j = 0; j < emotes.length; j++) {
                     redis.hset(channelCurrent + ':bttvchannelemotes', emotes[j].code, emotes[j].id);
-                    bttvemotes.channel[channelCurrent] = emotes[j].code;
                 }
+                cacheEmotes();
                 return callback();
             }
         })
