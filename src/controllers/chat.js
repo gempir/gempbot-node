@@ -191,6 +191,7 @@ function adminController(channel, username, message)
     switch(command) {
         case 'trusted':
             switchTrusted(channel, username, message);
+            break;
         case 'config':
             configController(channel, username, message);
             break;
