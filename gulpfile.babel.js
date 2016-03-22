@@ -19,4 +19,7 @@ gulp.task('default', () => {
 			presets: ['es2015']
 		}))
 		.pipe(gulp.dest('build'));
+
+	gulp.src('src/overlay/views/**/*.jade')
+		.pipe(gulp.dest('build/src/overlay/views'));
 });
