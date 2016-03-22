@@ -1,6 +1,6 @@
 var cfg         = require('./../../cfg');
 var irc         = require('./irc');
-var logs        = require('./../modules/logs.js');
+var logs        = require('./../modules/logs');
 var fn          = require('./functions');
 var combo       = require('./../modules/combo');
 var count       = require('./../modules/count');
