@@ -54,8 +54,8 @@ irc.socket.on('connect', function () {
 
 irc.socket.on('data', function(data) {
     data = data.replace(/(\r\n|\n|\r)/gm,"");
-    if (data.indexOf("USERSTATE") > -1) {
-        return;
+    if (data.indexOf(' :tmi.twitch.tv USERSTATE ') > -1) {
+        return
     }
     if (data.substr(0,1) == ':') {
         return;

@@ -19,7 +19,6 @@ var redis       = require('./../models/redis');
 
 
 irc.event.on('message', function(channel, user, message) {
-    console.log(channel, user.username, message);
     eventHandler(channel, user, message);
 })
 
