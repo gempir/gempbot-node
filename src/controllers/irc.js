@@ -84,7 +84,7 @@ irc.socket.on('data', function(data) {
         message: message
     }
     if (messageObj.user.username == '') {
-        messageObj.user.['display-name'] = cfg.irc.username;
+        messageObj.user['display-name'] = cfg.irc.username;
         messageObj.user.username = cfg.irc.username;
     }
     event.emit('message', messageObj.channel, messageObj.user, messageObj.message)
