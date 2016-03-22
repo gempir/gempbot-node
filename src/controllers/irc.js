@@ -120,9 +120,7 @@ function getTags(data) {
         }
 
     }
-    if (tags['display-name'].trim() == '') {
-        tags['display-name'] = cfg.irc.username;
-    }
+    console.log(tags['display-name']);
     return tags;
 }
 
