@@ -152,7 +152,6 @@ var userCooldowns = [];
 
 function whisper(username, message)
 {
-    event.emit('message', "#jtv", username, message)
     say('#jtv', '/w ' + username + ' ' + message);
 }
 
