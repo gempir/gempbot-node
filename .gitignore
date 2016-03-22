@@ -48,3 +48,6 @@ Temporary Items
 
 # selenium files
 chromedriver.exe
+
+# build
+build/

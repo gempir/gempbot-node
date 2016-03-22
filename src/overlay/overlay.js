@@ -9,7 +9,7 @@ console.log('[express] connected on port 3000');
 var io = require('socket.io').listen(server);
 
 app.set('view engine', 'jade');
-app.set('views', (__dirname + '/views'));
+app.set('views', (__dirname +'/views'));
 app.use(express.static(__dirname + '/public'));
 
 

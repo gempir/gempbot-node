@@ -62,7 +62,7 @@ function getActiveCommands(channel, callback) {
             return [];
         }
         var activeCommands = [];
-        for (key in obj) {
+        for (var key in obj) {
             var commandObj = JSON.parse(obj[key]);
             if (commandObj.enabled === true) {
                 activeCommands.push(commandObj.command)

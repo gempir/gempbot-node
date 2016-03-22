@@ -1,3 +1,5 @@
-require('nice-console')(console)
+require('nice-console')(console);
 require('./src/overlay/overlay');
-require('./src/controllers/boot');
+import Bot from './src/Bot';
+
+var bot = new Bot;

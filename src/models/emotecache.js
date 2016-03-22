@@ -33,7 +33,8 @@ function cacheGlobalBTTVEmotesToRedis(callback) {
 
 function cacheChannelBTTVEmotesToRedis(callback) {
     var channels = config.channels;
-        var channel  = '';
+    var channel  = '';
+    var channelCurrent = '';
         for (var i = 0; i < channels.length; i++) {
             channelCurrent =  channels[i];
             (function(channelCurrent) {

@@ -69,11 +69,11 @@ irc.socket.on('data', function(data) {
     }
     data = data.substr(1);
 
-    tags = getTags(data);
-    channel = getChannel(data);
-    message = getMessage(data);
+    var tags = getTags(data);
+    var channel = getChannel(data);
+    var message = getMessage(data);
 
-    messageObj = {
+    var messageObj = {
         user: {
             turbo: tags['user-id'],
             emotes: tags.emotes,

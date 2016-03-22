@@ -7,14 +7,14 @@ var irc    = require('./../controllers/irc');
 
 var userCooldowns = [];
 
-if (!fs.existsSync('logs')){
-    fs.mkdirSync('logs');
+if (!fs.existsSync('./../logs')){
+    fs.mkdirSync('./../logs');
     console.log('[LOG] created folder: logs');
 }
 
 function createFolder(channel) {
-    if (!fs.existsSync('logs/' + channel.substr(1))){
-      fs.mkdirSync('logs/' + channel.substr(1));
+    if (!fs.existsSync('./../logs/' + channel.substr(1))){
+      fs.mkdirSync('./../logs/' + channel.substr(1));
       console.log('[LOG] created folder: ' + channel.substr(1));
     }
 }
@@ -29,7 +29,7 @@ function logsCommandHandler(channel, user, message, callback)
     setTimeout(function() {
         fn.removeFromArray(userCooldowns, user.toLowerCase());
     }, 10000)
-    bigCommand = fn.getNthWord(message, 1) + ' ' + fn.getNthWord(message, 2);
+    var bigCommand = fn.getNthWord(message, 1) + ' ' + fn.getNthWord(message, 2);
     if (bigCommand === '!logs size') {
         logsSize(channel, user, message, function(response) {
             return callback(response);
@@ -43,7 +43,7 @@ function logsCommandHandler(channel, user, message, callback)
 function userLogs(channel, username, message)
 {
     username = username.toLowerCase();
-    var file = 'logs/' + channel.substr(1) + '/' + username +'.txt';
+    var file = './../logs/' + channel.substr(1) + '/' + username +'.txt';
     fs.appendFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + username + ': ' + message + '\n', function(){});
 }
 
@@ -55,8 +55,8 @@ function uploadLogs(channel, username, message)
     username = username.toLowerCase();
 
     var logsFor = (fn.getNthWord(message, 2)).toLowerCase();
-    var logFile = 'logs/' + channel.substr(1) + '/' + logsFor + '.txt';
-    var logFileChannel = 'logs/' + channel.substr(1) + '.txt';
+    var logFile = './../logs/' + channel.substr(1) + '/' + logsFor + '.txt';
+    var logFileChannel = './../logs/' + channel.substr(1) + '.txt';
     var logsShort = null;
     if (fn.fileExists(logFile)) {
             fs.readFile(logFile, function(err,data) {
@@ -86,7 +86,7 @@ function logsSize(channel, username, message, callback)
     username = username.toLowerCase();
 
     name = name.toLowerCase();
-    if (!fn.fileExists('logs/' + channel.substr(1) + '/' + name +  '.txt')) {
+    if (!fn.fileExists('./../logs/' + channel.substr(1) + '/' + name +  '.txt')) {
 
         if (fn.stringIsLongerThan(name, 20)) {
             name = 'the user';
@@ -95,7 +95,7 @@ function logsSize(channel, username, message, callback)
         return false;
     }
     else {
-        var file = 'logs/' + channel.substr(1) + '/' + name +  '.txt'
+        var file = './../logs/' + channel.substr(1) + '/' + name +  '.txt'
         var fileSize = fn.getFilesizeInKilobytes(file).toFixed(0);
         var extension = ' KB';
         if (fileSize > 1000) {
