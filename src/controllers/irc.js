@@ -120,7 +120,6 @@ function getTags(data) {
         }
 
     }
-    console.log(tags);
     return tags;
 }
 

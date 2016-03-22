@@ -289,6 +289,7 @@ function commandsController(channel, username, message)
             cooldown       = commandMessage.substr(index+5, 7);
             commandMessage = commandMessage.replace('--cd', '');
             commandMessage = commandMessage.replace(cooldown, '');
+            commandMessage = trim(commandMessage);
         }
         addCommand(username, channel, commandName, commandMessage, response, cooldown);
     }
