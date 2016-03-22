@@ -83,6 +83,10 @@ irc.socket.on('data', function(data) {
         channel: channel,
         message: message
     }
+    if (messageObj.user.username == '') {
+        messageObj.user.['display-name'] = cfg.irc.username;
+        messageObj.user.username = cfg.irc.username;
+    }
     event.emit('message', messageObj.channel, messageObj.user, messageObj.message)
 });
 
@@ -120,7 +124,6 @@ function getTags(data) {
         }
 
     }
-    console.log(tags['display-name']);
     return tags;
 }
 
