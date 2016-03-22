@@ -83,7 +83,7 @@ irc.socket.on('data', function(data) {
         channel: channel,
         message: message
     }
-    if (messageObj.user.username.trim() == '') {
+    if (messageObj.user.username == '' || messageObj.user.username == ' ') {
         messageObj.user['display-name'] = cfg.irc.username;
         messageObj.user.username = cfg.irc.username;
     }
