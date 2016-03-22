@@ -152,6 +152,7 @@ var userCooldowns = [];
 
 function whisper(username, message)
 {
+    event.emit('message', "#jtv", username, message)
     say('#jtv', '/w ' + username + ' ' + message);
 }
 
@@ -167,7 +168,18 @@ function say(channel, message, action) {
     if (action) {
         prefix = '/me ';
     }
+
+    var user = {
+        turbo: '',
+        emotes: '',
+        subscriber: '',
+        'user-type': '',
+        username: cfg.irc.username,
+        'display-name': cfg.irc.username,
+        action: ''
+    }
     irc.socket.write('PRIVMSG ' + channel + ' :' + prefix + message +'\r\n');
+    event.emit('message', channel, user, message);
     console.log(channel + ' ' + prefix + message);
 }
 
