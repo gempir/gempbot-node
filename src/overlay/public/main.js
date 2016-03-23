@@ -23,13 +23,13 @@ var channelByURL = (getUrlParts(currentURL).pathname).substr(1);
 
 socket.on(channelByURL + ':startSkip', function(data) {
 	var channel = data.channel.substr(1);
-	showData('A voting has been started type <span class="red">!vote skip</span> or <span class="green">!vote stay</span> to vote on the current content.  <br> The voting ends in 45 seconds', channel)
+	showData('A voting has been started type <span class="red">!vote skip</span> or <span class="green">!vote stay</span> to vote on the current content', channel)
 });
 
 socket.on(channelByURL + ':startRate', function(data) {
 
 	var channel = data.channel.substr(1);
-	showData('A rate voting has been started type E.g. <span class="yellow">[ !vote 5 ]</span> to rate the current content. The voting ends in 45 seconds.', channel)
+	showData('A rate voting has been started type E.g. <span class="yellow">[ !vote 5 ]</span> to rate the current content', channel)
 });
 
 socket.on(channelByURL + ':resultsSkip', function(data) {

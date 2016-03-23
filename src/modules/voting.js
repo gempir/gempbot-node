@@ -76,7 +76,7 @@ function votingSkip(channel, username, message) {
 }
 
 function votingSkipController(channel, username, message) {
-	irc.say(channel, 'A skip or stay voting has been started type [ !vote skip ] or [ !vote stay ] to vote on the current content');
+	irc.say(channel, 'A skip or stay voting has been started type [ !vote skip ] or [ !vote stay ] to vote on the current content (45s)');
 
 	setTimeout(function(){
 		fn.removeFromArray(activeVotings, channel);
@@ -87,7 +87,7 @@ function votingSkipController(channel, username, message) {
 }
 
 function votingRateController(channel, username, message) {
-	irc.say(channel, 'A rating voting has been started type E.g. [ !vote 5 ] to rate the current content');
+	irc.say(channel, 'A rating voting has been started type E.g. [ !vote 5 ] to rate the current content (45s)');
 
 	setTimeout(function(){
 		var totalRatings = 0;
