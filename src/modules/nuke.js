@@ -50,7 +50,7 @@ function nuke(channel, username, message)
             return false;
         }
 
-        for (index = 0; index < toNuke[channel].length; index++) {
+        for (var index = 0; index < toNuke[channel].length; index++) {
             irc.say(channel, '/timeout ' + toNuke[channel][index] + ' 1');
         }
         console.log('[LOG] nuking:' + toNuke[channel]);

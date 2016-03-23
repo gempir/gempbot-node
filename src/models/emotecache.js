@@ -8,11 +8,11 @@ var bttvemotes = {
     channel: {}
 }
 
-function fetchEmotesFromBttv(callback) {
+function fetchEmotesFromBttv() {
     console.log('[API] fetching bttv emotes');
     cacheGlobalBTTVEmotesToRedis(function() {
         cacheChannelBTTVEmotesToRedis(function() {
-            return callback();
+            cacheEmotes();
         });
     });
 }

@@ -23,7 +23,7 @@ function setTrusted(channel, username) {
 }
 
 function removeTrusted(channel, username) {
-    redis.del(channel + ':trusted', username);
+    redis.hdel(channel + ':trusted', username);
 }
 
 function cacheConfig() {

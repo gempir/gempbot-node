@@ -26,15 +26,15 @@ function eventHandler(channel, user, message)
 {
     var username = user.username;
 
-    lines.recordLines(channel, username, message);
-    emotelog.incrementUserEmote(channel, user, message);
-    emotelog.incrementEmote(channel, user, message);
-
-    oddshots.saveChannelOddshots(channel, username, message);
-    combo.count(channel, user, message);
-    logs.userLogs(channel, username, message);
-    chatters.recordChatters(channel, username, message);
-    nuke.recordToNuke(channel, user, message);
+    //lines.recordLines(channel, username, message);
+    // emotelog.incrementUserEmote(channel, user, message);
+    // emotelog.incrementEmote(channel, user, message);
+    //
+    // oddshots.saveChannelOddshots(channel, username, message);
+    // combo.count(channel, user, message);
+    // logs.userLogs(channel, username, message);
+    // chatters.recordChatters(channel, username, message);
+    // nuke.recordToNuke(channel, user, message);
 
     var command = fn.getNthWord(message, 1).toLowerCase();
     if (command.substr(0,1) != '!') {

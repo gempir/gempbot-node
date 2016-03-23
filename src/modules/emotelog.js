@@ -4,7 +4,7 @@ var emotecache         = require('./../models/emotecache');
 function incrementUserEmote(channel, user, message)
 {
     if (user.emotes != null) {
-        for (emote in user.emotes) {
+        for (var emote in user.emotes) {
             var currentEmotes = user.emotes[emote];
             var emotePosition    = currentEmotes[0];
             var emotePositionArr = emotePosition.split('-');
@@ -37,7 +37,7 @@ function countUserBTTVEmotes(channel, user, message) {
 function incrementEmote(channel, user, message)
 {
     if (user.emotes != null) {
-        for (emote in user.emotes) {
+        for (var emote in user.emotes) {
             var currentEmotes = user.emotes[emote];
             var emotePosition    = currentEmotes[0];
             var emotePositionArr = emotePosition.split('-');

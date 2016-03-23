@@ -62,7 +62,7 @@ function getEmoteFromMessage(channel, user, message)
             return false;
         }
         else {
-            for (emote in user.emotes) {
+            for (var emote in user.emotes) {
 
                 var currentEmotes = user.emotes[emote];
                 var emotePosition    = currentEmotes[0];
