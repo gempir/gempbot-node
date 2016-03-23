@@ -10,7 +10,7 @@ function getQuote(channel, username, message, callback)
 	}
 	var userToQuote = fn.getNthWord(message, 2);
 	userToQuote = userToQuote.toLowerCase();
-	userFile = 'logs/' + channel.substr(1) + '/' + userToQuote + '.txt';
+	var userFile = 'logs/' + channel.substr(1) + '/' + userToQuote + '.txt';
 
 	if (!fn.fileExists(userFile)) {
     	console.log('[LOG] ' + userToQuote + ' has no logs');
@@ -21,7 +21,7 @@ function getQuote(channel, username, message, callback)
 		if (err) {
 			return false;
 		}
-    	logsSplit = data.toString().split("\n");
+    	var logsSplit = data.toString().split("\n");
         var quote = logsSplit[Math.floor(Math.random()*logsSplit.length)];
         quote = quote.split(']');
         quote = quote[1];
@@ -42,7 +42,7 @@ function getQuote(channel, username, message, callback)
         }
     	return callback({
 			channeL: channel,
-			message: '"' + quote + ' "'
+			message: quote
 		});
     });
 }

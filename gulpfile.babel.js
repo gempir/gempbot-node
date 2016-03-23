@@ -22,4 +22,7 @@ gulp.task('default', () => {
 
 	gulp.src('src/overlay/views/**/*.jade')
 		.pipe(gulp.dest('build/src/overlay/views'));
+
+	gulp.src('src/overlay/public/**/*.css')
+		.pipe(gulp.dest('build/src/overlay/public'));
 });

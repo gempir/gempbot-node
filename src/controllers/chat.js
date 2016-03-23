@@ -32,7 +32,7 @@ function eventHandler(channel, user, message)
     //
     // oddshots.saveChannelOddshots(channel, username, message);
     // combo.count(channel, user, message);
-    // logs.userLogs(channel, username, message);
+    //logs.userLogs(channel, username, message);
     // chatters.recordChatters(channel, username, message);
     // nuke.recordToNuke(channel, user, message);
 

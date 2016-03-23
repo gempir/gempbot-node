@@ -19,7 +19,7 @@ function lastMessage(channel, username, message, callback) {
         data = data.toString();
 
         var lines = data.split('\n');
-        lastLine = lines[lines.length-2];
+        var lastLine = lines[lines.length-2];
         lastLine = lastLine.split(']');
 
         var response = lastLine[1];
@@ -32,7 +32,7 @@ function lastMessage(channel, username, message, callback) {
         }
 	    return callback({
             channel: channel,
-            message: '" ' + response + ' "'
+            message: response
         });
     });
 }
