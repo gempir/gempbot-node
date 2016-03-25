@@ -236,6 +236,7 @@ function adminController(channel, username, message)
             }
         }
         irc.joinChannel(chanToJoin, silent);
+        emotecache.fetchEmotesFromBttv();
     }
 
     function partChannel(channel, username, message) {
