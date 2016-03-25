@@ -7,9 +7,8 @@ function lastMessage(channel, username, message, callback) {
 	if (message === '!lastmessage') {
 		return false;
 	}
-
 	var lastMessageFor = fn.getNthWord(message, 2).toLowerCase();
-	var file = 'logs/' + channel.substr(1) + '/' + lastMessageFor + '.txt';
+	var file = './../logs/' + channel.substr(1) + '/' + lastMessageFor + '.txt';
 
 	if (!fn.fileExists(file)) {
 		return false;
