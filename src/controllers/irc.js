@@ -233,8 +233,11 @@ function joinChannel(channel, silent) {
     }
     createFolder(channel);
     irc.socket.write('JOIN ' + channel + '\r\n');
-    redis.hset('channels', channel, response);
-    console.log('[redis] ' + channel + ' ' + response)
+    console.log('[redis] ' + channel + ' ' + response);
+    redis.hset('channels', channel, response, function(err) {
+        if (err) console.log(err);
+        channelCache();
+    });
 }
 
 function createFolder(channel) {
@@ -246,8 +249,11 @@ function createFolder(channel) {
 
 function partChannel(channel) {
     irc.socket.write('PART ' + channel + '\r\n');
-    redis.hdel('channels', channel);
     console.log('[redis] PART ' + channel)
+    redis.hdel('channels', channel, function(err) {
+        if (err) console.log(err);
+        channelCache();
+    });
 }
 
 module.exports = {

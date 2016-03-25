@@ -230,11 +230,11 @@ function adminController(channel, username, message)
         var silent     = false;
         var chanToJoin = fn.getNthWord(message, 3);
 
-        if (fn.countWords(message) < 4) {
-            if (fn.getNthWord(message, 4) == 'silent') {
-                silent = true;
-            }
+
+        if (message.indexOf('--silent') > -1) {
+            silent = true;
         }
+
         irc.joinChannel(chanToJoin, silent);
         emotecache.fetchEmotesFromBttv();
     }
