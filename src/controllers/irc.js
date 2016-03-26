@@ -83,21 +83,20 @@ irc.socket.on('data', function(data) {
             emotes[id] = pos;
         }
     }
-
+    
     var messageObj = {
         user: {
             turbo: parsed.tags.turbo,
             emotes: emotes,
             subscriber: parsed.tags.subscriber,
             'user-type': parsed.tags['user-type'],
-            username: parsed.tags['display-name'],
+            username: (parsed.prefix.split("!"))[0],
             'display-name': parsed.tags['display-name'],
             action: action
         },
         channel: parsed.params[0],
         message: message
     }
-
     event.emit('message', messageObj.channel, messageObj.user, messageObj.message)
 });
 
