@@ -7,6 +7,7 @@
     "async": "*",
     "express": "*",
     "irc": "^0.4.1",
+    "irc-message": "^3.0.2",
     "jade": "*",
     "moment": "*",
     "nice-console": "^1.0.0",

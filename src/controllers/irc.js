@@ -90,7 +90,7 @@ irc.socket.on('data', function(data) {
             emotes: emotes,
             subscriber: parsed.tags.subscriber,
             'user-type': parsed.tags['user-type'],
-            username: parsed.tags['display-name'].toLowerCase(),
+            username: parsed.tags['display-name'],
             'display-name': parsed.tags['display-name'],
             action: action
         },
