@@ -13,6 +13,7 @@ irc.socket.setNoDelay();
 irc.socket.connect(cfg.irc.port, cfg.irc.server);
 
 var channels = {};
+var isMod = true;
 
 function channelCache()
 {
@@ -54,7 +55,14 @@ irc.socket.on('connect', function () {
 
 irc.socket.on('data', function(data) {
     data = data.replace(/(\r\n|\n|\r)/gm,"");
+
     if (data.indexOf(' :tmi.twitch.tv USERSTATE ') > -1) {
+        if (data.indexOf("user-type=mod") > -1) {
+            isMod = true;
+        }
+        else {
+            isMod = false;
+        }
         return
     }
     if (data.substr(0,1) == ':') {
@@ -158,6 +166,10 @@ function whisper(username, message)
 
 function say(channel, message, action) {
     if (channels[channel] == 0) {
+        return false;
+    }
+    if (!isMod) {
+        console.log("Bot is not mod in " + channel);
         return false;
     }
 

@@ -24,7 +24,7 @@ function saveChannelOddshots(channel, username, message)
 
 function parseOddshots(channel, username, message)
 {
-    var file = 'logs/' + channel.substr(1) + '/oddshots.txt';
+    var file = '../logs/' + channel.substr(1) + '/oddshots.txt';
     var messageSplit = message.split(' ');
 
     for (var i = 0; i < (messageSplit.length -1); i++) {
