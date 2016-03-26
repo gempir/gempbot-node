@@ -83,7 +83,7 @@ irc.socket.on('data', function(data) {
             emotes[id] = pos;
         }
     }
-    
+
     var messageObj = {
         user: {
             turbo: parsed.tags.turbo,
@@ -126,7 +126,10 @@ function say(channel, message, action) {
     if (action) {
         prefix = '/me ';
     }
-    irc.socket.write('PRIVMSG ' + channel + ' :' + prefix + message +'\r\n');
+
+    var fullMessage = (prefix + message).trim();
+
+    irc.socket.write('PRIVMSG ' + channel + ' :' + fullMessage +'\r\n');
     console.log(channel + ' ' + prefix + message);
 }
 
