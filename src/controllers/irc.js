@@ -6,6 +6,8 @@ var events = require('events');
 var event  = new events.EventEmitter();
 var fn     = require('./functions');
 var fs     = require('fs');
+var parse = require('irc-message').parse
+
 
 irc.socket = new net.Socket();
 irc.socket.setEncoding('utf-8');
@@ -54,43 +56,48 @@ irc.socket.on('connect', function () {
 
 irc.socket.on('data', function(data) {
     data = data.replace(/(\r\n|\n|\r)/gm,"");
+    if (data.substr(0,1) != "@" || !(data.indexOf(" PRIVMSG ") > -1)) {
+        return; // no tags
+    }
+    var message = '';
+    var emotes = {};
+    var action  = false;
+    var parsed  = parse(data);
+    parsed.params[1] = parsed.params[1] || '';
+    message = parsed.params[1];
 
-    if (data.indexOf(' :tmi.twitch.tv USERSTATE ') > -1) {
-        return
-    }
-    if (data.substr(0,1) == ':') {
-        return;
-    }
-    if (data.indexOf('.tmi.twitch.tv WHISPER') > -1) {
-        handleWhisper(data);
-        return;
-    }
-    if (data.indexOf('PRIVMSG') === -1) {
-        return;
-    }
-    data = data.substr(1);
 
-    var tags = getTags(data);
-    var channel = getChannel(data);
-    var message = getMessage(data);
+    if (message.substring(1,8) == "ACTION ") {
+        message = message.substr(8)
+        message = message.substr(0, message.length-1)
+        action  = true;
+    }
+
+    if (parsed.tags.emotes != true && typeof parsed.tags.emotes != 'undefined') {
+        var emotesRaw = parsed.tags.emotes.split('/');
+        for (var j = 0; j < emotesRaw.length; j++) {
+            var emote = emotesRaw[j].split(':');
+            var id    = emote[0];
+            var pos   = emote[1];
+            var pos = pos.split(',');
+            emotes[id] = pos;
+        }
+    }
 
     var messageObj = {
         user: {
-            turbo: tags['user-id'],
-            emotes: tags.emotes,
-            subscriber: tags.subscriber,
-            'user-type': tags['user-type'],
-            username: tags['display-name'].toLowerCase(),
-            'display-name': tags['display-name'],
-            action: tags.action
+            turbo: parsed.tags.turbo,
+            emotes: emotes,
+            subscriber: parsed.tags.subscriber,
+            'user-type': parsed.tags['user-type'],
+            username: parsed.tags['display-name'].toLowerCase(),
+            'display-name': parsed.tags['display-name'],
+            action: action
         },
-        channel: channel,
+        channel: parsed.params[0],
         message: message
     }
-    if (messageObj.user.username == '' || messageObj.user.username == ' ') {
-        messageObj.user['display-name'] = cfg.irc.username;
-        messageObj.user.username = cfg.irc.username;
-    }
+
     event.emit('message', messageObj.channel, messageObj.user, messageObj.message)
 });
 
@@ -99,54 +106,6 @@ function handleWhisper(data) {
     console.log(data);
 }
 
-function getTags(data) {
-    var tags = {};
-    tags['action'] = false;
-
-    if (data.indexOf('ACTION ') > -1) {
-        tags['action'] = true;
-    }
-    var tagsRaw = data.split(';');
-    for (var i = 0; i < tagsRaw.length; i++) {
-        var tag = tagsRaw[i].split('=');
-        tags[tag[0]] = tag[1];
-        tag[1] = tag[1] || '';
-        if (tag[1].substr(0,1) == ' ') {
-            tags[tag[0]] = '';
-        }
-        if (tag[0] == 'emotes' && tag[1] != '') {
-            var emotes = {};
-            var emotesRaw = tag[1].split('/');
-            for (var j = 0; j < emotesRaw.length; j++) {
-                var emote = emotesRaw[j].split(':');
-                var id    = emote[0];
-                var pos   = emote[1];
-                var pos = pos.split(',');
-                emotes[id] = pos;
-            }
-            tags[tag[0]] = emotes;
-        }
-
-    }
-    return tags;
-}
-
-function getChannel(data) {
-    var msg = data.split('PRIVMSG ');
-    msg = msg[1].split(' :');
-    return msg[0];
-}
-
-function getMessage(data) {
-    var msgRaw = data.split('PRIVMSG #')
-    msgRaw = msgRaw[1].split(' :');
-    var message = msgRaw[1];
-    if (message.indexOf('ACTION ') > -1) {
-        message = message.substr(8);
-        message = message.substring(0, message.length - 3)
-    }
-    return message;
-}
 
 var commandCooldowns = {};
 var userCooldowns = [];
