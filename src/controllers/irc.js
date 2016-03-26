@@ -128,7 +128,7 @@ function say(channel, message, action) {
     }
 
     var fullMessage = (prefix + message).trim();
-    if (fullMessage.substring(0,2) == "/w" || fullMessage.substring(0,8) == "/timeout" || fullMessage.substring(0,4) == "/ban") {
+    if (fullMessage.toLowerCase().substring(0,2) == "/w" || fullMessage.toLowerCase().substring(0,8) == "/timeout" || fullMessage.toLowerCase().substring(0,4) == "/ban") {
         return false;
     }
     irc.socket.write('PRIVMSG ' + channel + ' :' + fullMessage +'\r\n');
