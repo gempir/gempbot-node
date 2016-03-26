@@ -128,9 +128,7 @@ function say(channel, message, action) {
     }
 
     var fullMessage = (prefix + message).trim();
-    if (fullMessage.toLowerCase().substring(0,2) == "/w" || fullMessage.toLowerCase().substring(0,8) == "/timeout" || fullMessage.toLowerCase().substring(0,4) == "/ban") {
-        return false;
-    }
+
     irc.socket.write('PRIVMSG ' + channel + ' :' + fullMessage +'\r\n');
     console.log(channel + ' ' + prefix + message);
 }
@@ -158,6 +156,9 @@ function sayCommand(channel, username, response, commObj)
         response.message = '@' + username + ', ' + response.message;
     }
 
+    if (response.message.toLowerCase().substring(0,2) == "/w" || response.message.toLowerCase().substring(0,8) == "/timeout" || response.message.toLowerCase().substring(0,4) == "/ban") {
+        return false;
+    }
 	say(channel, response.message);
 	console.log('[COMMAND] ' + response.message);
 
