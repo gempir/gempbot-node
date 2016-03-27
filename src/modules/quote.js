@@ -10,7 +10,7 @@ function getQuote(channel, username, message, callback)
 	}
 	var userToQuote = fn.getNthWord(message, 2);
 	userToQuote = userToQuote.toLowerCase();
-	var userFile = 'logs/' + channel.substr(1) + '/' + userToQuote + '.txt';
+	var userFile = '../logs/' + channel.substr(1) + '/' + userToQuote + '.txt';
 
 	if (!fn.fileExists(userFile)) {
     	console.log('[LOG] ' + userToQuote + ' has no logs');
