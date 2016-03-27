@@ -1,28 +1,31 @@
 
-
+import CommandHandler from './controllers/CommandHandler';
 
 export default class Handler {
 
-    constructor(controllers, models, modules) {
-        this.controllers = controllers;
-        this.models      = models;
-        this.modules     = modules;
+    constructor(bot) {
+        this.bot            = bot;
+        this.commandHandler = new CommandHandler(bot);
     }
 
-    handleMessage(channel, user, message) {
-        this.handleDefault(channel, user, message);
+    filterMessage(channel, user, message) {
+
     }
 
     handleDefault(channel, user, message) {
         var username = user.username;
 
-        this.modules.lines.recordLines(channel, username, message);
-        this.modules.emotelog.incrementUserEmote(channel, user, message);
-        this.modules.emotelog.incrementEmote(channel, user, message);
-        this.modules.oddshots.saveChannelOddshots(channel, username, message);
-        this.modules.combo.count(channel, user, message);
-        this.modules.logs.userLogs(channel, username, message);
-        this.modules.chatters.recordChatters(channel, username, message);
-        this.modules.nuke.recordToNuke(channel, user, message);
+        this.bot.modules.lines.recordLines(channel, username, message);
+        this.bot.modules.emotelog.incrementUserEmote(channel, user, message);
+        this.bot.modules.emotelog.incrementEmote(channel, user, message);
+        this.bot.modules.oddshots.saveChannelOddshots(channel, username, message);
+        this.bot.modules.combo.count(channel, user, message);
+        this.bot.modules.logs.userLogs(channel, username, message);
+        this.bot.modules.chatters.recordChatters(channel, username, message);
+        this.bot.modules.nuke.recordToNuke(channel, user, message);
+    }
+
+    handleCommand(channel, user, command, args) {
+        this.commandHandler.handle(channel, user, command, args);
     }
 }

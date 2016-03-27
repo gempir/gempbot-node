@@ -28,6 +28,17 @@ function containsASCII(data)
     return false;
 }
 
+function countProperties(obj) {
+    var count = 0;
+
+    for(var prop in obj) {
+        if(obj.hasOwnProperty(prop))
+            ++count;
+    }
+
+    return count;
+}
+
 function getFilesizeInMegabytes(filepath)
 {
 	var stats = fs.statSync(filepath);
@@ -124,5 +135,6 @@ module.exports =
     getRandomInt,
     countWords,
     containsASCII,
-    removeFromArray
+    removeFromArray,
+    countProperties
 };

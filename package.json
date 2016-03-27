@@ -9,6 +9,7 @@
     "irc": "^0.4.1",
     "irc-message": "^3.0.2",
     "jade": "*",
+    "lodash": "^4.6.1",
     "moment": "*",
     "nice-console": "^1.0.0",
     "pastebin-js": "^0.4.0",

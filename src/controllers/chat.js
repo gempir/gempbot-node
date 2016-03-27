@@ -18,23 +18,9 @@ var emotecache  = require('./../models/emotecache');
 var redis       = require('./../models/redis');
 
 
-irc.event.on('message', function(channel, user, message) {
-    eventHandler(channel, user, message);
-})
-
 function eventHandler(channel, user, message)
 {
     var username = user.username;
-
-    //lines.recordLines(channel, username, message);
-    // emotelog.incrementUserEmote(channel, user, message);
-    // emotelog.incrementEmote(channel, user, message);
-    //
-    // oddshots.saveChannelOddshots(channel, username, message);
-    // combo.count(channel, user, message);
-    //logs.userLogs(channel, username, message);
-    // chatters.recordChatters(channel, username, message);
-    // nuke.recordToNuke(channel, user, message);
 
     var command = fn.getNthWord(message, 1).toLowerCase();
     if (command.substr(0,1) != '!') {
@@ -172,93 +158,9 @@ function adminCommands(channel, username, message)
                 emotecache.cacheEmotes();
             });
             break;
-        case '!channelcache':
-            irc.channelCache();
-            break;
-        case '!configcache':
-            config.cacheConfig();
-            break;
     }
 }
 
-function adminController(channel, username, message)
-{
-    if (fn.countWords(message) <= 2) {
-        return false;
-    }
-
-    var command = fn.getNthWord(message, 2).toLowerCase();
-    switch(command) {
-        case 'trusted':
-            switchTrusted(channel, username, message);
-            break;
-        case 'config':
-            configController(channel, username, message);
-            break;
-        case 'rejoin':
-            irc.updateChannelJoins();
-            break;
-        case 'join':
-            joinChannel(channel, username, message);
-            break;
-        case 'part':
-            partChannel(channel, username, message);
-            break;
-    }
-    function switchTrusted(channel, username, message) {
-        if (fn.countWords(message) <= 3) {
-            return false;
-        }
-        var command = fn.getNthWord(message, 3).toLowerCase();
-        var trusted = fn.getNthWord(message, 4).toLowerCase();
-        switch(command) {
-            case 'add':
-                config.setTrusted(channel, trusted);
-                irc.whisper(username, 'added ' + trusted + ' to trusted');
-                break;
-            case 'remove':
-                config.removeTrusted(channel, trusted);
-                irc.whisper(username, 'removed ' + trusted + ' from trusted');
-                break;
-        }
-    }
-
-    function joinChannel(channel, username, message) {
-        if (fn.countWords(message) < 3) {
-            return false;
-        }
-        var silent     = false;
-        var chanToJoin = fn.getNthWord(message, 3);
-
-
-        if (message.indexOf('--silent') > -1) {
-            silent = true;
-        }
-
-        irc.joinChannel(chanToJoin, silent);
-        emotecache.fetchEmotesFromBttv();
-    }
-
-    function partChannel(channel, username, message) {
-        if (fn.countWords(message) < 3) {
-            return false;
-        }
-        var chanToPart = fn.getNthWord(message, 3);
-        irc.partChannel(chanToPart);
-    }
-}
-
-function configController(channel, username, message) {
-    if (fn.countWords(message) < 4) {
-        return false;
-    }
-
-    var option = fn.getNthWord(message, 3);
-    var value = fn.getNthWord(message, 4);
-    config.setConfig(channel, option, value, function(message) {
-        irc.whisper(username, message);
-    });
-}
 
 
 function commandsController(channel, username, message)
@@ -334,3 +236,5 @@ function trustedCommands(channel, username, message)
         commandsController(channel, username, message);
     }
 }
+
+module.exports = eventHandler;

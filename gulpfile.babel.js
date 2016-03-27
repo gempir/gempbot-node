@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 const babel = require('gulp-babel');
 
-gulp.task('default', () => {
+gulp.task('build', () => {
 	gulp.src('src/**/*.js')
 		.pipe(babel({
 			presets: ['es2015']
@@ -26,3 +26,6 @@ gulp.task('default', () => {
 	gulp.src('src/overlay/public/**/*.css')
 		.pipe(gulp.dest('build/src/overlay/public'));
 });
+
+
+gulp.task('default', ['build']);

@@ -1,5 +1,5 @@
 import cfg from './../cfg';
-import irc from './controllers/irc';
+import IRC from './controllers/IRC';
 import config from './controllers/config';
 import redis from './models/redis';
 import fn from './controllers/functions'
@@ -30,9 +30,9 @@ export default class Bot {
     constructor() {
         this.controllers = {
             cfg: cfg,
-            irc: irc,
             chat: chat,
-            config: config
+            config: config,
+            redis: redis
         };
         this.models = {
             emotecache: emotecache,
@@ -52,15 +52,47 @@ export default class Bot {
             oddshots: oddshots,
             emotelog: emotelog
         };
-        this.handler = new Handler(this.controllers, this.models, this.modules);
+        this.channels = {};
+        this.admins   = cfg.admins;
+
+        this.handler  = new Handler(this);
+        this.IRC      = new IRC(this.handler);
+        this.loadChannels();
         this.loadCache();
-        this.readIRC();
     }
 
-    readIRC() {
-        this.controllers.irc.event.on('message', (channel, user, message) => this.handler.handleMessage(channel, user, message));
+    loadChannels() {
+        console.log('[redis] caching configs');
+        redis.hgetall('channels', (err, results) =>  {
+           if (err) {
+               console.log('[REDIS] ' + err);
+           } else {
+                for (var channel in results) {
+
+                    this.channels[channel] = {};
+                    this.channels[channel]['response'] = results[channel];
+
+
+                    logs.createFolder(channel);
+                    this.setConfigForChannel(channel);
+                }
+           }
+       });
     }
 
+    loadChannel(channel, response) {
+        this.channels[channel] = {};
+        this.channels[channel]['response'] = response;
+        logs.createFolder(channel);
+        this.setConfigForChannel(channel);
+    }
+
+
+    setConfigForChannel(channel) {
+        redis.hgetall(channel + ':config', (err, results) => {
+            this.channels[channel]['config'] = results || {};
+        });
+    }
 
     loadCache() {
         this.models.commandcache.cacheCommands();
@@ -68,15 +100,20 @@ export default class Bot {
         this.controllers.config.cacheConfig();
     }
 
-
-    say(channel, message, action) {
-        action = action || false;
-        irc.say(channel, message, action);
-    }
-
     whisper(username, message) {
-        irc.whisper(username, message);
+        this.IRC.output('#jtv', '/w ' + username + ' ' + message);
     }
 
-
+    say(channel, message) {
+        try {
+            var response = this.channels[channel].config.response;
+        } catch (err) {
+            console.log(err);
+            var response = 0;
+        }
+        if (response == 0) {
+            return;
+        }
+        this.IRC.output(channel, message);
+    }
 }
