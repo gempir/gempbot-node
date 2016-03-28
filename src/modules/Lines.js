@@ -7,6 +7,7 @@ export default class Lines
     {
         this.bot          = bot;
         this.channelLines = {};
+        this.userLines    = {};
         this.saveLines();
     }
 
@@ -16,6 +17,11 @@ export default class Lines
             for (var channel in this.channelLines) {
                 this.bot.models.redis.hincrby(channel + ':linecount:channel', 'lines', this.channelLines[channel]);
                 this.channelLines[channel] = 0;
+            }
+            for (var channel in this.userLines) {
+                for (var username in this.userLines[channel]){
+                    this.bot.models.redis.hincrby(channel + ':linecount:user', username, this.userLines[channel][username]);
+                }
             }
         }, 30000);
     }
@@ -47,6 +53,12 @@ export default class Lines
             this.channelLines[channel] = 0;
         }
         this.channelLines[channel]++;
-        this.bot.models.redis.hincrby(channel + ':linecount:user', username.toLowerCase(), 1);
+        if (typeof this.userLines[channel] === 'undefined') {
+            this.userLines[channel] = {};
+        }
+        if (typeof this.userLines[channel][username] === 'undefined') {
+            this.userLines[channel][username] = 0;
+        }
+        this.userLines[channel][username]++;
     }
 }
