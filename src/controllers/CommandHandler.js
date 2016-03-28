@@ -74,7 +74,12 @@ export default class CommandHandler {
                 var commObj = JSON.parse(results);
 
                 if (level < commObj.level || this.bot.cmdcds.indexOf(commObj.name) > -1 || this.bot.usercds.indexOf(user.username) > -1) {
-                    return; // level too low
+                    if (this.bot.admins.indexOf(user.username) > -1 || user.username === channel.substr(1)) {
+                        // continue
+                    }
+                    else {
+                        return; // level too low
+                    }
                 }
 
                 this.bot.cmdcds.push(commObj.name);
