@@ -60,7 +60,6 @@ export default class Parser {
     }
 
     parseData(data) {
-        data = data.replace(/(\r\n|\n|\r)/gm,"");
         if (data.substr(0,1) != "@" || !(data.indexOf(" PRIVMSG ") > -1)) {
             // console.log("unhandeld: " + data);
             return;
