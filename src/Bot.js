@@ -80,7 +80,6 @@ export default class Bot {
                 var bttvObj = JSON.parse(body);
                 var emotes  = bttvObj.emotes;
                 for (var i = 0; i < emotes.length; i++) {
-                    this.models.redis.del('bttvemotes');
                     this.models.redis.hset('bttvemotes', emotes[i].code, emotes[i].id);
                     this.bttv.global.push(emotes[i].code);
                 }
@@ -95,7 +94,6 @@ export default class Bot {
                 var emotes  = bttvObj.emotes;
                 this.bttv.channels[channel] = [];
                 for (var j = 0; j < emotes.length; j++) {
-                    this.models.redis.del(channel + ':bttvchannelemotes');
                     this.models.redis.hset(channel + ':bttvchannelemotes', emotes[j].code, emotes[j].id);
                     this.bttv.channels[channel].push(emotes[j].code);
                 }

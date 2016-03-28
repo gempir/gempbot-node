@@ -7,8 +7,6 @@ export default class CommandHandler {
 
 
     handle(channel, user, command, args) {
-        console.log(command, args);
-
         if (this.bot.admins.indexOf(user.username) > -1) {
             this.handleNormal(channel, user, command, args);
             this.handleAdmin(channel, user, command, args);
