@@ -1,7 +1,5 @@
-var irc     = require('./../controllers/irc');
 var overlay = require('./../overlay/overlay');
 var fn 	    = require('./../controllers/functions');
-
 
 var votings = {};
 var activeVotings = [];
