@@ -44,7 +44,7 @@ export default class Randomquote
 					this.bot.say(channel, prefix + 'couldn\'t find a suitable quote');
 	        		return false;
 	        	}
-	        	getQuote(channel, username, message, callback);
+	        	this.getQuote(channel, username, message, callback);
 	        	return false;
 	        }
 	    	this.bot.say(channel, prefix + quote);

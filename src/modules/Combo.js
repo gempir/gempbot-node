@@ -58,42 +58,34 @@ export default class Combo {
 
     getEmoteFromMessage(channel, user, message)
     {
-        try {
-            if (user.emotes != null) {
-                if (user.emotes.length > 1) {
-                    return false;
-                }
-                else {
-                    for (var emote in user.emotes) {
+        if (user.emotes != null) {
+            if (user.emotes.length > 1) {
+                return false;
+            }
+            else {
+                for (var emote in user.emotes) {
 
-                        var currentEmotes = user.emotes[emote];
-                        var emotePosition    = currentEmotes[0];
-                        var emotePositionArr = emotePosition.split('-');
-                        var emoteCode        = message.replace(' ', '').substring(+emotePositionArr[0], parseInt(emotePositionArr[1]) + 1);
-                        return emoteCode;
-                    }
+                    var currentEmotes = user.emotes[emote];
+                    var emotePosition    = currentEmotes[0];
+                    var emotePositionArr = emotePosition.split('-');
+                    var emoteCode        = message.replace(' ', '').substring(+emotePositionArr[0], parseInt(emotePositionArr[1]) + 1);
+                    return emoteCode;
                 }
             }
-            var messageArr = message.split(' ');
-            for (var i = 0; i < messageArr.length; i++) {
-                var globalBttv = this.bot.bttv.global;
-                for (var j = 0; j < globalBttv.length; j++) {
-                    if (globalBttv[j] === messageArr[i]) {
-                        return messageArr[i];
-                    }
-                }
-                var channelBttv = this.bot.bttv.channels[channel];
-                for (var k = 0; k < channelBttv.length; k++) {
-                    if (channelBttv[k] === messageArr[i]) {
-                        return messageArr[i];
-                    }
-                }
-            }
-        } catch (err) {
-            console.log(err);
         }
-
-
+        message = message.trim();
+        var messageArr = message.split(' ');
+        console.log(messageArr);
+        for (var i = 0; i < messageArr.length; i++) {
+            var globalBttv = this.bot.bttv.global;
+            if (globalBttv.indexOf(messageArr[i]) > -1) {
+                return messageArr[i];
+            }
+            var channelBttv = this.bot.bttv.channels[channel];
+            if (channelBttv.indexOf(messageArr[i]) > -1) {
+                return messageArr[i];
+            }
+        }
     }
 
 }

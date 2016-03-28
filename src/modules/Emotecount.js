@@ -50,11 +50,11 @@ export default class Emotecount
     {
         if (user.emotes != null) {
             for (var emote in user.emotes) {
-                var currentEmotes = user.emotes[emote];
+                var currentEmotes    = user.emotes[emote];
                 var emotePosition    = currentEmotes[0];
                 var emotePositionArr = emotePosition.split('-');
-                var emoteCode        = message.substring(+emotePositionArr[0], +emotePositionArr[1] + +1);
-                this.bot.models.redis.hincrby(channel + ':emotelog:user:' + emoteCode, user.username.toLowerCase(), currentEmotes.length);
+                var emoteCode        = message.substring(emotePositionArr[0], Number(emotePositionArr[1]) + 1);
+                this.bot.models.redis.hincrby(channel + ':emotelog:user:' + emoteCode, user.username, currentEmotes.length);
             }
         }
         this.countUserBTTVEmotes(channel, user, message);
