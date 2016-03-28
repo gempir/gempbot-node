@@ -57,7 +57,7 @@ export default class Emotecount
                 this.bot.models.redis.hincrby(channel + ':emotelog:user:' + emoteCode, user.username, currentEmotes.length);
             }
         }
-        //this.countUserBTTVEmotes(channel, user, message);
+        this.countUserBTTVEmotes(channel, user, message);
     }
 
     countUserBTTVEmotes(channel, user, message) {
@@ -89,7 +89,7 @@ export default class Emotecount
                 this.bot.models.redis.hincrby(channel + ':emotelog:channel', emoteCode, currentEmotes.length);
             }
         }
-        //this.countBTTVEmotes(channel, user, message);
+        this.countBTTVEmotes(channel, user, message);
     }
 
     countBTTVEmotes(channel, user, message) {
