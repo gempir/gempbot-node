@@ -10,6 +10,7 @@ export default class Irc {
         this.bot         = handler.bot;
         this.socket      = new net.Socket();
         this.parser      = new Parser(handler);
+        this.logs        = this.logs = __dirname +'/../../../logs/';
 
         this.setupConnection();
         this.readConnection();
@@ -73,8 +74,8 @@ export default class Irc {
             }
         }
 
-        if (!fs.existsSync('../logs/' + channel.substr(1))){
-          fs.mkdirSync('../logs/' + channel.substr(1));
+        if (!fs.existsSync(this.logs + channel.substr(1))){
+          fs.mkdirSync(this.logs + channel.substr(1));
           console.log('[LOG] created folder: ' + channel.substr(1));
         }
 

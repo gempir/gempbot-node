@@ -5,7 +5,8 @@ export default class Randomquote
 {
 	constructor(bot)
 	{
-		this.bot = bot;
+		this.bot  = bot;
+		this.logs = __dirname +'/../../../logs/';
 		this.quoteSkip = 0;
 	}
 
@@ -16,7 +17,7 @@ export default class Randomquote
 			userToQuote = args[0];
 		}
 
-		var userFile = '../logs/' + channel.substr(1) + '/' + userToQuote + '.txt';
+		var userFile = this.logs + channel.substr(1) + '/' + userToQuote + '.txt';
 
 		if (!fn.fileExists(userFile)) {
 	    	console.log('[LOG] ' + userToQuote + ' has no logs');

@@ -6,11 +6,12 @@ export default class LastMessage
     constructor(bot)
     {
         this.bot = bot;
+        this.logs =this.logs = __dirname +'/../../../logs/';
     }
 
     lastMessage(channel, username, lastMessageFor, prefix) {
         lastMessageFor = lastMessageFor.toLowerCase();
-    	var file = '../logs/' + channel.substr(1) + '/' + lastMessageFor + '.txt';
+    	var file = this.logs + channel.substr(1) + '/' + lastMessageFor + '.txt';
 
     	if (!fn.fileExists(file)) {
     		return false;
