@@ -39,7 +39,7 @@ export default class CommandHandler {
                 level = 2000;
             }
 
-            if (level >= 500 || this.bot.admins.indexOf(user.username) > -1) {
+            if (level >= 500 || this.bot.admins.indexOf(user.username) > -1 || user.username === channel.substr(1)) {
                 switch (command) {
                     case '!cmd':
                     case '!command':
@@ -176,7 +176,7 @@ export default class CommandHandler {
         var response    = false;
         var level       = 100;
 
-        if (name.indexOf('!') === -1) {
+        if (!(name.indexOf('!') > -1)) {
             name = '!' + name;
         }
 
