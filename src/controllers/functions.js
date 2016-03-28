@@ -1,4 +1,4 @@
-import fs from 'fs';
+var fs = require('fs');
 
 function getNthWord(string, n)
 {
