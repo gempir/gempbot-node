@@ -251,27 +251,31 @@ export default class CommandHandler {
     }
 
     handleAdmin(channel, user, command, args) {
-        switch (command) {
-            case '!status':
-                console.log(this.bot.bttv.channels[channel]);
-                var time = process.uptime();
-                var uptime = fn.secsToTime((time + ""));
-                this.bot.say(
-                    channel,
-                    '@' + user.username + ', uptime: ' + uptime
-                    + ' | active in ' + fn.countProperties(this.bot.channels) + ' channels'
-                );
-                break;
-            case '!join':
-                this.bot.IRC.joinChannel(args);
-                break;
-            case '!part':
-                this.bot.IRC.partChannel(args);
-                break;
-            case '!say':
-                var toSay = message.substr(5);
-                this.bot.say(channel, toSay);
-                break;
+        try {
+            switch (command) {
+                case '!status':
+                    console.log(this.bot.bttv.channels[channel]);
+                    var time = process.uptime();
+                    var uptime = fn.secsToTime((time + ""));
+                    this.bot.say(
+                        channel,
+                        '@' + user.username + ', uptime: ' + uptime
+                        + ' | active in ' + fn.countProperties(this.bot.channels) + ' channels'
+                    );
+                    break;
+                case '!join':
+                    this.bot.Irc.joinChannel(args);
+                    break;
+                case '!part':
+                    this.bot.Irc.partChannel(args);
+                    break;
+                case '!say':
+                    var toSay = message.substr(5);
+                    this.bot.say(channel, toSay);
+                    break;
+            }
+        } catch (err) {
+            console.log(err);
         }
     }
 
