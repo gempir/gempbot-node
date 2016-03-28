@@ -1,10 +1,3 @@
-var fn     = require('./../controllers/functions');
-var emotecache = require('./../models/emotecache');
-var cfg        = require('./../../cfg');
-var irc        = require('./../controllers/irc');
-var config     = require('./../controllers/config');
-
-
 export default class Combo {
 
     constructor(bot)
@@ -65,41 +58,41 @@ export default class Combo {
 
     getEmoteFromMessage(channel, user, message)
     {
-        if (user.emotes != null) {
-            if (user.emotes.length > 1) {
-                return false;
-            }
-            else {
-                for (var emote in user.emotes) {
+        try {
+            if (user.emotes != null) {
+                if (user.emotes.length > 1) {
+                    return false;
+                }
+                else {
+                    for (var emote in user.emotes) {
 
-                    var currentEmotes = user.emotes[emote];
-                    var emotePosition    = currentEmotes[0];
-                    var emotePositionArr = emotePosition.split('-');
-                    var emoteCode        = message.replace(' ', '').substring(+emotePositionArr[0], parseInt(emotePositionArr[1]) + 1);
-                    return emoteCode;
+                        var currentEmotes = user.emotes[emote];
+                        var emotePosition    = currentEmotes[0];
+                        var emotePositionArr = emotePosition.split('-');
+                        var emoteCode        = message.replace(' ', '').substring(+emotePositionArr[0], parseInt(emotePositionArr[1]) + 1);
+                        return emoteCode;
+                    }
                 }
             }
-        }
-
-        if (typeof emotecache.bttvemotes['channel'][channel] === 'undefined' || typeof emotecache.bttvemotes.global === 'undefined') {
-            return false;
-        }
-
-        var messageArr = message.split(' ');
-        for (var i = 0; i < messageArr.length; i++) {
-            var globalBttv = emotecache.bttvemotes.global;
-            for (var j = 0; j < globalBttv.length; j++) {
-                if (globalBttv[j] === messageArr[i]) {
-                    return messageArr[i];
+            var messageArr = message.split(' ');
+            for (var i = 0; i < messageArr.length; i++) {
+                var globalBttv = this.bot.bttv.global;
+                for (var j = 0; j < globalBttv.length; j++) {
+                    if (globalBttv[j] === messageArr[i]) {
+                        return messageArr[i];
+                    }
+                }
+                var channelBttv = this.bot.bttv.channels[channel];
+                for (var k = 0; k < channelBttv.length; k++) {
+                    if (channelBttv[k] === messageArr[i]) {
+                        return messageArr[i];
+                    }
                 }
             }
-            var channelBttv = emotecache.bttvemotes['channel'][channel];
-            for (var k = 0; k < channelBttv.length; k++) {
-                if (channelBttv[k] === messageArr[i]) {
-                    return messageArr[i];
-                }
-            }
+        } catch (err) {
+            console.log(err);
         }
+
 
     }
 

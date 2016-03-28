@@ -1,7 +1,4 @@
-var fs = require('fs');
-var fn = require('./../controllers/functions');
-var redis = require('./../models/redis');
-var emotecache         = require('./../models/emotecache');
+import fn from './../controllers/functions';
 
 export default class Emotecount
 {
@@ -34,7 +31,7 @@ export default class Emotecount
     {
         emote = emote.replace(' ', '');
 
-        redis.hget(channel + ":emotelog:channel", emote, (err, obj) => {
+        this.bot.models.redis.hget(channel + ":emotelog:channel", emote, (err, obj) => {
             if (obj === null) {
                 return false;
             }
@@ -57,28 +54,27 @@ export default class Emotecount
                 var emotePosition    = currentEmotes[0];
                 var emotePositionArr = emotePosition.split('-');
                 var emoteCode        = message.substring(+emotePositionArr[0], +emotePositionArr[1] + +1);
-                redis.hincrby(channel + ':emotelog:user:' + emoteCode, user.username.toLowerCase(), currentEmotes.length);
+                this.bot.models.redis.hincrby(channel + ':emotelog:user:' + emoteCode, user.username.toLowerCase(), currentEmotes.length);
             }
         }
         this.countUserBTTVEmotes(channel, user, message);
     }
 
     countUserBTTVEmotes(channel, user, message) {
-        var messageArr = message.split(' ');
+        try {
+            var messageArr = message.split(' ');
 
-        for (var i = 0; i < messageArr.length; i++) {
-            var currentEmote = messageArr[i];
-            var channelBttvEmotes = emotecache.bttvemotes.channel[channel];
-            var globalBttvEmotes = emotecache.bttvemotes.global;
-            if (typeof channelBttvEmotes === 'undefined') {
-                return false;
+            for (var i = 0; i < messageArr.length; i++) {
+                var currentEmote = messageArr[i];
+                var channelBttvEmotes = this.bot.bttv.channels[channel];
+                var globalBttvEmotes = this.bot.bttv.global;
+
+                if (globalBttvEmotes.indexOf(messageArr[i]) > -1 || channelBttvEmotes.indexOf(messageArr[i]) > -1) {
+                    this.bot.models.redis.hincrby(channel + ':emotelog:user:' + messageArr[i], user.username.toLowerCase(), 1);
+                }
             }
-            if (Object.keys(emotecache.bttvemotes.channel).length === 0 || globalBttvEmotes.length === 0) {
-                return false;
-            }
-            if (globalBttvEmotes.indexOf(messageArr[i]) > -1 || channelBttvEmotes.indexOf(messageArr[i]) > -1) {
-                redis.hincrby(channel + ':emotelog:user:' + messageArr[i], user.username.toLowerCase(), 1);
-            }
+        } catch (err) {
+            console.log(err);
         }
     }
 
@@ -90,27 +86,26 @@ export default class Emotecount
                 var emotePosition    = currentEmotes[0];
                 var emotePositionArr = emotePosition.split('-');
                 var emoteCode        = message.substring(+emotePositionArr[0], +emotePositionArr[1] + +1);
-                redis.hincrby(channel + ':emotelog:channel', emoteCode, currentEmotes.length);
+                this.bot.models.redis.hincrby(channel + ':emotelog:channel', emoteCode, currentEmotes.length);
             }
         }
         this.countBTTVEmotes(channel, user, message);
     }
 
     countBTTVEmotes(channel, user, message) {
-        var messageArr = message.split(' ');
-        for (var i = 0; i < messageArr.length; i++) {
-            var currentEmote = messageArr[i];
-            var channelBttvEmotes = emotecache.bttvemotes.channel[channel];
-            var globalBttvEmotes = emotecache.bttvemotes.global;
-            if (typeof channelBttvEmotes === 'undefined') {
-                return false;
+        try {
+            var messageArr = message.split(' ');
+            for (var i = 0; i < messageArr.length; i++) {
+                var currentEmote = messageArr[i];
+                var channelBttvEmotes = this.bot.bttv.channels[channel];
+                var globalBttvEmotes = this.bot.bttv.global;
+
+                if (globalBttvEmotes.indexOf(messageArr[i]) > -1 || channelBttvEmotes.indexOf(messageArr[i]) > -1) {
+                    this.bot.models.redis.hincrby(channel + ':emotelog:channel', currentEmote, 1);
+                }
             }
-            if (Object.keys(emotecache.bttvemotes.channel).length === 0 || globalBttvEmotes.length === 0) {
-                return false;
-            }
-            if (globalBttvEmotes.indexOf(messageArr[i]) > -1 || channelBttvEmotes.indexOf(messageArr[i]) > -1) {
-                redis.hincrby(channel + ':emotelog:channel', currentEmote, 1);
-            }
+        } catch (err) {
+            console.log(err);
         }
     }
 }

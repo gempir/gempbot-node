@@ -1,7 +1,6 @@
-var cfg    = require('./../../cfg.js');
-var fs     = require('fs');
-var moment = require('moment');
-var fn     = require('./../controllers/functions');
+import fs     from 'fs';
+import moment from 'moment';
+import fn     from './../controllers/functions';
 
 
 function saveChannelOddshots(channel, username, message)

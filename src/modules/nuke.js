@@ -1,5 +1,4 @@
 
-
 import fn from './../controllers/functions';
 
 export default class Nuke

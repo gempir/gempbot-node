@@ -1,6 +1,5 @@
-var fs     = require('fs');
-var fn     = require('./../controllers/functions');
-
+import fs from 'fs';
+import fn from './../controllers/functions';
 
 export default class Randomquote
 {

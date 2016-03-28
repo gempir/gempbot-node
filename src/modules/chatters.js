@@ -1,4 +1,4 @@
-var fn           = require('./../controllers/functions');
+import fn from './../controllers/functions';
 
 export default class Chatters {
 

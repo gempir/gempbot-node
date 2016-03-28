@@ -2,9 +2,7 @@ import cfg          from './../cfg';
 import IRC          from './controllers/IRC';
 import redis        from './models/redis';
 import fn           from './controllers/functions'
-import chat         from './controllers/chat';
-import emotecache   from './models/emotecache';
-import commandcache from './models/commandcache';
+import request      from 'request';
 
 import Handler      from './Handler';
 
@@ -28,11 +26,8 @@ export default class Bot {
     constructor() {
         this.controllers = {
             cfg: cfg,
-            chat: chat,
         };
         this.models = {
-            emotecache: emotecache,
-            commandcache: commandcache,
             redis: redis
         };
         this.modules = {
@@ -52,16 +47,19 @@ export default class Bot {
         this.admins    = cfg.admins;
         this.cmdcds    = [];
         this.usercds   = [];
+        this.bttv      = {
+            channels: {},
+            global: []
+        }
 
         this.handler  = new Handler(this);
         this.IRC      = new IRC(this.handler);
         this.loadChannels();
-        this.loadCache();
-
+        this.loadBttvEmotes();
     }
 
     loadChannels() {
-        console.log('[redis] caching configs');
+        console.log('[redis|API] caching configs and loading emotes');
         redis.hgetall('channels', (err, results) =>  {
            if (err) {
                console.log('[REDIS] ' + err);
@@ -69,9 +67,41 @@ export default class Bot {
                 for (var channel in results) {
                     this.loadChannel(channel, results[channel]);
                     this.setConfigForChannel(channel);
+                    this.loadBttvChannelEmotes(channel);
                 }
            }
        });
+    }
+
+    loadBttvEmotes() {
+        console.log('[API] fetching bttv global emotes');
+        request('https://api.betterttv.net/2/emotes', (error, response, body) => {
+            if (!error && response.statusCode == 200) {
+                var bttvObj = JSON.parse(body);
+                var emotes  = bttvObj.emotes;
+                for (var i = 0; i < emotes.length; i++) {
+                    this.models.redis.del('bttvemotes');
+                    this.models.redis.hset('bttvemotes', emotes[i].code, emotes[i].id);
+                    this.bttv.global.push(emotes[i].code);
+                }
+            }
+        })
+    }
+
+    loadBttvChannelEmotes(channel) {
+        request('https://api.betterttv.net/2/channels/' + channel.substr(1), (error, response, body) => {
+            if (!error && response.statusCode == 200) {
+                var bttvObj = JSON.parse(body);
+                var emotes  = bttvObj.emotes;
+                this.bttv.channels[channel] = [];
+                for (var j = 0; j < emotes.length; j++) {
+                    this.models.redis.del(channel + ':bttvchannelemotes');
+                    this.models.redis.hset(channel + ':bttvchannelemotes', emotes[j].code, emotes[j].id);
+                    this.bttv.channels[channel].push(emotes[j].code);
+                }
+            }
+        });
+
     }
 
     loadChannel(channel, response) {
@@ -88,11 +118,6 @@ export default class Bot {
                 this.channels[channel].config[cfg] = results[cfg];
             }
         });
-    }
-
-    loadCache() {
-        this.models.commandcache.cacheCommands();
-        this.models.emotecache.fetchEmotesFromBttv();
     }
 
     whisper(username, message) {

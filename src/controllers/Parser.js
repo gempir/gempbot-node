@@ -1,6 +1,4 @@
-var parse = require('irc-message').parse
-
-
+var parse = require('irc-message').parse;
 
 export default class Parser {
     constructor(handler) {
@@ -61,7 +59,7 @@ export default class Parser {
         this.args    = params;
     }
 
-    parse(data) {
+    parseData(data) {
         data = data.replace(/(\r\n|\n|\r)/gm,"");
         if (data.substr(0,1) != "@" || !(data.indexOf(" PRIVMSG ") > -1)) {
             // console.log("unhandeld: " + data);

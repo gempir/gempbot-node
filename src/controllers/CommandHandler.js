@@ -1,4 +1,3 @@
-
 import fn from './functions';
 
 export default class CommandHandler {
@@ -41,25 +40,32 @@ export default class CommandHandler {
             }
 
             if (level >= 500) {
-                if (command === '!cmd' || command === '!command') {
-                    try {
-                        switch (args[0]) {
-                            case 'add':
-                                args.splice(0,1);
-                                this.addCommand(channel, user, args);
-                                return;
-                            case 'del':
-                            case 'rm':
-                            case 'delete':
-                            case 'remove':
-                                if (args[1].indexOf('!') === -1) args[1] = '!' + args[1];
-                                this.bot.models.redis.hdel(channel + ":commands", args[1]);
-                                this.bot.whisper(user.username, 'removed command ' + args[1]);
-                                return;
+                switch (command) {
+                    case '!cmd':
+                    case '!command':
+                        try {
+                            switch (args[0]) {
+                                case 'add':
+                                    args.splice(0,1);
+                                    this.addCommand(channel, user, args);
+                                    return;
+                                case 'del':
+                                case 'rm':
+                                case 'delete':
+                                case 'remove':
+                                    if (args[1].indexOf('!') === -1) args[1] = '!' + args[1];
+                                    this.bot.models.redis.hdel(channel + ":commands", args[1]);
+                                    this.bot.whisper(user.username, 'removed command ' + args[1]);
+                                    return;
+                            }
+                        } catch (err) {
+                            console.log(err);
                         }
-                    } catch (err) {
-                        console.log(err);
-                    }
+                        break;
+                    case '!cache':
+                        this.bot.loadChannels();
+                        this.bot.loadBttvEmotes();
+                        break;
                 }
             }
 
@@ -104,6 +110,7 @@ export default class CommandHandler {
                         case 'countme':
                             this.bot.modules.emotecount.countMe(channel, user.username, args[0], prefix);
                             break;
+                        case 'follow':
                         case 'followage':
                             this.bot.modules.followage.followageCommandHandler(channel, user.username, args, prefix);
                             break;

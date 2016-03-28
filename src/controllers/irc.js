@@ -1,13 +1,7 @@
-var cfg    = require('./../../cfg');
-var net    = require('net');
-var redis  = require('./../models/redis');
-var events = require('events');
-var fn     = require('./functions');
-var fs     = require('fs');
-var parse = require('irc-message').parse
-
+import cfg   from './../../cfg';
+import net   from 'net';
+import fs    from 'fs';
 import Parser from "./Parser";
-
 
 
 export default class IRC {
@@ -40,7 +34,7 @@ export default class IRC {
 
     readConnection() {
         this.socket.on('data', (data) => {
-            this.parser.parse(data);
+            this.parser.parseData(data);
         });
     }
 
@@ -48,7 +42,7 @@ export default class IRC {
         this.socket.write('PASS ' + cfg.irc.pass + '\r\n');
     	this.socket.write('USER ' + cfg.irc.username + '\r\n');
         this.socket.write('NICK ' + cfg.irc.username + '\r\n');
-        redis.hgetall('channels', (err, results) => {
+        this.bot.models.redis.hgetall('channels', (err, results) => {
            if (err) {
                console.log('[REDIS] ' + err);
            } else {
@@ -86,7 +80,7 @@ export default class IRC {
 
         this.socket.write('JOIN ' + channel + '\r\n');
         console.log('[redis] ' + channel + ' ' + response);
-        redis.hset('channels', channel, response, (err) => {
+        this.bot.models.redis.hset('channels', channel, response, (err) => {
             if (err) console.log(err);
             this.bot.loadChannel(channel, response);
         });
@@ -101,7 +95,7 @@ export default class IRC {
 
         this.socket.write('PART ' + channel + '\r\n');
         console.log('[redis] PART ' + channel)
-        redis.hdel('channels', channel, (err) => {
+        this.bot.models.redis.hdel('channels', channel, (err) => {
             if (err) console.log(err);
         });
     }
