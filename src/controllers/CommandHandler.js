@@ -253,6 +253,7 @@ export default class CommandHandler {
     handleAdmin(channel, user, command, args) {
         switch (command) {
             case '!status':
+                console.log(this.bot.bttv.channels[channel]);
                 var time = process.uptime();
                 var uptime = fn.secsToTime((time + ""));
                 this.bot.say(

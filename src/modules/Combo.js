@@ -75,7 +75,6 @@ export default class Combo {
         }
         message = message.trim();
         var messageArr = message.split(' ');
-        console.log(messageArr);
         for (var i = 0; i < messageArr.length; i++) {
             var globalBttv = this.bot.bttv.global;
             if (globalBttv.indexOf(messageArr[i]) > -1) {
