@@ -1,48 +1,36 @@
 var fn           = require('./../controllers/functions');
-var fs 	         = require('fs');
-var cfg          = require('./../../cfg');
-var commandCache = require('./../models/commandcache');
 
-var chatters = {};
+export default class Chatters {
 
-function recordChatters(channel, username, message)
-{
-	if (typeof chatters[channel] === 'undefined') {
-		chatters[channel] = [];
+	constructor(bot)
+	{
+		this.bot = bot;
+		this.chatters = {};
 	}
-	if (chatters[channel].indexOf(username) > -1) {
-		return false;
-	};
 
-	chatters[channel].push(username);
+	recordChatters(channel, username)
+	{
+		if (typeof this.chatters[channel] === 'undefined') {
+			this.chatters[channel] = [];
+		}
+		if (this.chatters[channel].indexOf(username) > -1) {
+			return false;
+		};
 
-	setTimeout(function() {
-		fn.removeFromArray(chatters[channel], username);
-	}, 900000);
-}
+		this.chatters[channel].push(username);
 
+		try {
+			setTimeout(() => {
+				fn.removeFromArray(this.chatters[channel], username);
+			}, 900000);
+		} catch (err) {
+			console.log(err);
+		}
 
-function chattersCommandHandler(channel, username, message, callback)
-{
-	switch(message.toLowerCase()) {
-		case '!chatters':
-			getChatters(channel, username, message, function(response) {
-				return callback(response);
-			});
-			break;
 	}
-}
 
-function getChatters(channel, username, message, callback)
-{
-	return callback({
-		channel: channel,
-		message: 'There were ' + chatters[channel].length + ' chatters in the last 15mins'
-	});
-}
-
-module.exports =
-{
-	chattersCommandHandler,
-	recordChatters
+	getChatters(channel, prefix)
+	{
+		this.bot.say(channel, prefix + this.chatters[channel].length + ' chatters active in the last 15mins');
+	}
 }

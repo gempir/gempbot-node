@@ -1,113 +1,83 @@
-var fn      = require('./../controllers/functions');
-var fs 	    = require('fs');
-var request = require('request');
+import fn from './../controllers/functions';
+import request from 'request';
 
+export default class Followage
+{
+	constructor(bot)
+	{
+		this.bot = bot;
+	}
 
-function followageCommandHandler(channel, username, message, callback) {
-	if (message.toLowerCase() === '!followage') {
-		getLocalFollowage(channel, username, message, function(response){
-			return callback(response);
+	followageCommandHandler(channel, username, args, prefix) {
+		if (args.length === 0) {
+			this.getLocalFollowage(channel, username, prefix);
+		}
+		else if (args.length === 1) {
+			this.getUserLocalFollowage(channel, username, args[0], prefix);
+		}
+		else if (args.length >= 2) {
+			this.getUserChannelFollowage(channel, username, args[0], args[1], prefix);
+		}
+	}
+
+	getUserLocalFollowage(channel, username, arg, prefix)
+	{
+		var channelSub = channel.substr(1);
+		var followURL = 'https://api.rtainc.co/twitch/followers/length?channel='+ channelSub +'&name=' + arg;
+
+		if (fn.stringContainsUrl(arg) || fn.stringIsLongerThan(arg, 30)) {
+				return false;
+		}
+
+		request(followURL, (error, response, body) => {
+			console.log('[GET] ' + followURL);
+			if (!error && response.statusCode == 200) {
+				this.bot.say(channel, prefix + arg + ' has been following ' + channelSub + ' ' + body.toString());
+			}
+			else {
+				this.bot.say(channel, prefix + arg + ' is not following ' + channelSub + ' or the channel doesn\'t exist');
+			}
+
 		});
 	}
-	else if (fn.countWords(message) === 2) {
-		getUserLocalFollowage(channel, username, message, function(response) {
-			return callback(response);
+
+	getLocalFollowage(channel, username, prefix)
+	{
+		var channelSub = channel.substr(1);
+		var followURL = 'https://api.rtainc.co/twitch/followers/length?channel='+ channelSub +'&name=' + username;
+
+		request(followURL, (error, response, body) => {
+			console.log('[GET] ' + followURL);;
+			if (!error && response.statusCode == 200) {
+				this.bot.say(channel, prefix + username + ' has been following ' + channelSub + ' ' + body.toString());
+			}
+			else {
+				this.bot.say(channel, prefix + username + ' is not following ' + channelSub + ' or the channel doesn\'t exist');
+			}
 		});
 	}
-	else if (fn.countWords(message) >= 3) {
-		getUserChannelFollowage(channel, username, message, function(response) {
-			return callback(response);
+
+	getUserChannelFollowage(channel, username, arg1, arg2, prefix)
+	{
+		var followURL = 'https://api.rtainc.co/twitch/followers/length?channel='+ arg2 +'&name=' + arg1;
+
+		if (fn.stringContainsUrl(arg2) || fn.stringIsLongerThan(arg2, 30)) {
+				return false;
+		}
+
+		if (fn.stringContainsUrl(arg1) || fn.stringIsLongerThan(arg1, 30)) {
+				return false;
+		}
+
+		request(followURL, (error, response, body) => {
+			console.log('[GET] ' + followURL);
+			if (!error && response.statusCode == 200) {
+				this.bot.say(channel, prefix + arg1 + ' has been following ' + arg2 + ' ' + body.toString());
+			}
+			else {
+				this.bot.say(channel, prefix + arg1 + ' is not following ' + arg2 + ' or the channel doesn\'t exist');
+			}
+
 		});
 	}
-}
-
-
-function getUserLocalFollowage(channel, username, message, callback)
-{
-	var following = fn.getNthWord(message, 2);
-	var channelSub = channel.substr(1);
-	var followURL = 'https://api.rtainc.co/twitch/followers/length?channel='+ channelSub +'&name=' + following;
-
-	if (fn.stringContainsUrl(following) || fn.stringIsLongerThan(following, 30)) {
-	  		return false;
-	}
-
-	request(followURL, function (error, response, body) {
-		console.log('[GET] ' + followURL);
-	  	if (!error && response.statusCode == 200) {
-	  		return callback({
-				channel: channel,
-				message: following + ' has been following ' + channelSub + ' ' + body.toString()
-			});
-	  	}
-	  	else {
-	  		return callback({
-				channel: channel,
-				message: following + ' is not following ' + channelSub + ' or the channel doesn\'t exist'
-			});
-	  	}
-
-	});
-}
-
-function getLocalFollowage(channel, username, message, callback)
-{
-	var channelSub = channel.substr(1);
-	var followURL = 'https://api.rtainc.co/twitch/followers/length?channel='+ channelSub +'&name=' + username;
-
-	request(followURL, function (error, response, body) {
-		console.log('[GET] ' + followURL);;
-	  	if (!error && response.statusCode == 200) {
-    		return callback({
-				channel: channel,
-				message: username + ' has been following ' + channelSub + ' ' + body.toString()
-			});
-	  	}
-	  	else {
-	  		return callback({
-				channel: channel,
-				message: username + ' is not following ' + channelSub + ' or the channel doesn\'t exist'
-			});
-	  		return false;
-	  	}
-
-	});
-}
-
-function getUserChannelFollowage(channel, username, message, callback)
-{
-	var following = fn.getNthWord(message, 3);
-	var userFollow = fn.getNthWord(message, 2);
-	var followURL = 'https://api.rtainc.co/twitch/followers/length?channel='+ following +'&name=' + userFollow;
-
-	if (fn.stringContainsUrl(following) || fn.stringIsLongerThan(following, 30)) {
-	  		return false;
-	}
-
-	if (fn.stringContainsUrl(userFollow) || fn.stringIsLongerThan(userFollow, 30)) {
-	  		return false;
-	}
-
-	request(followURL, function (error, response, body) {
-		console.log('[GET] ' + followURL);
-	  	if (!error && response.statusCode == 200) {
-	  		return callback({
-				channel: channel,
-				message: userFollow + ' has been following ' + following + ' ' + body.toString()
-			});
-	  	}
-	  	else {
-	  		return callback({
-				channel: channel,
-				message: userFollow + ' is not following ' + following + ' or the channel doesn\'t exist'
-			});
-	  	}
-
-	});
-}
-
-
-module.exports =
-{
-	followageCommandHandler
 }

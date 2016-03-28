@@ -10,7 +10,6 @@ var lastmessage = require('./../modules/lastmessage');
 var voting      = require('./../modules/voting');
 var followage   = require('./../modules/followage');
 var chatters    = require('./../modules/chatters');
-var config      = require('./../controllers/config');
 var nuke        = require('./../modules/nuke');
 var oddshots    = require('./../modules/oddshots');
 var emotelog    = require('./../modules/emotelog');

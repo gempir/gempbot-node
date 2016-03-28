@@ -1,27 +1,25 @@
-import cfg from './../cfg';
-import IRC from './controllers/IRC';
-import config from './controllers/config';
-import redis from './models/redis';
-import fn from './controllers/functions'
-import chat from './controllers/chat';
-import emotecache from './models/emotecache';
+import cfg          from './../cfg';
+import IRC          from './controllers/IRC';
+import redis        from './models/redis';
+import fn           from './controllers/functions'
+import chat         from './controllers/chat';
+import emotecache   from './models/emotecache';
 import commandcache from './models/commandcache';
 
-import Handler from './Handler';
+import Handler      from './Handler';
 
 // modules
-import logs from './modules/logs';
-import combo from './modules/combo';
-import count from './modules/count';
-import nuke  from './modules/nuke';
-import lines from './modules/lines'; // should be in logs in the future
-import quote from './modules/quote'; // should be in logs in the future
-import lastmessage from './modules/lastmessage'; // should be in logs in the future
-import voting from './modules/voting';
-import followage from './modules/followage';
-import chatters from './modules/chatters';
-import oddshots from './modules/oddshots';
-import emotelog from './modules/emotelog';
+import Logs         from './modules/Logs';
+import Combo        from './modules/Combo';
+import Nuke         from './modules/Nuke';
+import Lines        from './modules/Lines';
+import Randomquote  from './modules/Randomquote';
+import LastMessage  from './modules/LastMessage';
+import Voting       from './modules/Voting';
+import Followage    from './modules/Followage';
+import Chatters     from './modules/Chatters';
+import oddshots     from './modules/oddshots';
+import Emotecount   from './modules/Emotecount';
 
 
 
@@ -31,34 +29,35 @@ export default class Bot {
         this.controllers = {
             cfg: cfg,
             chat: chat,
-            config: config,
-            redis: redis
         };
         this.models = {
             emotecache: emotecache,
-            commandcache: commandcache
+            commandcache: commandcache,
+            redis: redis
         };
         this.modules = {
-            logs: logs,
-            combo: combo,
-            count: count,
-            lines: lines,
-            quote: quote,
-            nuke: nuke,
-            lastmessage: lastmessage,
-            voting: voting,
-            followage: followage,
-            chatters: chatters,
-            oddshots: oddshots,
-            emotelog: emotelog
+            logs:        new Logs(this),
+            combo:       new Combo(this),
+            lines:       new Lines(this),
+            randomquote: new Randomquote(this),
+            nuke:        new Nuke(this),
+            lastmessage: new LastMessage(this),
+            voting:      new Voting(this),
+            followage:   new Followage(this),
+            chatters:    new Chatters(this),
+            emotecount:  new Emotecount(this),
+            oddshots:    oddshots
         };
-        this.channels = {};
-        this.admins   = cfg.admins;
+        this.channels  = {};
+        this.admins    = cfg.admins;
+        this.cmdcds    = [];
+        this.usercds   = [];
 
         this.handler  = new Handler(this);
         this.IRC      = new IRC(this.handler);
         this.loadChannels();
         this.loadCache();
+
     }
 
     loadChannels() {
@@ -68,12 +67,7 @@ export default class Bot {
                console.log('[REDIS] ' + err);
            } else {
                 for (var channel in results) {
-
-                    this.channels[channel] = {};
-                    this.channels[channel]['response'] = results[channel];
-
-
-                    logs.createFolder(channel);
+                    this.loadChannel(channel, results[channel]);
                     this.setConfigForChannel(channel);
                 }
            }
@@ -81,23 +75,24 @@ export default class Bot {
     }
 
     loadChannel(channel, response) {
+        this.modules.logs.createFolder(channel);
         this.channels[channel] = {};
-        this.channels[channel]['response'] = response;
-        logs.createFolder(channel);
+        this.channels[channel]['config'] = {};
+        this.channels[channel].config['response'] = response;
         this.setConfigForChannel(channel);
     }
 
-
     setConfigForChannel(channel) {
         redis.hgetall(channel + ':config', (err, results) => {
-            this.channels[channel]['config'] = results || {};
+            for (var cfg in results) {
+                this.channels[channel].config[cfg] = results[cfg];
+            }
         });
     }
 
     loadCache() {
         this.models.commandcache.cacheCommands();
         this.models.emotecache.fetchEmotesFromBttv();
-        this.controllers.config.cacheConfig();
     }
 
     whisper(username, message) {

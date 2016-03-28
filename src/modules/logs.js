@@ -1,117 +1,62 @@
-var cfg    = require('./../../cfg.js');
-var config = require('./../controllers/config');
-var fs     = require('fs');
-var moment = require('moment');
-var fn     = require('./../controllers/functions');
-var irc    = require('./../controllers/irc');
 
-var userCooldowns = [];
+import cfg    from './../../cfg.js';
+import fs     from 'fs';
+import moment from 'moment';
+import fn     from './../controllers/functions';
 
-if (!fs.existsSync('../logs')){
-    fs.mkdirSync('../logs');
-    console.log('[LOG] created folder: logs');
-}
-
-function createFolder(channel) {
-    if (!fs.existsSync('../logs/' + channel.substr(1))){
-      fs.mkdirSync('../logs/' + channel.substr(1));
-      console.log('[LOG] created folder: ' + channel.substr(1));
-    }
-}
-
-
-function logsCommandHandler(channel, user, message, callback)
+export default class Logs
 {
-    if (userCooldowns.indexOf(user.toLowerCase()) > -1) {
-        return false;
+    constructor(bot)
+    {
+        this.bot = bot;
+        if (!fs.existsSync('../logs')){
+            fs.mkdirSync('../logs');
+            console.log('[LOG] created folder: logs');
+        }
     }
-    userCooldowns.push(user.toLowerCase());
-    setTimeout(function() {
-        fn.removeFromArray(userCooldowns, user.toLowerCase());
-    }, 10000)
-    var bigCommand = fn.getNthWord(message, 1) + ' ' + fn.getNthWord(message, 2);
-    if (bigCommand === '!logs size') {
-        logsSize(channel, user, message, function(response) {
-            return callback(response);
-        });
-    }
-    else if (fn.getNthWord(message, 1) === '!logs') {
-        uploadLogs(channel, user, message);
-    }
-}
 
-function userLogs(channel, username, message)
-{
-    username = username.toLowerCase();
-    var file = '../logs/' + channel.substr(1) + '/' + username +'.txt';
-    fs.appendFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + username + ': ' + message + '\n', function(){});
-}
-
-function uploadLogs(channel, username, message)
-{
-    if (message.toLowerCase() === '!logs') {
-        return false;
+    createFolder(channel) {
+        if (!fs.existsSync('../logs/' + channel.substr(1))){
+          fs.mkdirSync('../logs/' + channel.substr(1));
+          console.log('[LOG] created folder: ' + channel.substr(1));
+        }
     }
-    username = username.toLowerCase();
 
-    var logsFor = (fn.getNthWord(message, 2)).toLowerCase();
-    var logFile = '../logs/' + channel.substr(1) + '/' + logsFor + '.txt';
-    var logFileChannel = '../logs/' + channel.substr(1) + '.txt';
-    var logsShort = null;
-    if (fn.fileExists(logFile)) {
-            fs.readFile(logFile, function(err,data) {
-                var shortLogs = data.toString()
-                shortLogs = shortLogs.substr(shortLogs.length - 20000);
+    userLogs(channel, username, message)
+    {
+        var file = '../logs/' + channel.substr(1) + '/' + username +'.txt';
+        fs.appendFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + username + ': ' + message + '\r\n', function(){});
+    }
+
+    uploadLogs(channel, username, args, prefix)
+    {
+        var logsFor = username;
+        if (args.length > 0) {
+            logsFor = args[0];
+        }
+
+        var logFile = '../logs/' + channel.substr(1) + '/' + logsFor + '.txt';
+        var logFileChannel = '../logs/' + channel.substr(1) + '.txt';
+        var logsShort = null;
+        if (fn.fileExists(logFile)) {
+            fs.readFile(logFile, (err,data) => {
+                var logs = data.toString()
+                // TODO: split by lines 
+                var shortLogs = logs.substr(logs.length - 20000);
 
                 cfg.pastebin.createPaste(shortLogs, 'short logs for ' + logsFor + ' in ' + channel,null,3, '10M')
-                        .then(function (data) {
+                        .then((data) => {
                             console.log('Pastebin created: ' + data);
                             console.log(logsFor, logFile);
-                            irc.whisper(username, 'Last 20k chars for '+ logsFor + ' in ' + channel + ' pastebin.com/' + data);
+                            this.bot.whisper(username, prefix + 'last 20k chars for '+ logsFor + ' in ' + channel + ' pastebin.com/' + data);
                         })
                         .fail(function (err) {
-                                console.log(channel, err);
-                });
+                            console.log(channel, err);
+                        });
             });
         }
-    else {
-        console.log('[LOG] ' + logsFor + ' has no log here');
-    }
-}
-
-function logsSize(channel, username, message, callback)
-{
-    var messageStart = message.substr(0,12).toLowerCase();
-    var name = fn.getNthWord(message, 3);
-    username = username.toLowerCase();
-
-    name = name.toLowerCase();
-    if (!fn.fileExists('../logs/' + channel.substr(1) + '/' + name +  '.txt')) {
-
-        if (fn.stringIsLongerThan(name, 20)) {
-            name = 'the user';
+        else {
+            console.log('[LOG] ' + logsFor + ' has no log here');
         }
-        console.log('[LOG] ' + name + ' has no log here');
-        return false;
     }
-    else {
-        var file = '../logs/' + channel.substr(1) + '/' + name +  '.txt'
-        var fileSize = fn.getFilesizeInKilobytes(file).toFixed(0);
-        var extension = ' KB';
-        if (fileSize > 1000) {
-            fileSize = fn.getFilesizeInMegabytes(file).toFixed(2);
-            extension = ' MB';
-        }
-        return callback({
-            channel: channel,
-            message: 'log file for ' + name + ' is ' + fileSize + extension
-        });
-    }
-}
-
-module.exports =
-{
-    userLogs,
-    logsCommandHandler,
-    createFolder
 }

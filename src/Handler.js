@@ -16,12 +16,12 @@ export default class Handler {
         var username = user.username;
 
         this.bot.modules.lines.recordLines(channel, username, message);
-        this.bot.modules.emotelog.incrementUserEmote(channel, user, message);
-        this.bot.modules.emotelog.incrementEmote(channel, user, message);
+        this.bot.modules.emotecount.incrementUserEmote(channel, user, message);
+        this.bot.modules.emotecount.incrementEmote(channel, user, message);
         this.bot.modules.oddshots.saveChannelOddshots(channel, username, message);
         this.bot.modules.combo.count(channel, user, message);
         this.bot.modules.logs.userLogs(channel, username, message);
-        this.bot.modules.chatters.recordChatters(channel, username, message);
+        this.bot.modules.chatters.recordChatters(channel, username);
         this.bot.modules.nuke.recordToNuke(channel, user, message);
     }
 

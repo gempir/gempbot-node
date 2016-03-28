@@ -1,68 +1,73 @@
-var fn = require('./../controllers/functions');
-var irc    = require('./../controllers/irc');
 
-var nukeLength = 30;
-var activeNukes = [];
-var toNuke = {}
 
-function recordToNuke(channel, user, message)
+import fn from './../controllers/functions';
+
+export default class Nuke
 {
-    if (!(activeNukes.indexOf(channel) > -1)) {
-        return false;
+    constructor(bot)
+    {
+        this.bot         = bot;
+        this.nukeLength  = 30;
+        this.activeNukes = [];
+        this.toNuke      = {};
     }
 
-    if (user['user-type'] === 'mod') {
-        return false;
+    recordToNuke(channel, user, message)
+    {
+        try {
+            if (!(this.activeNukes.indexOf(channel) > -1)) {
+                return false;
+            }
+
+            if (user['user-type'] === 'mod') {
+                return false;
+            }
+
+            if (typeof this.toNuke[channel] === 'undefined') {
+        		this.toNuke[channel] = [];
+        	}
+            if (this.toNuke[channel].indexOf(user.username) > -1) {
+                return false;
+            }
+            this.toNuke[channel].push(user.username);
+        } catch (err) {
+            console.log(err);
+        }
     }
 
-    if (typeof toNuke[channel] === 'undefined') {
-		toNuke[channel] = [];
-	}
-    if (toNuke[channel].indexOf(user.username) > -1) {
-        return false;
-    }
-    toNuke[channel].push(user.username);
-}
-
-function nuke(channel, username, message)
-{
-    if (activeNukes.indexOf(channel) > -1) {
-        return false;
-    }
-
-    activeNukes.push(channel);
-
-    irc.say(channel, 'VaultBoy THIS CHAT WILL BE NUKED IN 30 SECONDS VaultBoy', true);
-
-    for (var x = 0; x < (nukeLength - 1) ; x++) {
-        (function(index) {
-            setTimeout(function() {
-                if ((index / nukeLength) > 0.80) {
-                    irc.say(channel, index % 2 == 0 ? 'Tock...' : 'Tick...');
-                }
-            }, index*1000)
-        })(x);
-    }
-
-    setTimeout(function() {
-        if (typeof toNuke[channel] === 'undefined') {
-            irc.say(channel, 'No targets found!');
+    nuke(channel, username)
+    {
+        if (this.activeNukes.indexOf(channel) > -1) {
             return false;
         }
 
-        for (var index = 0; index < toNuke[channel].length; index++) {
-            irc.say(channel, '/timeout ' + toNuke[channel][index] + ' 1');
+        this.activeNukes.push(channel);
+
+        this.bot.say(channel, '/me VaultBoy THIS CHAT WILL BE NUKED IN 30 SECONDS VaultBoy');
+
+        for (var x = 0; x < (this.nukeLength - 1) ; x++) {
+            ((index) => {
+                setTimeout(() => {
+                    if ((index / this.nukeLength) > 0.80) {
+                        this.bot.say(channel, index % 2 == 0 ? 'Tock...' : 'Tick...');
+                    }
+                }, index*1000)
+            })(x);
         }
-        console.log('[LOG] nuking:' + toNuke[channel]);
-        irc.say(channel, 'VaultBoy NUKED ' + toNuke[channel].length + ' CHATTERS VaultBoy', true);
-        fn.removeFromArray(activeNukes, channel);
-        toNuke[channel] = [];
-        nukeLength = 30;
-    }, nukeLength * 1000);
-}
 
-
-module.exports = {
-    nuke,
-    recordToNuke
+        setTimeout(() => {
+            if (typeof this.toNuke[channel] === 'undefined') {
+                this.bot.say(channel, 'No targets found!');
+                return false;
+            }
+            for (var index = 0; index < this.toNuke[channel].length; index++) {
+                this.bot.say(channel, '/timeout ' + this.toNuke[channel][index] + ' 1');
+            }
+            console.log('[LOG] nuking:' + this.toNuke[channel]);
+            this.bot.say(channel, '/me VaultBoy NUKED ' + this.toNuke[channel].length + ' CHATTERS VaultBoy');
+            fn.removeFromArray(this.activeNukes, channel);
+            console.log(this.activeNukes);
+            this.toNuke[channel] = [];
+        }, this.nukeLength * 1000);
+    }
 }

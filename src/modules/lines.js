@@ -1,45 +1,37 @@
-var cfg = require('./../../cfg');
-var fn = require('./../controllers/functions');
-var redis = require('./../models/redis');
 
-function lineCount(channel, username, message, callback)
-{
-    if (message.toLowerCase() === '!lines') {
-        var linesFor = username.toLowerCase();
-        redis.hget(channel + ":linecount:user", linesFor, function (err, obj) {
-            return callback({
-                channel: channel,
-                message: linesFor + ' has written a total of ' + obj + ' lines'
-            });
-        });
-    }
-    else if (message.toLowerCase() === '!lines channel') {
-        redis.hget(channel + ":linecount:channel", 'lines', function (err, obj) {
-            return callback({
-                channel: channel,
-                message: 'Chat has written a total of ' + obj + ' lines'
-            });
-        });
-    }
-    else {
-        var linesFor = fn.getNthWord(message,2).toLowerCase();
-        redis.hget(channel + ":linecount:user", linesFor, function (err, obj) {
-            return callback({
-                channel: channel,
-                message: linesFor + ' has written a total of ' + obj + ' lines'
-            });
-        });
-    }
-}
+import fn from './../controllers/functions';
 
-function recordLines(channel, username, message)
+export default class Lines
 {
-    redis.hincrby(channel + ':linecount:channel', 'lines', 1);
-    redis.hincrby(channel + ':linecount:user', username.toLowerCase(), 1);
-}
+    constructor(bot)
+    {
+        this.bot = bot;
+    }
 
-module.exports =
-{
-    lineCount,
-    recordLines
+    lineCount(channel, username, args, prefix)
+    {
+        if (args.length === 0) {
+            var linesFor = username.toLowerCase();
+            this.bot.models.redis.hget(channel + ":linecount:user", linesFor, (err, obj) => {
+                this.bot.say(channel, prefix + linesFor + ' has written a total of ' + obj + ' lines');
+            });
+        }
+        else if (args.length === 1 && args[0] === 'channel') {
+            this.bot.models.redis.hget(channel + ":linecount:channel", 'lines', (err, obj) => {
+                this.bot.say(channel, prefix + 'chat has written a total of ' + obj + ' lines')
+            });
+        }
+        else {
+            linesFor = args[0];
+            this.bot.models.redis.hget(channel + ":linecount:user", linesFor, (err, obj) => {
+                this.bot.say(channel, prefix + linesFor + ' has written a total of ' + obj + ' lines');
+            });
+        }
+    }
+
+    recordLines(channel, username, message)
+    {
+        this.bot.models.redis.hincrby(channel + ':linecount:channel', 'lines', 1);
+        this.bot.models.redis.hincrby(channel + ':linecount:user', username.toLowerCase(), 1);
+    }
 }

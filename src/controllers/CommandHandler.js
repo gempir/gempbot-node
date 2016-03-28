@@ -28,12 +28,17 @@ export default class CommandHandler {
 
 
     handleNormal(channel, user, command, args) {
-        this.bot.controllers.redis.hget(channel + ':levels', user.username, (err, results) => {
+        this.handleDefault(channel, user, command, args);
+
+        this.bot.models.redis.hget(channel + ':levels', user.username, (err, results) => {
             if (err) {
                 console.log(err)
                 return;
             }
             var level = results || 100;
+            if (user.username === channel.substr(1)) {
+                level = 2000;
+            }
 
             if (level >= 500) {
                 if (command === '!cmd' || command === '!command') {
@@ -48,7 +53,7 @@ export default class CommandHandler {
                             case 'delete':
                             case 'remove':
                                 if (args[1].indexOf('!') === -1) args[1] = '!' + args[1];
-                                this.bot.controllers.redis.hdel(channel + ":commands", args[1]);
+                                this.bot.models.redis.hdel(channel + ":commands", args[1]);
                                 this.bot.whisper(user.username, 'removed command ' + args[1]);
                                 return;
                         }
@@ -58,30 +63,100 @@ export default class CommandHandler {
                 }
             }
 
-            this.bot.controllers.redis.hget(channel + ':commands', command, (err, results) => {
+            this.bot.models.redis.hget(channel + ':commands', command, (err, results) => {
                 if (err || results === null) {
-                    console.log('[command] ', err, results);
                     return;
                 }
                 var commObj = JSON.parse(results);
 
-                if (level < commObj.level) {
+                if (level < commObj.level || this.bot.cmdcds.indexOf(commObj.name) > -1 || this.bot.usercds.indexOf(user.username) > -1) {
                     return; // level too low
                 }
 
-                switch (commObj.func) {
-                    case 'voting':
-                        this.bot.modules.voting.startVoting(channel, user.username, args[0]);
-                        break;
-                    case null:
-                    default:
-                        // message commands
-                        break;
+                this.bot.cmdcds.push(commObj.name);
+                setTimeout(() => {
+                    fn.removeFromArray(this.bot.cmdcds, commObj.name);
+                }, commObj.cd * 1000)
 
+                this.bot.usercds.push(user.username);
+                setTimeout(() => {
+                    fn.removeFromArray(this.bot.usercds, user.username);
+                }, 3000)
+
+                try {
+                    var prefix = '';
+                    if (commObj.response) {
+                        prefix = user.username + ', ';
+                    }
+                    if (commObj.func != null) {
+                        commObj.func.toLowerCase();
+                    }
+                    switch (commObj.func) {
+                        case 'voting':
+                            this.bot.modules.voting.startVoting(channel, user.username, args[0], prefix);
+                            break;
+                        case 'chatters':
+                            this.bot.modules.chatters.getChatters(channel, prefix);
+                            break;
+                        case 'count':
+                            this.bot.modules.emotecount.count(channel, user.username, args[0], prefix);
+                            break;
+                        case 'countme':
+                            this.bot.modules.emotecount.countMe(channel, user.username, args[0], prefix);
+                            break;
+                        case 'followage':
+                            this.bot.modules.followage.followageCommandHandler(channel, user.username, args, prefix);
+                            break;
+                        case 'lastmessage':
+                            this.bot.modules.lastmessage.lastMessage(channel, user.username, args[0], prefix);
+                            break;
+                        case 'lines':
+                            this.bot.modules.lines.lineCount(channel, user.username, args, prefix);
+                            break;
+                        case 'logs':
+                            this.bot.modules.logs.uploadLogs(channel, user.username, args, prefix);
+                            break;
+                        case 'nuke':
+                            this.bot.modules.nuke.nuke(channel, user.username);
+                            break;
+                        case 'quote':
+                        case 'rquote':
+                        case 'rndquote':
+                        case 'randomquote':
+                            this.bot.modules.randomquote.getQuote(channel, user.username, args, prefix);
+                            break;
+                        case null:
+                        default:
+                            this.bot.say(channel, prefix + commObj.message);
+                            break;
+
+                    }
+                } catch (err) {
+                    console.log(err);
                 }
             });
 
         });
+    }
+
+    handleDefault(channel, user, command, args) {
+        try {
+            switch (command) {
+                case '!v':
+                case '!vt':
+                case '!vote':
+                    this.bot.modules.voting.vote(channel, user.username, args[0]);
+                    break;
+                case '!skip':
+                    this.bot.modules.voting.vote(channel, user.username, 'skip');
+                    break;
+                case '!stay':
+                    this.bot.modules.voting.vote(channel, user.username, 'stay');
+                    break;
+            }
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     addCommand(channel, user, args) {
@@ -92,6 +167,7 @@ export default class CommandHandler {
         var cd          = 5;
         var description = '';
         var response    = false;
+        var level       = 100;
 
         if (name.indexOf('!') === -1) {
             name = '!' + name;
@@ -104,6 +180,10 @@ export default class CommandHandler {
                 cd = args[i].replace('--cd-', '');
             } else if (args[i].indexOf('--func-') > -1) {
                 func = args[i].replace('--func-', '');
+            } else if (args[i].indexOf('--level-') > -1) {
+                level = args[i].replace('--level-', '');
+            } else if (args[i].indexOf('--lvl-') > -1) {
+                level = args[i].replace('--lvl-', '');
             } else {
                 message += args[i] + ' ';
             }
@@ -115,10 +195,11 @@ export default class CommandHandler {
             cd: cd,
             func: func,
             response: response,
+            level: level,
             description: description
         }
         console.log("set", commObj.name, commObj);
-        this.bot.controllers.redis.hset(channel + ':commands', commObj.name, JSON.stringify(commObj));
+        this.bot.models.redis.hset(channel + ':commands', commObj.name, JSON.stringify(commObj));
         this.bot.whisper(user.username, 'command ' + commObj.name + ' set');
     }
 
@@ -127,7 +208,7 @@ export default class CommandHandler {
             case '!lvl':
             case '!level':
                 try {
-                    this.bot.controllers.redis.hset(channel + ':levels', args[0], args[1]);
+                    this.bot.models.redis.hset(channel + ':levels', args[0], args[1]);
                     this.bot.whisper(user.username, args[0] + ' level set to ' + args[1]);
                 } catch (err) {
                     console.log(err)
@@ -136,8 +217,9 @@ export default class CommandHandler {
             case '!cfg':
             case '!config':
                 try {
-                    this.bot.controllers.redis.hset(channel + ':config', args[0], args[1]);
+                    this.bot.models.redis.hset(channel + ':config', args[0], args[1]);
                     this.bot.whisper(user.username, 'config ' + args[0] + ' set to ' + args[1]);
+                    this.bot.setConfigForChannel(channel);
                 } catch(err) {
                     console.log(err);
                 }
@@ -147,12 +229,12 @@ export default class CommandHandler {
                 try {
                     switch (args[0]) {
                         case 'add':
-                            this.bot.controllers.redis.hset(channel + ':trusted', args[1], '1');
+                            this.bot.models.redis.hset(channel + ':trusted', args[1], '1');
                             this.bot.whisper(user.username, 'added ' + args[1] + ' to trusted');
                             break;
                         case 'rm':
                         case 'remove':
-                            this.bot.controllers.redis.hset(channel + ':trusted', args[1], '0');
+                            this.bot.models.redis.hset(channel + ':trusted', args[1], '0');
                             this.bot.whisper(user.username, 'removed ' + args[1] + ' from trusted');
                             break;
                     }
