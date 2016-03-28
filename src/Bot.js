@@ -88,11 +88,11 @@ export default class Bot {
     }
 
     loadBttvChannelEmotes(channel) {
+        this.bttv.channels[channel] = [];
         request('https://api.betterttv.net/2/channels/' + channel.substr(1), (error, response, body) => {
             if (!error && response.statusCode == 200) {
                 var bttvObj = JSON.parse(body);
                 var emotes  = bttvObj.emotes;
-                this.bttv.channels[channel] = [];
                 for (var j = 0; j < emotes.length; j++) {
                     this.models.redis.hset(channel + ':bttvchannelemotes', emotes[j].code, emotes[j].id);
                     this.bttv.channels[channel].push(emotes[j].code);

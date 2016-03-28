@@ -73,15 +73,20 @@ export default class Irc {
             }
         }
 
-        if (!fs.existsSync('logs/' + channel.substr(1))){
-          fs.mkdirSync('logs/' + channel.substr(1));
+        if (!fs.existsSync('../logs/' + channel.substr(1))){
+          fs.mkdirSync('../logs/' + channel.substr(1));
           console.log('[LOG] created folder: ' + channel.substr(1));
         }
 
         this.socket.write('JOIN ' + channel + '\r\n');
         console.log('[redis] ' + channel + ' ' + response);
         this.bot.models.redis.hset('channels', channel, response, (err) => {
-            if (err) console.log(err);
+            if (err) {
+                console.log(err);
+                return;
+            }
+            this.bot.setConfigForChannel(channel);
+            this.bot.loadBttvChannelEmotes(channel);
             this.bot.loadChannel(channel, response);
         });
     }

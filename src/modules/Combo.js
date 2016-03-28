@@ -73,17 +73,21 @@ export default class Combo {
                 }
             }
         }
-        message = message.trim();
-        var messageArr = message.split(' ');
-        for (var i = 0; i < messageArr.length; i++) {
-            var globalBttv = this.bot.bttv.global;
-            if (globalBttv.indexOf(messageArr[i]) > -1) {
-                return messageArr[i];
+        try {
+            message = message.trim();
+            var messageArr = message.split(' ');
+            for (var i = 0; i < messageArr.length; i++) {
+                var globalBttv = this.bot.bttv.global;
+                if (globalBttv.indexOf(messageArr[i]) > -1) {
+                    return messageArr[i];
+                }
+                var channelBttv = this.bot.bttv.channels[channel];
+                if (channelBttv.indexOf(messageArr[i]) > -1) {
+                    return messageArr[i];
+                }
             }
-            var channelBttv = this.bot.bttv.channels[channel];
-            if (channelBttv.indexOf(messageArr[i]) > -1) {
-                return messageArr[i];
-            }
+        } catch (err) {
+            console.log(err);
         }
     }
 
