@@ -4,7 +4,7 @@ import fs    from 'fs';
 import Parser from "./Parser";
 
 
-export default class IRC {
+export default class Irc {
 
     constructor(handler) {
         this.bot         = handler.bot;

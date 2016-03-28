@@ -1,5 +1,5 @@
 import cfg          from './../cfg';
-import IRC          from './controllers/IRC';
+import Irc          from './controllers/Irc';
 import redis        from './models/redis';
 import fn           from './controllers/functions'
 import request      from 'request';
@@ -53,7 +53,7 @@ export default class Bot {
         }
 
         this.handler  = new Handler(this);
-        this.IRC      = new IRC(this.handler);
+        this.Irc      = new Irc(this.handler);
         this.loadChannels();
         this.loadBttvEmotes();
     }
@@ -121,7 +121,7 @@ export default class Bot {
     }
 
     whisper(username, message) {
-        this.IRC.output('#jtv', '/w ' + username + ' ' + message);
+        this.Irc.output('#jtv', '/w ' + username + ' ' + message);
     }
 
     say(channel, message) {
@@ -134,6 +134,6 @@ export default class Bot {
         if (response == 0) {
             return;
         }
-        this.IRC.output(channel, message);
+        this.Irc.output(channel, message);
     }
 }
