@@ -39,7 +39,7 @@ export default class CommandHandler {
                 level = 2000;
             }
 
-            if (level >= 500) {
+            if (level >= 500 || this.bot.admins.indexOf(user.username) > -1) {
                 switch (command) {
                     case '!cmd':
                     case '!command':
