@@ -1,5 +1,5 @@
 import cfg          from './../cfg';
-import Irc          from './controllers/irc';
+import Irc          from './controllers/Irc';
 import redis        from './models/redis';
 import fn           from './controllers/functions'
 import request      from 'request';
