@@ -6,24 +6,6 @@ export default class Lines
     constructor(bot)
     {
         this.bot          = bot;
-        this.channelLines = {};
-        this.userLines    = {};
-        this.saveLines();
-    }
-
-    saveLines()
-    {
-        setInterval(() => {
-            for (var channel in this.channelLines) {
-                this.bot.models.redis.hincrby(channel + ':linecount', 'channel', this.channelLines[channel]);
-                this.channelLines[channel] = 0;
-            }
-            for (var channel in this.userLines) {
-                for (var username in this.userLines[channel]){
-                    this.bot.models.redis.hincrby(channel + ':linecount', username, this.userLines[channel][username]);
-                }
-            }
-        }, 30000);
     }
 
     lineCount(channel, username, args, prefix)
@@ -49,16 +31,7 @@ export default class Lines
 
     recordLines(channel, username, message)
     {
-        if (typeof this.channelLines[channel] === 'undefined') {
-            this.channelLines[channel] = 0;
-        }
-        this.channelLines[channel]++;
-        if (typeof this.userLines[channel] === 'undefined') {
-            this.userLines[channel] = {};
-        }
-        if (typeof this.userLines[channel][username] === 'undefined') {
-            this.userLines[channel][username] = 0;
-        }
-        this.userLines[channel][username]++;
+        this.bot.models.redis.hincrby(channel + ':linecount', 'channel', 1);
+        this.bot.models.redis.hincrby(channel + ':linecount', username, 1);
     }
 }
