@@ -42,6 +42,9 @@ export default class Voting {
 
 	vote(channel, username, arg)
 	{
+		if (this.activeVotings.indexOf(channel) === -1) {
+			return;
+		}
 		try {
 			var regex = '([+-]?\\d*\\.\\d+)(?![-+0-9\\.])';
 			var regex2 = '([+-]?\\d*\\,\\d+)(?![-+0-9\\.])';
