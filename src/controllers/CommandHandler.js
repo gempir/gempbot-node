@@ -259,7 +259,6 @@ export default class CommandHandler {
         try {
             switch (command) {
                 case '!status':
-                    console.log(this.bot.bttv.channels[channel]);
                     var time = process.uptime();
                     var uptime = fn.secsToTime((time + ""));
                     this.bot.say(

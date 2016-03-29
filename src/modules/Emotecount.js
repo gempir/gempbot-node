@@ -12,7 +12,7 @@ export default class Emotecount
     {
         emote = emote.replace(' ', '');
 
-        this.bot.models.redis.hget(channel + ":emotelog:user:" + emote, username, (err, obj) => {
+        this.bot.models.redis.hget(channel + ":emotecount:" + emote, username, (err, obj) => {
             if (obj === null) {
                 return false;
             }
@@ -31,7 +31,7 @@ export default class Emotecount
     {
         emote = emote.replace(' ', '');
 
-        this.bot.models.redis.hget(channel + ":emotelog:channel", emote, (err, obj) => {
+        this.bot.models.redis.hget(channel + ":emotecount:" + emote, 'channel', (err, obj) => {
             if (obj === null) {
                 return false;
             }
@@ -46,47 +46,19 @@ export default class Emotecount
 
     }
 
-    incrementUserEmote(channel, user, message)
+    incrementEmotes(channel, user, message)
     {
         if (user.emotes != null) {
             for (var emote in user.emotes) {
                 var currentEmotes    = user.emotes[emote];
                 var emotePosition    = currentEmotes[0];
                 var emotePositionArr = emotePosition.split('-');
-                var emoteCode        = message.substring(emotePositionArr[0], Number(emotePositionArr[1]) + 1);
-                this.bot.models.redis.hincrby(channel + ':emotelog:user:' + emoteCode, user.username, currentEmotes.length);
-            }
-        }
-        this.countUserBTTVEmotes(channel, user, message);
-    }
-
-    countUserBTTVEmotes(channel, user, message) {
-        try {
-            var messageArr = message.split(' ');
-
-            for (var i = 0; i < messageArr.length; i++) {
-                var currentEmote = messageArr[i];
-                var channelBttvEmotes = this.bot.bttv.channels[channel];
-                var globalBttvEmotes = this.bot.bttv.global;
-
-                if (globalBttvEmotes.indexOf(messageArr[i]) > -1 || channelBttvEmotes.indexOf(messageArr[i]) > -1) {
-                    this.bot.models.redis.hincrby(channel + ':emotelog:user:' + messageArr[i], user.username.toLowerCase(), 1);
-                }
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    incrementEmote(channel, user, message)
-    {
-        if (user.emotes != null) {
-            for (var emote in user.emotes) {
-                var currentEmotes = user.emotes[emote];
-                var emotePosition    = currentEmotes[0];
-                var emotePositionArr = emotePosition.split('-');
-                var emoteCode        = message.substring(+emotePositionArr[0], +emotePositionArr[1] + +1);
-                this.bot.models.redis.hincrby(channel + ':emotelog:channel', emoteCode, currentEmotes.length);
+                var emoteStart       = emotePositionArr[0];
+                var emoteEnd         = emotePositionArr[1];
+                emoteEnd++;
+                var emoteCode        = message.substring(emoteStart, emoteEnd);
+                this.bot.models.redis.hincrby(channel + ':emotecount:' + emoteCode, user.username, currentEmotes.length);
+                this.bot.models.redis.hincrby(channel + ':emotecount:' + emoteCode, 'channel', currentEmotes.length);
             }
         }
         this.countBTTVEmotes(channel, user, message);
@@ -95,17 +67,22 @@ export default class Emotecount
     countBTTVEmotes(channel, user, message) {
         try {
             var messageArr = message.split(' ');
+
             for (var i = 0; i < messageArr.length; i++) {
+
                 var currentEmote = messageArr[i];
                 var channelBttvEmotes = this.bot.bttv.channels[channel];
                 var globalBttvEmotes = this.bot.bttv.global;
 
                 if (globalBttvEmotes.indexOf(messageArr[i]) > -1 || channelBttvEmotes.indexOf(messageArr[i]) > -1) {
-                    this.bot.models.redis.hincrby(channel + ':emotelog:channel', currentEmote, 1);
+                    this.bot.models.redis.hincrby(channel + ':emotecount:' + messageArr[i], user.username, 1);
+                    this.bot.models.redis.hincrby(channel + ':emotecount:' + currentEmote, 'channel', 1);
                 }
+
             }
         } catch (err) {
             console.log(err);
         }
     }
+
 }

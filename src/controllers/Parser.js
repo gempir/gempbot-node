@@ -22,6 +22,8 @@ export default class Parser {
                 var pos = pos.split(',');
                 this.emotes[id] = pos;
             }
+        } else {
+            this.emotes = {};
         }
     }
 
