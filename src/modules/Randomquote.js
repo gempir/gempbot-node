@@ -40,12 +40,12 @@ export default class Randomquote
 	        if (quote.length > 200 || fn.stringContainsUrl(quote)) {
 				console.log('[LOG] skipped user quote');
 				this.quoteSkip++;
-	        	if (this.quoteSkip > 25) {
+	        	if (this.quoteSkip > 50) {
 	        		this.quoteSkip = 0;
 					this.bot.say(channel, prefix + 'couldn\'t find a suitable quote');
 	        		return false;
 	        	}
-	        	this.getQuote(channel, username, message, callback);
+	        	this.getQuote(channel, username, args, callback);
 	        	return false;
 	        }
 	    	this.bot.say(channel, prefix + quote);
