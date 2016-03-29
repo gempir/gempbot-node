@@ -15,12 +15,12 @@ export default class Lines
     {
         setInterval(() => {
             for (var channel in this.channelLines) {
-                this.bot.models.redis.hincrby(channel + ':linecount:channel', 'lines', this.channelLines[channel]);
+                this.bot.models.redis.hincrby(channel + ':linecount', 'channel', this.channelLines[channel]);
                 this.channelLines[channel] = 0;
             }
             for (var channel in this.userLines) {
                 for (var username in this.userLines[channel]){
-                    this.bot.models.redis.hincrby(channel + ':linecount:user', username, this.userLines[channel][username]);
+                    this.bot.models.redis.hincrby(channel + ':linecount', username, this.userLines[channel][username]);
                 }
             }
         }, 30000);
@@ -30,18 +30,18 @@ export default class Lines
     {
         if (args.length === 0) {
             var linesFor = username.toLowerCase();
-            this.bot.models.redis.hget(channel + ":linecount:user", linesFor, (err, obj) => {
+            this.bot.models.redis.hget(channel + ":linecount", linesFor, (err, obj) => {
                 this.bot.say(channel, prefix + linesFor + ' has written a total of ' + obj + ' lines');
             });
         }
         else if (args.length === 1 && args[0] === 'channel') {
-            this.bot.models.redis.hget(channel + ":linecount:channel", 'lines', (err, obj) => {
+            this.bot.models.redis.hget(channel + ":linecount", 'channel', (err, obj) => {
                 this.bot.say(channel, prefix + 'chat has written a total of ' + obj + ' lines')
             });
         }
         else {
             linesFor = args[0];
-            this.bot.models.redis.hget(channel + ":linecount:user", linesFor, (err, obj) => {
+            this.bot.models.redis.hget(channel + ":linecount", linesFor, (err, obj) => {
                 this.bot.say(channel, prefix + linesFor + ' has written a total of ' + obj + ' lines');
             });
         }
