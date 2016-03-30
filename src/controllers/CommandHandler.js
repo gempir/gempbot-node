@@ -129,6 +129,7 @@ export default class CommandHandler {
                         case 'nuke':
                             this.bot.modules.nuke.nuke(channel, user.username);
                             break;
+                        case 'rq':
                         case 'quote':
                         case 'rquote':
                         case 'rndquote':
