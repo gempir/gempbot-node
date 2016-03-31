@@ -59,8 +59,6 @@ export default class Irc {
         this.socket.write('PASS ' + cfg.irc.pass + '\r\n');
     	this.socket.write('USER ' + cfg.irc.username + '\r\n');
         this.socket.write('NICK ' + cfg.irc.username + '\r\n');
-        this.socket.write("CAP REQ :twitch.tv/tags\r\n")     // enable ircv3 tags
-	    this.socket.write("CAP REQ :twitch.tv/commands\r\n")
         this.bot.models.redis.hgetall('channels', (err, results) => {
            if (err) {
                console.log('[REDIS] ' + err);

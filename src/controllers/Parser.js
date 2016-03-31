@@ -71,11 +71,11 @@ export default class Parser {
 
     getMessage(data) {
         var message = data.params[1] || '';
-        message = message.trim();
         if (this.isAction) {
             message = message.replace(/^\u0001ACTION /,'');
             message = message.replace(/\u0001$/,'');
         }
+        message = message.trim();
         return message;
     }
 
@@ -90,7 +90,7 @@ export default class Parser {
         var command = args[0].toLowerCase();
         args.splice(0, 1);
         return {
-            command: args,
+            command: command,
             args: args
         }
     }
