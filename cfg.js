@@ -1,21 +1,11 @@
-var admin = 'gempir';
+var admins = ['gempir'];
 
-var globalcooldown = 800;
-
-var options = {
-        options: {
-            debug: false
-        },
-        connection: {
-            random: 'chat',
-            reconnect: true
-        },
-        identity: {
-            username: 'gempbot',
-            password: 'oauth:'
-        },
-        channels: ['#gempir']
-};
+var irc = {
+    server: "irc.chat.twitch.tv",
+    port: 80,
+    username: "",
+    pass: 'test;oauth:'
+} // missing the group connection, because for me my relaybroker handles that together
 
 var redis = {
     port: '6379',
@@ -27,17 +17,15 @@ var redis = {
 
 var PastebinAPI = require('pastebin-js'),
     pastebin = new PastebinAPI({
-          'api_dev_key' : '',
-          'api_user_name' : '',
-          'api_user_password' : ''
+      'api_dev_key' : '',
+      'api_user_name' : '',
+      'api_user_password' : ''
     });
-
 
 module.exports =
 {
-    pastebin,
-    admin,
-    options,
+    admins,
+    irc,
     redis,
-    globalcooldown
+    pastebin
 };
