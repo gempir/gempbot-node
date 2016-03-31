@@ -30,9 +30,6 @@ export default class Parser {
         }
         var message = this.getMessage(data);
 
-
-        console.log(channel, user, message);
-
         // handle always
         this.handler.handleDefault(channel, user, message);
 
