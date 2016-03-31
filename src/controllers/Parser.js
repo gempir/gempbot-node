@@ -3,84 +3,98 @@ var parse = require('irc-message').parse;
 export default class Parser {
     constructor(handler) {
       this.handler = handler;
-      this.user    = {};
-      this.emotes  = {};
-      this.message = {};
-      this.channel = {};
-      this.action  = false;
-      this.command = '';
-      this.args    = [];
+      this.isAction = false;
     }
 
-    parseEmotes() {
-        if (this.data.tags.emotes != true && typeof this.data.tags.emotes != 'undefined') {
-            var emotesRaw = this.data.tags.emotes.split('/');
+    parseData(data) {
+        data = parse(data);
+        switch(data.command) {
+            case 'PRIVMSG':
+                this.parseMessage(data);
+                break;
+            default:
+                break;
+        }
+    }
+
+    parseMessage(data) {
+        var channel = this.getChannel(data);
+        var user    = {
+            emotes: this.getEmotes(data),
+            'message-type': this.getAction(data),
+            'user-type': data.tags['user-type'],
+            'display-name': data.tags['display-name'],
+            username: ((data.prefix.split("!"))[0]).toLowerCase(),
+            turbo: data.tags.turbo,
+            subscriber: data.tags.subscriber,
+        }
+        var message = this.getMessage(data);
+
+
+        console.log(channel, user, message);
+
+        // handle always
+        this.handler.handleDefault(channel, user, message);
+
+        // filter
+        this.handler.filterMessage(channel, user, message);
+
+        // handle commands
+        if (message.substring(0,1) === "!") {
+            var parsed = this.getCommandAndArgs(message);
+            this.handler.handleCommand(channel, user, parsed.command, parsed.args);
+        }
+    }
+
+
+    getEmotes(data) {
+        var emotes = {};
+        if (data.tags.emotes != true && typeof data.tags.emotes != 'undefined') {
+            var emotesRaw = data.tags.emotes.split('/');
             for (var j = 0; j < emotesRaw.length; j++) {
                 var emote = emotesRaw[j].split(':');
                 var id    = emote[0];
                 var pos   = emote[1];
                 var pos = pos.split(',');
-                this.emotes[id] = pos;
+                emotes[id] = pos;
             }
+        }
+        return emotes;
+    }
+
+    getAction(data) {
+        if (data.params[1].match(/^\u0001ACTION ([^\u0001]+)\u0001$/)) {
+            this.isAction = true;
+            return 'action';
         } else {
-            this.emotes = {};
+            this.isAction = false;
+            return '';
         }
     }
 
-    parseAction() {
-        if (this.message.substring(1,8) == "ACTION ") {
-            this.message = message.substr(8)
-            this.message = message.substr(0, message.length-1)
-            this.action  = true;
+    getMessage(data) {
+        var message = data.params[1] || '';
+        message = message.trim();
+        if (this.isAction) {
+            message = message.replace(/^\u0001ACTION /,'');
+            message = message.replace(/\u0001$/,'');
         }
+        return message;
     }
 
-    parseParams() {
-        this.data.params[0] = this.data.params[0] || '';
-        this.data.params[1] = this.data.params[1] || '';
-        this.channel = (this.data.params[0]).trim().toLowerCase();
-        this.message = (this.data.params[1]).trim();
+    getChannel(data) {
+        var channel = data.params[0] || '';
+        channel = channel.trim().toLowerCase();
+        return channel;
     }
 
-    createUserObj() {
-        this.user = {
-            turbo: this.data.tags.turbo,
-            emotes: this.emotes,
-            subscriber: this.data.tags.subscriber,
-            'user-type': this.data.tags['user-type'],
-            username: ((this.data.prefix.split("!"))[0]).toLowerCase(),
-            'display-name': this.data.tags['display-name'],
-            action: this.action
-        }
-    }
-
-    parseCommand() {
-        var params   = this.message.split(" ");
-        this.command = params[0].toLowerCase();
-        params.splice(0, 1);
-        this.args    = params;
-    }
-
-    parseData(data) {
-        if (data.substr(0,1) != "@" || !(data.indexOf(" PRIVMSG ") > -1)) {
-            // console.log("unhandeld: " + data);
-            return;
-        }
-        this.data = parse(data);
-        this.parseEmotes();
-        this.parseParams();
-        this.createUserObj();
-
-        // handle always
-        this.handler.handleDefault(this.channel, this.user, this.message);
-
-        // filter
-        this.handler.filterMessage(this.channel, this.user, this.message);
-
-        // handle commands
-        if (this.message.substring(0,1) === "!") {
-            this.parseCommand();
-            this.handler.handleCommand(this.channel, this.user, this.command, this.args);
+    getCommandAndArgs(message) {
+        var args    = message.split(" ");
+        var command = args[0].toLowerCase();
+        args.splice(0, 1);
+        return {
+            command: args,
+            args: args
         }
     }
 }

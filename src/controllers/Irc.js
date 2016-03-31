@@ -34,8 +34,24 @@ export default class Irc {
     }
 
     readConnection() {
-        this.socket.on('data', (data) => {
-            this.parser.parseData(data);
+        var buffer = new Buffer('');
+        this.socket.on('data', (chunk) => {
+            if (typeof (chunk) === 'string') {
+                buffer += chunk;
+            } else {
+                buffer = Buffer.concat([buffer, chunk]);
+            }
+            var lines = buffer.toString().split(/\r\n|\r|\n/);
+
+            if (lines.pop()) {
+                return;
+            } else {
+                buffer = new Buffer('');
+            }
+
+            lines.forEach((line) => {
+                this.parser.parseData(line);
+            })
         });
     }
 
@@ -43,6 +59,8 @@ export default class Irc {
         this.socket.write('PASS ' + cfg.irc.pass + '\r\n');
     	this.socket.write('USER ' + cfg.irc.username + '\r\n');
         this.socket.write('NICK ' + cfg.irc.username + '\r\n');
+        this.socket.write("CAP REQ :twitch.tv/tags\r\n")     // enable ircv3 tags
+	    this.socket.write("CAP REQ :twitch.tv/commands\r\n")
         this.bot.models.redis.hgetall('channels', (err, results) => {
            if (err) {
                console.log('[REDIS] ' + err);
