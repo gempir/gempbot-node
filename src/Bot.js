@@ -19,7 +19,7 @@ import Chatters     from './modules/Chatters';
 import Oddshots     from './modules/Oddshots';
 import Emotecount   from './modules/Emotecount';
 // filters
-import Linkfilter   from './filters/Linkfilter';
+import Danger   from './filters/Danger';
 
 
 export default class Bot {
@@ -32,8 +32,8 @@ export default class Bot {
             redis: redis
         };
         this.filters = {
-            linkfilter: new Linkfilter(this)
-        }
+            danger: new Danger(this)
+        };
         this.modules = {
             logs:        new Logs(this),
             combo:       new Combo(this),
@@ -47,17 +47,17 @@ export default class Bot {
             emotecount:  new Emotecount(this),
             oddshots:    new Oddshots(this)
         };
-        this.channels  = {};
         this.admins    = cfg.admins;
+        this.channels  = {};
         this.cmdcds    = [];
         this.usercds   = [];
         this.bttv      = {
             channels: {},
             global: []
-        }
+        };
 
         this.handler  = new Handler(this);
-        this.Irc      = new Irc(this.handler);
+        this.Irc      = new Irc(this);
         this.loadChannels();
         this.loadBttvEmotes();
     }

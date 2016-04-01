@@ -2,8 +2,8 @@ var parse = require('irc-message').parse;
 import fn from './functions';
 
 export default class Parser {
-    constructor(handler) {
-      this.handler = handler;
+    constructor(bot) {
+      this.bot      = bot;
       this.isAction = false;
     }
 
@@ -32,15 +32,15 @@ export default class Parser {
         var message = this.getMessage(data);
 
         // handle always
-        this.handler.handleDefault(channel, user, message);
+        this.bot.handler.handleDefault(channel, user, message);
 
         // filter
-        this.handler.filterMessage(channel, user, message);
+        this.bot.handler.filterMessage(channel, user, message);
 
         // handle commands
         if (message.substring(0,1) === "!") {
             var parsed = this.getCommandAndArgs(message);
-            this.handler.handleCommand(channel, user, parsed.command, parsed.args);
+            this.bot.handler.handleCommand(channel, user, parsed.command, parsed.args);
         }
     }
 

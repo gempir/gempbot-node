@@ -6,10 +6,10 @@ import Parser from "./Parser";
 
 export default class Irc {
 
-    constructor(handler) {
-        this.bot         = handler.bot;
+    constructor(bot) {
+        this.bot         = bot;
         this.socket      = new net.Socket();
-        this.parser      = new Parser(handler);
+        this.parser      = new Parser(bot);
         this.logs        = this.logs = __dirname +'/../../../logs/';
 
         this.setupConnection();

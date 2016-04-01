@@ -38,7 +38,7 @@ export default class Randomquote
 		this.getAllFilesFromFolder(this.logs + channel.substr(1) + '/'+ this.date.getFullYear(), (folders) => {
 			var randMonth = folders[Math.floor(Math.random() * folders.length)];
 			var userFile = this.logs + channel.substr(1) + '/' + this.date.getFullYear() + '/' + randMonth + '/' + userToQuote + '.txt';
-
+			console.log(userFile);
 			if (!fn.fileExists(userFile)) {
 				this.fileMiss++;
 		    	this.getQuote(channel, username, args, prefix);

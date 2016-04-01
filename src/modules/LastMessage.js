@@ -40,7 +40,7 @@ export default class LastMessage
 
             var response = lastLine[1];
 
-            if (fn.containsASCII(response) || fn.stringContainsUrl(response))  {
+            if (this.bot.danger.evalulate(response) > 5)  {
                 return false;
             }
             if (response.length > 120) {
