@@ -70,8 +70,8 @@ export default class Logs
                     }
                     logsShort += lsplit[i] + "\r\n";
                 }
-
-                cfg.pastebin.createPaste(logsShort, 'short logs for ' + logsFor + ' in ' + channel,null,3, '10M')
+                try {
+                    cfg.pastebin.createPaste(logsShort, 'short logs for ' + logsFor + ' in ' + channel,null,3, '10M')
                         .then((data) => {
                             console.log('Pastebin created: ' + data);
                             console.log(logsFor, logFile);
@@ -80,6 +80,9 @@ export default class Logs
                         .fail(function (err) {
                             console.log(channel, err);
                         });
+                } catch (err) {
+                    console.log(err);
+                }
             });
         }
         else {
