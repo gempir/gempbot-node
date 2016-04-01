@@ -1,4 +1,5 @@
 var parse = require('irc-message').parse;
+import fn from './functions';
 
 export default class Parser {
     constructor(handler) {

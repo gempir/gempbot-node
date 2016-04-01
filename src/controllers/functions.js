@@ -96,13 +96,7 @@ function countWords(str) {
 
 function stringContainsUrl(inputString)
 {
-    if (inputString.indexOf(".") > -1) {
-        return true;
-    }
-    if (inputString.indexOf("dot com") > -1) {
-        return true;
-    }
-    if (inputString.indexOf(". com ") > -1) {
+    if (inputString.match(/(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/)) {
         return true;
     }
     return false;
