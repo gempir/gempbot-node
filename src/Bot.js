@@ -16,7 +16,7 @@ import LastMessage  from './modules/LastMessage';
 import Voting       from './modules/Voting';
 import Followage    from './modules/Followage';
 import Chatters     from './modules/Chatters';
-import oddshots     from './modules/oddshots';
+import Oddshots     from './modules/Oddshots';
 import Emotecount   from './modules/Emotecount';
 
 
@@ -41,7 +41,7 @@ export default class Bot {
             followage:   new Followage(this),
             chatters:    new Chatters(this),
             emotecount:  new Emotecount(this),
-            oddshots:    oddshots
+            oddshots:    new Oddshots(this)
         };
         this.channels  = {};
         this.admins    = cfg.admins;

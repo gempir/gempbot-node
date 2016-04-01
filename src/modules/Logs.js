@@ -62,12 +62,20 @@ export default class Logs
         if (fn.fileExists(logFile)) {
             fs.readFile(logFile, (err,data) => {
                 var logs = data.toString()
+                var logsShort = '';
+                var lsplit = logs.split('\r\n');
+                for (var i = lsplit.length; i > (lsplit.length - 1000); i--) {
+                    if (lsplit[i] == '' || typeof lsplit[i] === 'undefined') {
+                        continue;
+                    }
+                    logsShort += lsplit[i] + "\r\n";
+                }
 
-                cfg.pastebin.createPaste(logs, 'short logs for ' + logsFor + ' in ' + channel,null,3, '10M')
+                cfg.pastebin.createPaste(logsShort, 'short logs for ' + logsFor + ' in ' + channel,null,3, '10M')
                         .then((data) => {
                             console.log('Pastebin created: ' + data);
                             console.log(logsFor, logFile);
-                            this.bot.whisper(username, prefix + 'last 20k chars for '+ logsFor + ' in ' + channel + ' pastebin.com/' + data + ' from ' + this.month[this.date.getMonth()]);
+                            this.bot.whisper(username, prefix + 'last 1k lines for '+ logsFor + ' in ' + channel + ' pastebin.com/' + data + ' from ' + this.month[this.date.getMonth()]);
                         })
                         .fail(function (err) {
                             console.log(channel, err);
