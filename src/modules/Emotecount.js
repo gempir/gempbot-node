@@ -57,6 +57,9 @@ export default class Emotecount
                 var emoteEnd         = emotePositionArr[1];
                 emoteEnd++;
                 var emoteCode        = message.substring(emoteStart, emoteEnd);
+                if (emoteCode.indexOf(' ') > -1) {
+                    continue;
+                }
                 this.bot.models.redis.hincrby(channel + ':emotecount:' + emoteCode, user.username, currentEmotes.length);
                 this.bot.models.redis.hincrby(channel + ':emotecount:' + emoteCode, 'channel', currentEmotes.length);
             }
@@ -75,6 +78,9 @@ export default class Emotecount
                 var globalBttvEmotes = this.bot.bttv.global;
 
                 if (globalBttvEmotes.indexOf(messageArr[i]) > -1 || channelBttvEmotes.indexOf(messageArr[i]) > -1) {
+                    if (messageArr[i].indexOf(' ') > -1) {
+                        continue;
+                    }
                     this.bot.models.redis.hincrby(channel + ':emotecount:' + messageArr[i], user.username, 1);
                     this.bot.models.redis.hincrby(channel + ':emotecount:' + currentEmote, 'channel', 1);
                 }
