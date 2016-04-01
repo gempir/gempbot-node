@@ -57,7 +57,7 @@ export default class Logs
             logsFor = args[0];
         }
 
-        var logFile = this.logs + channel.substr(1) +'/' + this.date.getFullYear() + '/' + this.month[this.date.getMonth()] + '/' + username +'.txt';
+        var logFile = this.logs + channel.substr(1) +'/' + this.date.getFullYear() + '/' + this.month[this.date.getMonth()] + '/' + logsFor +'.txt';
         var logsShort = null;
         if (fn.fileExists(logFile)) {
             fs.readFile(logFile, (err,data) => {

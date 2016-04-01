@@ -96,6 +96,12 @@ function countWords(str) {
 
 function stringContainsUrl(inputString)
 {
+    if (inputString.indexOf(".") < 0) {
+        return false;
+    }
+    if (!inputString.match(/(\w+).(\w+)((?:\/\w+)*)/i)) {
+        return false;
+    }
     if (inputString.match(/(\.com)|(\.se)|(\.ru)|(\.net)|(\.org)|(\.de)|(\.jp)|(\.uk)|(\.br)|(\.pl)|(\.it)|(\.in)|(\.fr)|(\.au)|(\.info)|(\.nl)|(\.cn)|(\.ir)|(\.es)|(\.cz)|(\.ca)|(\.ua)|(\.biz)|(\.eu)|(\.za)|(\.kr)|(\.gr)|(\.co)|(\.ro)|(\.tw)|(\.se)|(\.vn)|(\.mx)|(\.ch)|(\.tr)|(\.at)|(\.be)|(\.hu)|(\.tv)|(\.dk)|(\.me)|(\.ar)|(\.us)|(\.no)|(\.sk)|(\.fi)|(\.id)|(\.cl)|(\.xzy)|(\.bz)|(\.nz)|(\.pt)|(\.ie)|(\.il)|(\.kz)|(\.my)|(\.lt)|(\.hk)|(\.cc)|(\.sg)|(\.io)|(\.edu)|(\.su)|(\.pk)|(\.bg)|(\.th)|(\.lv)|(\.hr)|(\.pe)|(\.rs.)|(\.az)|(\.ae)|(\.si)|(\.ph)|(\.tk)|(\.club)|(\.ee)|(\.ng)|(\.pro)|(\.mobi)|(\.asia)|(\.ws)|(\.pw)|(\.top)|(\.fm)|(\.to)/i)) {
         return true;
     }

@@ -25,6 +25,9 @@ gulp.task('build', () => {
 
 	gulp.src('src/overlay/public/**/*.css')
 		.pipe(gulp.dest('build/src/overlay/public'));
+
+	gulp.src('TLDs.txt')
+		.pipe(gulp.dest('build/'));
 });
 
 
