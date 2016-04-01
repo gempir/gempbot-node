@@ -50,24 +50,24 @@ export default class Randomquote
 					return false;
 				}
 		    	var logsSplit = data.toString().split("\n");
-		        var quote = logsSplit[Math.floor(Math.random()*logsSplit.length)];
-		        quote = quote.split(']');
-		        quote = quote[1];
 
-				if (typeof quote === 'undefined') {
-					return false;
-				}
+				var quote = logsSplit[Math.floor(Math.random()*logsSplit.length)];
+				quote = quote.split(']');
+				quote = quote[1];
 
-		        if (quote.length > 200 || fn.stringContainsUrl(quote)) {
+		        while (quote.length > 200 || fn.stringContainsUrl(quote) || this.bot.filters.danger.isASCII(quote)) {
+
+					var quote = logsSplit[Math.floor(Math.random()*logsSplit.length)];
+					quote = quote.split(']');
+					quote = quote[1];
+
 					console.log('[LOG] skipped user quote');
-					this.quoteSkip++;
-		        	if (this.quoteSkip > 50) {
+					if (this.quoteSkip > 50) {
 		        		this.quoteSkip = 0;
 						this.bot.say(channel, prefix + 'couldn\'t find a suitable quote');
 		        		return false;
 		        	}
-		        	this.getQuote(channel, username, args, callback);
-		        	return false;
+					this.quoteSkip++;
 		        }
 		    	this.bot.say(channel, prefix + quote);
 		    });
