@@ -32,8 +32,8 @@ export default class Logs
     }
 
     createFolder(channel) {
-        if (!fs.existsSync(this.logs + channel)){
-          fs.mkdirSync(this.logs + channel);
+        if (!fs.existsSync(this.logs + channel.substr(1))){
+          fs.mkdirSync(this.logs + channel.substr(1));
           console.log('[LOG] created folder: ' + channel);
         }
     }
