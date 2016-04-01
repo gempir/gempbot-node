@@ -55,13 +55,20 @@ export default class Randomquote
 				quote = quote.split(']');
 				quote = quote[1];
 
-		        while (quote.length > 200 || fn.stringContainsUrl(quote) || this.bot.filters.danger.isASCII(quote)) {
 
-					var quote = logsSplit[Math.floor(Math.random()*logsSplit.length)];
+		        while (true) {
+					if (!(typeof quote == 'undefined')) {
+						var filters = this.bot.filters.evaluate(quote)
+						if (filters.length < 200 && !filters.ascii && !filters.links) {
+							break;
+						}
+					}
+					console.log('[LOG] skipped user quote');
+					quote = logsSplit[Math.floor(Math.random()*logsSplit.length)];
 					quote = quote.split(']');
 					quote = quote[1];
 
-					console.log('[LOG] skipped user quote');
+
 					if (this.quoteSkip > 50) {
 		        		this.quoteSkip = 0;
 						this.bot.say(channel, prefix + 'couldn\'t find a suitable quote');

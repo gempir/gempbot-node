@@ -1,7 +1,8 @@
 import cfg          from './../cfg';
 import Irc          from './controllers/Irc';
 import redis        from './models/redis';
-import fn           from './controllers/functions'
+import fn           from './controllers/functions';
+import Filters      from './controllers/Filters';
 import request      from 'request';
 
 import Handler      from './Handler';
@@ -18,8 +19,6 @@ import Followage    from './modules/Followage';
 import Chatters     from './modules/Chatters';
 import Oddshots     from './modules/Oddshots';
 import Emotecount   from './modules/Emotecount';
-// filters
-import Danger   from './filters/Danger';
 
 
 export default class Bot {
@@ -31,9 +30,7 @@ export default class Bot {
         this.models = {
             redis: redis
         };
-        this.filters = {
-            danger: new Danger(this)
-        };
+        this.filters = new Filters(this);
         this.modules = {
             logs:        new Logs(this),
             combo:       new Combo(this),

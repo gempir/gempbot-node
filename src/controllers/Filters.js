@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-export default class Linkfilter {
+export default class Filters {
     constructor(bot)
     {
         this.bot    = bot;
@@ -20,7 +20,7 @@ export default class Linkfilter {
 
     isLink(message)
     {
-        if (this.evaluateLink(message) >= 10) {
+        if (this.evaluateLink(message) > 5) {
             return true;
         } else {
             return false;
@@ -46,7 +46,7 @@ export default class Linkfilter {
             return danger;
         }
         if (message.match(/((?:http:\/\/)?)((?:www\.?)?)([\w\.-_]+)(?:\.|\s*\(dot\)\s*)(\w+)((?:\/[^\s]+)*)/i)) {
-            this.danger += 5;
+            danger += 5;
         }
         return danger;
     }
@@ -57,12 +57,12 @@ export default class Linkfilter {
         // this should be used very rarely, because it's very expensive
     }
 
-    evaluate(user, message)
+    evaluate(message)
     {
         var userlevel = 100;
         var ascii = this.isASCII(message);
         var links = this.isLink(message);
-        var length = message.replace(' ','');
+        var length = message.replace(' ','').length;
 
         return {
             userlevel: userlevel,
