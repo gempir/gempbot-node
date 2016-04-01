@@ -70,6 +70,10 @@ export default class Logs
                     }
                     logsShort += lsplit[i] + "\r\n";
                 }
+                if (logsShort == '' || logsShort == null) {
+                    console.log("[logs] invalid logs");
+                    return false;
+                }
                 try {
                     cfg.pastebin.createPaste(logsShort, 'short logs for ' + logsFor + ' in ' + channel,null,3, '10M')
                         .then((data) => {
