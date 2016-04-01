@@ -4,8 +4,6 @@ export default class Combo {
     {
         this.bot         = bot;
         this.combos      = {};
-        this.lastMessage = '';
-        this.lastEmote   = ''
     }
 
     count(channel, user, message)

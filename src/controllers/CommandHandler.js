@@ -208,7 +208,7 @@ export default class CommandHandler {
             response: response,
             level: level,
             description: description
-        }
+        };
         console.log("set", commObj.name, commObj);
         this.bot.models.redis.hset(channel + ':commands', commObj.name, JSON.stringify(commObj));
         this.bot.whisper(user.username, 'command ' + commObj.name + ' set');
