@@ -223,8 +223,8 @@ export default class CommandHandler {
             case '!lvl':
             case '!level':
                 try {
-                    this.bot.models.redis.hset(channel + ':levels', args[0], args[1]);
-                    this.bot.whisper(user.username, args[0] + ' level set to ' + args[1]);
+                    this.bot.models.redis.hset(channel + ':levels', args[0].toLowerCase(), args[1]);
+                    this.bot.whisper(user.username, args[0].toLowerCase() + ' level set to ' + args[1]);
                 } catch (err) {
                     console.log(err)
                 }
