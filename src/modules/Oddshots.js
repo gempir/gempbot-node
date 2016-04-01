@@ -49,7 +49,7 @@ export default class Oddshots {
                         continue;
                     }
                     if (data.indexOf(messageSplit[i]) < 0) {
-                        fs.appendFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + username + ': ' + message + '\n', function(){})
+                        fs.appendFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + username + ': ' + message + '\r\n', function(){})
                         return true;
                     }
                 }
