@@ -18,7 +18,8 @@ import Followage    from './modules/Followage';
 import Chatters     from './modules/Chatters';
 import Oddshots     from './modules/Oddshots';
 import Emotecount   from './modules/Emotecount';
-
+// filters
+import Linkfilter   from './filters/Linkfilter';
 
 
 export default class Bot {
@@ -30,6 +31,9 @@ export default class Bot {
         this.models = {
             redis: redis
         };
+        this.filters = {
+            linkfilter: new Linkfilter(this)
+        }
         this.modules = {
             logs:        new Logs(this),
             combo:       new Combo(this),

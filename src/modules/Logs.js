@@ -54,7 +54,7 @@ export default class Logs
     {
         var logsFor = username;
         if (args.length > 0) {
-            logsFor = args[0];
+            logsFor = args[0].toLowerCase();
         }
 
         var logFile = this.logs + channel.substr(1) +'/' + this.date.getFullYear() + '/' + this.month[this.date.getMonth()] + '/' + logsFor +'.txt';
