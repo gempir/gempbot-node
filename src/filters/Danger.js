@@ -11,6 +11,9 @@ export default class Linkfilter {
     loadTLDs()
     {
         fs.readFile(__dirname + '/../../tlds.txt', 'utf8', (err, data) => {
+            if (err) {
+                return;
+            }
             this.tlds = data.split('\r\n');
         });
     }
