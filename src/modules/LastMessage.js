@@ -39,8 +39,8 @@ export default class LastMessage
             lastLine = lastLine.split(']');
 
             var response = lastLine[1];
-
-            if (this.bot.danger.evalulate(response) > 5)  {
+            var filters = this.bot.filters.evaluate(response);
+            if (filters.length > 200 || filters.ascii || filters.links) {
                 return false;
             }
             if (response.length > 120) {
