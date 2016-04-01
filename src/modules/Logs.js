@@ -40,13 +40,13 @@ export default class Logs
 
     userLogs(channel, username, message)
     {
-        if (!fs.existsSync(this.logs + channel +'/' + this.date.getFullYear())) {
-            fs.mkdirSync(this.logs + channel +'/' + this.date.getFullYear());
+        if (!fs.existsSync(this.logs + channel.substr(1) +'/' + this.date.getFullYear())) {
+            fs.mkdirSync(this.logs + channel.substr(1) +'/' + this.date.getFullYear());
         }
-        if (!fs.existsSync(this.logs + channel +'/' + this.date.getFullYear() + '/' + this.month[this.date.getMonth()])) {
-            fs.mkdirSync(this.logs + channel +'/' + this.date.getFullYear() + '/' + this.month[this.date.getMonth()]);
+        if (!fs.existsSync(this.logs + channel.substr(1) +'/' + this.date.getFullYear() + '/' + this.month[this.date.getMonth()])) {
+            fs.mkdirSync(this.logs + channel.substr(1) +'/' + this.date.getFullYear() + '/' + this.month[this.date.getMonth()]);
         }
-        var file = this.logs + channel +'/' + this.date.getFullYear() + '/' + this.month[this.date.getMonth()] + '/' + username +'.txt';
+        var file = this.logs + channel.substr(1) +'/' + this.date.getFullYear() + '/' + this.month[this.date.getMonth()] + '/' + username +'.txt';
         fs.appendFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + username + ': ' + message + '\r\n', function(){});
     }
 
@@ -57,7 +57,7 @@ export default class Logs
             logsFor = args[0];
         }
 
-        var logFile = this.logs + channel +'/' + this.date.getFullYear() + '/' + this.month[this.date.getMonth()] + '/' + username +'.txt';
+        var logFile = this.logs + channel.substr(1) +'/' + this.date.getFullYear() + '/' + this.month[this.date.getMonth()] + '/' + username +'.txt';
         var logsShort = null;
         if (fn.fileExists(logFile)) {
             fs.readFile(logFile, (err,data) => {
