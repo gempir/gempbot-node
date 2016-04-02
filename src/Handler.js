@@ -8,27 +8,28 @@ export default class Handler {
     }
 
     filterMessage(channel, user, message) {
+        var cfgLength = this.bot.getConfig(channel, 'maxlength');
+        var cfgASCII  = this.bot.getConfig(channel, 'ascii');
+        var cfgLinks  = this.bot.getConfig(channel, 'links');
         var ascii  = false;
         var length = false;
         var links  = false;
         var reason = '';
 
-        if (this.bot.getConfig(channel, 'ascii')) {
+        if (cfgASCII == true || cfgASCII == 1) {
             links = this.bot.filters.isASCII(message);
             reason = 'ASCII';
         }
-        if (this.bot.getConfig(channel, 'maxlength') && !ascii) {
-            var maxlength =  this.bot.getConfig(channel, 'maxlength');
-            if (message.length > maxlength) {
+        if ((!isNaN(cfgLength) && cfgLength != 0) && !ascii) {
+            if (message.length > cfgLength) {
                 length = true;
                 reason = 'a message over the length limit';
             }
         }
-        if (this.bot.getConfig(channel, 'links') && !ascii && !length) {
+        if ((cfgLinks == true || cfgLinks == 1) && !ascii && !length) {
             ascii = this.bot.filters.evaluateLink(message);
             reason = 'a link in your message';
         }
-
 
         if (ascii || length || links) {
             this.bot.timeout.spam(channel, user.username, reason);
