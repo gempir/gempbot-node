@@ -33,6 +33,12 @@ export default class Parser {
         // handle always
         this.bot.handler.handleDefault(channel, user, message);
 
+        // check if bot active
+        var response = this.bot.getConfig(channel, 'response')
+        if (!(response == 1) || !(response == true)) {
+            return;
+        }
+
         // filter
         this.bot.handler.filterMessage(channel, user, message);
 
