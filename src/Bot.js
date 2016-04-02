@@ -52,6 +52,12 @@ export default class Bot {
             channels: {},
             global: []
         };
+        this.configs   = [
+            'filterlinks',
+            'filterlength',
+            'filterascii',
+            'combos'
+        ];
         this.loadChannels();
         this.loadBttvEmotes();
     }
