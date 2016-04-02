@@ -59,8 +59,8 @@ export default class Randomquote
 
 		        while (true) {
 					if (!(typeof quote == 'undefined')) {
-						var filters = this.bot.filters.evaluate(quote)
-						if (filters.length < 200 && filters.danger < 5) {
+						var filters = this.bot.filters.evaluate(channel, quote)
+						if (filters.length < 200 && filters.danger < 5 && !filters.banphrase) {
 							break;
 						}
 					}

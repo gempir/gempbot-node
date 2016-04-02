@@ -74,11 +74,11 @@ export default class Filters {
         // this should be used very rarely, because it's very expensive
     }
 
-    evaluate(message)
+    evaluate(channel, message)
     {
         var danger = this.evaluateLink(message);
         var ascii  = this.isASCII(message);
-        var banphrase = this.isBanphrased(message);
+        var banphrase = this.isBanphrased(channel, message);
         var links  = false;
         var length = message.length;
 

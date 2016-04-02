@@ -39,8 +39,8 @@ export default class LastMessage
             lastLine = lastLine.split(']');
 
             var response = lastLine[1];
-            var filters = this.bot.filters.evaluate(response);
-            if (filters.length > 200 || filters.danger >= 20) {
+            var filters = this.bot.filters.evaluate(channel, response);
+            if (filters.length > 200 || filters.danger >= 20 || filters.banphrase) {
                 return false;
             }
             if (response.length > 120) {
