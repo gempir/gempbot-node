@@ -59,7 +59,7 @@ export default class Filters {
 
     evaluate(message)
     {
-        var danger = evaluateLink(message);
+        var danger = this.evaluateLink(message);
         var ascii  = this.isASCII(message);
         var links  = false;
         var length = message.length;
