@@ -3,8 +3,8 @@ import fs from 'fs';
 export default class Filters {
     constructor(bot)
     {
-        this.bot    = bot;
-        this.tlds   = [];
+        this.bot        = bot;
+        this.tlds       = [];
         this.loadTLDs();
     }
 
@@ -23,6 +23,23 @@ export default class Filters {
         if (this.evaluateLink(message) > 5) {
             return true;
         } else {
+            return false;
+        }
+    }
+
+    isBanphrased(channel, message)
+    {
+        message = ' ' + message + ' ';
+        var banphrases = this.bot.channels[channel].banphrases;
+        try {
+            for (var i = 0; i < banphrases.length; i++) {
+                if (message.toLowerCase().indexOf(banphrases[i].toLowerCase()) > -1) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (err) {
+            console.log(err);
             return false;
         }
     }
@@ -61,6 +78,7 @@ export default class Filters {
     {
         var danger = this.evaluateLink(message);
         var ascii  = this.isASCII(message);
+        var banphrase = this.isBanphrased(message);
         var links  = false;
         var length = message.length;
 
@@ -70,11 +88,15 @@ export default class Filters {
         if (ascii) {
             danger += 10;
         }
+        if (banphrase) {
+            danger += 10;
+        }
 
         return {
             length: length,
             ascii: ascii,
             links: links,
+            banphrase: banphrase,
             danger: danger
         }
     }

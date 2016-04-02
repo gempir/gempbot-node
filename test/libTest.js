@@ -1,5 +1,5 @@
 var assert = require('chai').assert
-var lib     = require('./../src/lib');
+var lib     = require('./../build/src/lib');
 
 
 describe('lib', function() {

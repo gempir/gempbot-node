@@ -1,7 +1,16 @@
 const gulp = require('gulp');
 const babel = require('gulp-babel');
+const shell = require('gulp-shell')
+
+gulp.task('test', () => {
+	gulp.src('./')
+		.pipe(shell([
+	  		'npm test'
+		]));
+});
 
 gulp.task('build', () => {
+
 	gulp.src('src/**/*.js')
 		.pipe(babel({
 			presets: ['es2015']
@@ -30,5 +39,4 @@ gulp.task('build', () => {
 		.pipe(gulp.dest('build/'));
 });
 
-
-gulp.task('default', ['build']);
+gulp.task('default', ['test', 'build']);

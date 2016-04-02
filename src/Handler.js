@@ -14,24 +14,29 @@ export default class Handler {
         var ascii  = false;
         var length = false;
         var links  = false;
+        var banphrase = false;
         var reason = '';
 
-        if ((cfgASCII == true || cfgASCII == 1) && cfgASCII != null) {
+        banphrase = this.bot.filters.isBanphrased(channel, message);
+        if (banphrase) {
+            reason = 'using a banphrased word';
+        }
+        if ((cfgASCII == true || cfgASCII == 1) && cfgASCII != null && !banphrase) {
             links = this.bot.filters.isASCII(message);
             reason = 'ASCII';
         }
-        if ((!isNaN(cfgLength) && cfgLength != 0 && cfgLength != null) && !ascii) {
+        if ((!isNaN(cfgLength) && cfgLength != 0 && cfgLength != null) && !ascii && !banphrase) {
             if (message.length > cfgLength) {
                 length = true;
                 reason = 'a message over the length limit';
             }
         }
-        if ((cfgLinks == true || cfgLinks == 1) && cfgLinks != null && !ascii && !length) {
+        if ((cfgLinks == true || cfgLinks == 1) && cfgLinks != null && !ascii && !length && !banphrase) {
             ascii = this.bot.filters.evaluateLink(message);
             reason = 'a link in your message';
         }
 
-        if (ascii || length || links) {
+        if (ascii || length || links || banphrase) {
             this.bot.timeout.spam(channel, user, reason);
         }
     }

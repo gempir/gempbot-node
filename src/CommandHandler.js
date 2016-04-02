@@ -78,6 +78,43 @@ export default class CommandHandler {
                         this.bot.loadChannels();
                         this.bot.loadBttvEmotes();
                         break;
+                    case '!banphrase':
+                        try {
+                            var banphrase = '';
+                            for (var i = 1; i < args.length; i++) {
+                                banphrase += args[i] + ' ';
+                            }
+                            switch(args[0]) {
+                                case 'add':
+                                    this.bot.redis.hset(channel + ':banphrases', banphrase, 1, (err) => {
+                                        if (err) {
+                                            console.log(err);
+                                            return;
+                                        }
+                                        this.bot.loadBanphrases(channel);
+                                        this.bot.whisper(user.username, 'added banphrase ' + banphrase);
+                                    });
+                                    break;
+                                case 'rm':
+                                case 'remove':
+                                    this.bot.redis.hdel(channel + ':banphrases', banphrase, (err, deleted) => {
+                                        if (err) {
+                                            console.log(err);
+                                            return;
+                                        }
+                                        if (!deleted) {
+                                            this.bot.whisper(user.username, 'couldn\'t find banphrase ' + banphrase);
+                                        } else {
+                                            this.bot.loadBanphrases(channel);
+                                            this.bot.whisper(user.username, 'removed banphrase ' + banphrase);
+                                        }
+                                    });
+                                    break;
+                            }
+                        } catch (err) {
+                            console.log(err);
+                        }
+                        break;
                 }
             }
 
