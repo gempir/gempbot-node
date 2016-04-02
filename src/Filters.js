@@ -30,7 +30,7 @@ export default class Filters {
     evaluateLink(message)
     {
         var danger = 0;
-        if (message.indexOf('.') > -1 || message.indexOf(',') > -1) {
+        if (message.indexOf('.') > -1) {
             danger += 1;
         }
         if (message.indexOf('(dot)') > -1 || message.indexOf('dot') > -1) {
@@ -70,7 +70,7 @@ export default class Filters {
         if (ascii) {
             danger += 10;
         }
-        
+
         return {
             length: length,
             ascii: ascii,

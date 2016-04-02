@@ -35,7 +35,7 @@ export default class Parser {
 
         // check if bot active
         var response = this.bot.getConfig(channel, 'response')
-        if (!(response == 1) || !(response == true)) {
+        if (response == 0 || response == false) {
             return;
         }
 
