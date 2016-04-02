@@ -16,17 +16,17 @@ export default class Handler {
         var links  = false;
         var reason = '';
 
-        if (cfgASCII == true || cfgASCII == 1) {
+        if ((cfgASCII == true || cfgASCII == 1) && cfgASCII != null) {
             links = this.bot.filters.isASCII(message);
             reason = 'ASCII';
         }
-        if ((!isNaN(cfgLength) && cfgLength != 0) && !ascii) {
+        if ((!isNaN(cfgLength) && cfgLength != 0 && cfgLength != null) && !ascii) {
             if (message.length > cfgLength) {
                 length = true;
                 reason = 'a message over the length limit';
             }
         }
-        if ((cfgLinks == true || cfgLinks == 1) && !ascii && !length) {
+        if ((cfgLinks == true || cfgLinks == 1) && cfgLinks != null && !ascii && !length) {
             ascii = this.bot.filters.evaluateLink(message);
             reason = 'a link in your message';
         }
