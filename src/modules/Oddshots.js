@@ -1,6 +1,6 @@
 import fs     from 'fs';
 import moment from 'moment';
-import fn     from './../controllers/functions';
+import lib     from './../lib';
 import cfg    from './../../cfg';
 
 
@@ -22,7 +22,7 @@ export default class Oddshots {
             oddshotChannel = channelSplit[0] + '-' + channelSplit[1];
         }
 
-        if (!fn.fileExists(file)) {
+        if (!lib.fileExists(file)) {
            fs.appendFile(file, '\r\n', function(){});
        }
 
@@ -61,7 +61,7 @@ export default class Oddshots {
     {
         var logFile = this.logs + channel.substr(1) + '/' + 'oddshots.txt';
         console.log(logFile);
-        if (fn.fileExists(logFile)) {
+        if (lib.fileExists(logFile)) {
             fs.readFile(logFile, (err,data) => {
                 var logs = data.toString()
                 var logsShort = '';

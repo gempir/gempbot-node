@@ -1,4 +1,3 @@
-import fn from './../controllers/functions';
 import request from 'request';
 
 export default class Followage
@@ -25,7 +24,7 @@ export default class Followage
 		var channelSub = channel.substr(1);
 		var followURL = 'https://api.rtainc.co/twitch/followers/length?channel='+ channelSub +'&name=' + arg;
 
-		if (fn.stringContainsUrl(arg) || fn.stringIsLongerThan(arg, 30)) {
+		if (this.bot.filters.isLink(arg) || this.bot.filters.evaluate(arg).length > 30) {
 				return false;
 		}
 
@@ -61,11 +60,11 @@ export default class Followage
 	{
 		var followURL = 'https://api.rtainc.co/twitch/followers/length?channel='+ arg2 +'&name=' + arg1;
 
-		if (fn.stringContainsUrl(arg2) || fn.stringIsLongerThan(arg2, 30)) {
+		if (this.bot.filters.isLink(arg2) || this.bot.filters.evaluate(arg2).length > 30) {
 				return false;
 		}
 
-		if (fn.stringContainsUrl(arg1) || fn.stringIsLongerThan(arg1, 30)) {
+		if (this.bot.filters.isLink(arg1) || this.bot.filters.evaluate(arg1).length > 30) {
 				return false;
 		}
 

@@ -1,5 +1,4 @@
 var parse = require('irc-message').parse;
-import fn from './functions';
 
 export default class Parser {
     constructor(bot) {
@@ -50,10 +49,10 @@ export default class Parser {
         if (data.tags.emotes != true && typeof data.tags.emotes != 'undefined') {
             var emotesRaw = data.tags.emotes.split('/');
             for (var j = 0; j < emotesRaw.length; j++) {
-                var emote = emotesRaw[j].split(':');
-                var id    = emote[0];
-                var pos   = emote[1];
-                var pos = pos.split(',');
+                var emote  = emotesRaw[j].split(':');
+                var id     = emote[0];
+                var pos    = emote[1];
+                var pos    = pos.split(',');
                 emotes[id] = pos;
             }
         }

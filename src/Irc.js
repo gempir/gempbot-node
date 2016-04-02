@@ -23,7 +23,7 @@ export default class Irc {
     output(channel, message) {
         message = message.trim();
         this.socket.write('PRIVMSG ' + channel + ' :' + message +'\r\n');
-        console.log(channel + ' => ' + message);
+        console.log(channel + ' ' + message);
     }
 
     setupConnection() {
@@ -59,7 +59,7 @@ export default class Irc {
         this.socket.write('PASS ' + cfg.irc.pass + '\r\n');
     	this.socket.write('USER ' + cfg.irc.username + '\r\n');
         this.socket.write('NICK ' + cfg.irc.username + '\r\n');
-        this.bot.models.redis.hgetall('channels', (err, results) => {
+        this.bot.redis.hgetall('channels', (err, results) => {
            if (err) {
                console.log('[REDIS] ' + err);
            } else {
@@ -97,7 +97,7 @@ export default class Irc {
 
         this.socket.write('JOIN ' + channel + '\r\n');
         console.log('[redis] ' + channel + ' ' + response);
-        this.bot.models.redis.hset('channels', channel, response, (err) => {
+        this.bot.redis.hset('channels', channel, response, (err) => {
             if (err) {
                 console.log(err);
                 return;
@@ -117,7 +117,7 @@ export default class Irc {
 
         this.socket.write('PART ' + channel + '\r\n');
         console.log('[redis] PART ' + channel)
-        this.bot.models.redis.hdel('channels', channel, (err) => {
+        this.bot.redis.hdel('channels', channel, (err) => {
             if (err) console.log(err);
         });
     }

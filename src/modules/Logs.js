@@ -1,8 +1,7 @@
-
 import cfg    from './../../cfg.js';
 import fs     from 'fs';
 import moment from 'moment';
-import fn     from './../controllers/functions';
+import lib     from './../lib';
 
 export default class Logs
 {
@@ -59,7 +58,7 @@ export default class Logs
 
         var logFile = this.logs + channel.substr(1) +'/' + this.date.getFullYear() + '/' + this.month[this.date.getMonth()] + '/' + logsFor +'.txt';
         var logsShort = null;
-        if (fn.fileExists(logFile)) {
+        if (lib.fileExists(logFile)) {
             fs.readFile(logFile, (err,data) => {
                 var logs = data.toString()
                 var logsShort = '';

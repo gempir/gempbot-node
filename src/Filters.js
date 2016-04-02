@@ -42,7 +42,7 @@ export default class Filters {
                 break;
             }
         }
-        if (this.danger === 0) {
+        if (danger === 0) {
             return danger;
         }
         if (message.match(/((?:http:\/\/)?)((?:www\.?)?)([\w\.-_]+)(?:\.|\s*\(dot\)\s*)(\w+)((?:\/[^\s]+)*)/i)) {
@@ -59,16 +59,23 @@ export default class Filters {
 
     evaluate(message)
     {
-        var userlevel = 100;
-        var ascii = this.isASCII(message);
-        var links = this.isLink(message);
-        var length = message.replace(' ','').length;
+        var danger = evaluateLink(message);
+        var ascii  = this.isASCII(message);
+        var links  = false;
+        var length = message.length;
 
+        if (danger > 5) {
+            links = true;
+        }
+        if (ascii) {
+            danger += 10;
+        }
+        
         return {
-            userlevel: userlevel,
             length: length,
             ascii: ascii,
-            links: links
+            links: links,
+            danger: danger
         }
     }
 

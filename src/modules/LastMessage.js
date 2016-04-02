@@ -1,4 +1,4 @@
-import fn from './../controllers/functions';
+import lib from './../lib';
 import fs from 'fs';
 
 export default class LastMessage
@@ -27,7 +27,7 @@ export default class LastMessage
         lastMessageFor = lastMessageFor.toLowerCase();
     	var file = this.logs + channel.substr(1) + '/' + this.date.getFullYear() + '/' + this.month[this.date.getMonth()] + '/' + lastMessageFor + '.txt';
 
-    	if (!fn.fileExists(file)) {
+    	if (!lib.fileExists(file)) {
     		return false;
     	}
 
@@ -40,7 +40,7 @@ export default class LastMessage
 
             var response = lastLine[1];
             var filters = this.bot.filters.evaluate(response);
-            if (filters.length > 200 || filters.ascii || filters.links) {
+            if (filters.length > 200 || filters.danger >= 20) {
                 return false;
             }
             if (response.length > 120) {

@@ -1,4 +1,4 @@
-import fn from './../controllers/functions';
+import lib from './../lib';
 
 export default class Emotecount
 {
@@ -11,18 +11,12 @@ export default class Emotecount
     countMe(channel, username, emote, prefix)
     {
         emote = emote.replace(' ', '');
-
-        this.bot.models.redis.hget(channel + ":emotecount:" + emote, username, (err, obj) => {
-            if (obj === null) {
+        this.bot.redis.hget(channel + ":emotecount:" + emote, username, (err, obj) => {
+            if (obj === null || err) {
+                console.log('[emotecount] ', obj, err);
                 return false;
             }
-            if (fn.stringContainsUrl(emote) || fn.stringIsLongerThan(emote, 20)) {
-                var phrase = 'the phrase';
-            }
-            else {
-                var phrase = emote;
-            }
-            this.bot.say(channel, prefix + phrase + ' has been used ' + fn.numberFormatted(obj) + ' times by you');
+            this.bot.say(channel, prefix + emote + ' has been used ' + lib.numberFormatted(obj) + ' times by you');
         });
     }
 
@@ -30,18 +24,12 @@ export default class Emotecount
     count(channel, username, emote, prefix)
     {
         emote = emote.replace(' ', '');
-
-        this.bot.models.redis.hget(channel + ":emotecount:" + emote, 'channel', (err, obj) => {
-            if (obj === null) {
+        this.bot.redis.hget(channel + ":emotecount:" + emote, 'channel', (err, obj) => {
+            if (obj === null || err) {
+                console.log('[emotecount] ', obj, err);
                 return false;
             }
-            if (fn.stringContainsUrl(emote) || fn.stringIsLongerThan(emote, 20)) {
-                var phrase = 'the phrase';
-            }
-            else {
-                var phrase = emote;
-            }
-            this.bot.say(channel, prefix + phrase + ' has been used ' + fn.numberFormatted(obj) + ' times');
+            this.bot.say(channel, prefix + emote + ' has been used ' + lib.numberFormatted(obj) + ' times');
         });
 
     }
@@ -60,8 +48,8 @@ export default class Emotecount
                 if (emoteCode.indexOf(' ') > -1) {
                     continue;
                 }
-                this.bot.models.redis.hincrby(channel + ':emotecount:' + emoteCode, user.username, currentEmotes.length);
-                this.bot.models.redis.hincrby(channel + ':emotecount:' + emoteCode, 'channel', currentEmotes.length);
+                this.bot.redis.hincrby(channel + ':emotecount:' + emoteCode, user.username, currentEmotes.length);
+                this.bot.redis.hincrby(channel + ':emotecount:' + emoteCode, 'channel', currentEmotes.length);
             }
         }
         this.countBTTVEmotes(channel, user, message);
@@ -81,8 +69,8 @@ export default class Emotecount
                     if (messageArr[i].indexOf(' ') > -1) {
                         continue;
                     }
-                    this.bot.models.redis.hincrby(channel + ':emotecount:' + messageArr[i], user.username, 1);
-                    this.bot.models.redis.hincrby(channel + ':emotecount:' + currentEmote, 'channel', 1);
+                    this.bot.redis.hincrby(channel + ':emotecount:' + messageArr[i], user.username, 1);
+                    this.bot.redis.hincrby(channel + ':emotecount:' + currentEmote, 'channel', 1);
                 }
 
             }

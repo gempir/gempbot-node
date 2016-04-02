@@ -1,4 +1,4 @@
-import fn from './../controllers/functions';
+import lib from './../lib';
 
 export default class Chatters {
 
@@ -21,7 +21,7 @@ export default class Chatters {
 
 		try {
 			setTimeout(() => {
-				fn.removeFromArray(this.chatters[channel], username);
+				lib.removeFromArray(this.chatters[channel], username);
 			}, 900000);
 		} catch (err) {
 			console.log(err);

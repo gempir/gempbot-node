@@ -1,5 +1,5 @@
 var overlay = require('./../overlay/overlay');
-var fn 	    = require('./../controllers/functions');
+var lib 	= require('./../lib');
 
 var votings = {};
 var activeVotings = [];
@@ -77,7 +77,7 @@ export default class Voting {
 		this.bot.say(channel, prefix + 'a skip or stay voting has been started type [ !vote skip ] or [ !vote stay ] to vote on the current content (45s)');
 
 		setTimeout(() => {
-			fn.removeFromArray(this.activeVotings, channel);
+			lib.removeFromArray(this.activeVotings, channel);
 			var totalVotes = Number(this.votings[channel]['votesSkipStay']['stay']) + Number(this.votings[channel]['votesSkipStay']['skip']);
 			overlay.emit(channel.substr(1) + ':resultsSkip', { stay: this.votings[channel]['votesSkipStay']['stay'], skip: this.votings[channel]['votesSkipStay']['skip'], channel: channel});
 			this.bot.say(channel, prefix + 'the voting ended, skip: [ ' +  this.votings[channel]['votesSkipStay']['skip'] + ' ] | stay: [ ' +  this.votings[channel]['votesSkipStay']['stay'] + ' ] | votes: [ ' + totalVotes + ' ]');
@@ -107,7 +107,7 @@ export default class Voting {
 			}
 			avgRating = (totalRatings / count).toFixed(1);
 
-			fn.removeFromArray(this.activeVotings, channel);
+			lib.removeFromArray(this.activeVotings, channel);
 			this.bot.say(channel, prefix + 'the voting ended, the average ratings is: [ ' + avgRating + ' ] | votes: [ ' + this.votings[channel]['votesRatings'].length + ' ]' + ' raw rating: [' + avgRatingsRaw + ']');
 			overlay.emit(channel.substr(1) + ':resultsRate', { avgRating: avgRating, votes: this.votings[channel]['votesRatings'].length, channel: channel });
 		}, 45000);

@@ -1,11 +1,11 @@
-import cfg          from './../cfg';
-import Irc          from './controllers/Irc';
-import redis        from './models/redis';
-import fn           from './controllers/functions';
-import Filters      from './controllers/Filters';
 import request      from 'request';
 
+import cfg          from './../cfg';
+import Irc          from './Irc';
+import redis        from './redis';
+import Filters      from './Filters';
 import Handler      from './Handler';
+import Timeout      from './Timeout';
 
 // modules
 import Logs         from './modules/Logs';
@@ -24,13 +24,14 @@ import Emotecount   from './modules/Emotecount';
 export default class Bot {
 
     constructor() {
-        this.controllers = {
-            cfg: cfg,
-        };
-        this.models = {
-            redis: redis
-        };
+        this.cfg     = cfg;
+        this.admins  = cfg.admins;
+        this.name    = cfg.irc.username;
+        this.redis   = redis;
+        this.Irc     = new Irc(this);
+        this.handler = new Handler(this);
         this.filters = new Filters(this);
+        this.timeout = new Timeout(this);
         this.modules = {
             logs:        new Logs(this),
             combo:       new Combo(this),
@@ -44,7 +45,6 @@ export default class Bot {
             emotecount:  new Emotecount(this),
             oddshots:    new Oddshots(this)
         };
-        this.admins    = cfg.admins;
         this.channels  = {};
         this.cmdcds    = [];
         this.usercds   = [];
@@ -52,16 +52,13 @@ export default class Bot {
             channels: {},
             global: []
         };
-
-        this.handler  = new Handler(this);
-        this.Irc      = new Irc(this);
         this.loadChannels();
         this.loadBttvEmotes();
     }
 
     loadChannels() {
         console.log('[redis|API] caching configs and loading emotes');
-        redis.hgetall('channels', (err, results) =>  {
+        this.redis.hgetall('channels', (err, results) =>  {
            if (err) {
                console.log('[REDIS] ' + err);
            } else {
@@ -81,7 +78,7 @@ export default class Bot {
                 var bttvObj = JSON.parse(body);
                 var emotes  = bttvObj.emotes;
                 for (var i = 0; i < emotes.length; i++) {
-                    this.models.redis.hset('bttvemotes', emotes[i].code, emotes[i].id);
+                    this.redis.hset('bttvemotes', emotes[i].code, emotes[i].id);
                     this.bttv.global.push(emotes[i].code);
                 }
             }
@@ -95,7 +92,7 @@ export default class Bot {
                 var bttvObj = JSON.parse(body);
                 var emotes  = bttvObj.emotes;
                 for (var j = 0; j < emotes.length; j++) {
-                    this.models.redis.hset(channel + ':bttvchannelemotes', emotes[j].code, emotes[j].id);
+                    this.redis.hset(channel + ':bttvchannelemotes', emotes[j].code, emotes[j].id);
                     this.bttv.channels[channel].push(emotes[j].code);
                 }
             }
@@ -114,7 +111,7 @@ export default class Bot {
     setConfigForChannel(channel) {
         redis.hgetall(channel + ':config', (err, results) => {
             for (var cfg in results) {
-                this.channels[channel].config[cfg] = results[cfg];
+                this.channels[channel].config[cfg.toLowerCase()] = results[cfg].toLowerCase();
             }
         });
     }
@@ -123,7 +120,8 @@ export default class Bot {
         this.Irc.output('#jtv', '/w ' + username + ' ' + message);
     }
 
-    say(channel, message) {
+    say(channel, message)
+    {
         try {
             var response = this.channels[channel].config.response;
         } catch (err) {
@@ -134,5 +132,15 @@ export default class Bot {
             return;
         }
         this.Irc.output(channel, message);
+    }
+
+    getConfig(channel, configName)
+    {
+        configName = configName.toLowerCase();
+        var conf   = this.channels[channel].config[configName];
+        if (typeof conf == 'undefined') {
+            return null;
+        }
+        return conf;
     }
 }

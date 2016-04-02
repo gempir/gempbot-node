@@ -1,4 +1,4 @@
-import fn from './functions';
+import lib from './lib';
 
 export default class CommandHandler {
     constructor(bot) {
@@ -27,7 +27,7 @@ export default class CommandHandler {
     handleNormal(channel, user, command, args) {
         this.handleDefault(channel, user, command, args);
 
-        this.bot.models.redis.hget(channel + ':levels', user.username, (err, results) => {
+        this.bot.redis.hget(channel + ':levels', user.username, (err, results) => {
             if (err) {
                 console.log(err)
                 return;
@@ -52,7 +52,7 @@ export default class CommandHandler {
                                 case 'delete':
                                 case 'remove':
                                     if (args[1].indexOf('!') === -1) args[1] = '!' + args[1];
-                                    this.bot.models.redis.hdel(channel + ":commands", args[1]);
+                                    this.bot.redis.hdel(channel + ":commands", args[1]);
                                     this.bot.whisper(user.username, 'removed command ' + args[1]);
                                     return;
                             }
@@ -67,7 +67,7 @@ export default class CommandHandler {
                 }
             }
 
-            this.bot.models.redis.hget(channel + ':commands', command, (err, results) => {
+            this.bot.redis.hget(channel + ':commands', command, (err, results) => {
                 if (err || results === null) {
                     return;
                 }
@@ -84,12 +84,12 @@ export default class CommandHandler {
 
                 this.bot.cmdcds.push(commObj.name);
                 setTimeout(() => {
-                    fn.removeFromArray(this.bot.cmdcds, commObj.name);
+                    lib.removeFromArray(this.bot.cmdcds, commObj.name);
                 }, commObj.cd * 1000)
 
                 this.bot.usercds.push(user.username);
                 setTimeout(() => {
-                    fn.removeFromArray(this.bot.usercds, user.username);
+                    lib.removeFromArray(this.bot.usercds, user.username);
                 }, 3000)
 
                 try {
@@ -214,7 +214,7 @@ export default class CommandHandler {
             description: description
         };
         console.log("set", commObj.name, commObj);
-        this.bot.models.redis.hset(channel + ':commands', commObj.name, JSON.stringify(commObj));
+        this.bot.redis.hset(channel + ':commands', commObj.name, JSON.stringify(commObj));
         this.bot.whisper(user.username, 'command ' + commObj.name + ' set');
     }
 
@@ -223,7 +223,7 @@ export default class CommandHandler {
             case '!lvl':
             case '!level':
                 try {
-                    this.bot.models.redis.hset(channel + ':levels', args[0].toLowerCase(), args[1]);
+                    this.bot.redis.hset(channel + ':levels', args[0].toLowerCase(), args[1]);
                     this.bot.whisper(user.username, args[0].toLowerCase() + ' level set to ' + args[1]);
                 } catch (err) {
                     console.log(err)
@@ -232,7 +232,7 @@ export default class CommandHandler {
             case '!cfg':
             case '!config':
                 try {
-                    this.bot.models.redis.hset(channel + ':config', args[0], args[1]);
+                    this.bot.redis.hset(channel + ':config', args[0], args[1]);
                     this.bot.whisper(user.username, 'config ' + args[0] + ' set to ' + args[1]);
                     this.bot.setConfigForChannel(channel);
                 } catch(err) {
@@ -244,12 +244,12 @@ export default class CommandHandler {
                 try {
                     switch (args[0]) {
                         case 'add':
-                            this.bot.models.redis.hset(channel + ':trusted', args[1], '1');
+                            this.bot.redis.hset(channel + ':trusted', args[1], '1');
                             this.bot.whisper(user.username, 'added ' + args[1] + ' to trusted');
                             break;
                         case 'rm':
                         case 'remove':
-                            this.bot.models.redis.hset(channel + ':trusted', args[1], '0');
+                            this.bot.redis.hset(channel + ':trusted', args[1], '0');
                             this.bot.whisper(user.username, 'removed ' + args[1] + ' from trusted');
                             break;
                     }
@@ -265,11 +265,11 @@ export default class CommandHandler {
             switch (command) {
                 case '!status':
                     var time = process.uptime();
-                    var uptime = fn.secsToTime((time + ""));
+                    var uptime = lib.secsToTime((time + ""));
                     this.bot.say(
                         channel,
                         '@' + user.username + ', uptime: ' + uptime
-                        + ' | active in ' + fn.countProperties(this.bot.channels) + ' channels'
+                        + ' | active in ' + lib.countProperties(this.bot.channels) + ' channels'
                     );
                     break;
                 case '!join':

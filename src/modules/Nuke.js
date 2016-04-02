@@ -1,5 +1,4 @@
-
-import fn from './../controllers/functions';
+import lib from './../lib';
 
 export default class Nuke
 {
@@ -64,7 +63,7 @@ export default class Nuke
             }
             console.log('[LOG] nuking:' + this.toNuke[channel]);
             this.bot.say(channel, '/me VaultBoy NUKED ' + this.toNuke[channel].length + ' CHATTERS VaultBoy');
-            fn.removeFromArray(this.activeNukes, channel);
+            lib.removeFromArray(this.activeNukes, channel);
             console.log(this.activeNukes);
             this.toNuke[channel] = [];
         }, this.nukeLength * 1000);

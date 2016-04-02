@@ -1,5 +1,5 @@
 import fs from 'fs';
-import fn from './../controllers/functions';
+import lib from './../lib';
 
 export default class Randomquote
 {
@@ -28,6 +28,7 @@ export default class Randomquote
 	getQuote(channel, username, args, prefix)
 	{
 		if (this.fileMiss > 20) {
+			this.fileMIiss = 0;
 			console.log("[logs] didn\'t find userfile");
 			return false;
 		}
@@ -39,7 +40,7 @@ export default class Randomquote
 			var randMonth = folders[Math.floor(Math.random() * folders.length)];
 			var userFile = this.logs + channel.substr(1) + '/' + this.date.getFullYear() + '/' + randMonth + '/' + userToQuote + '.txt';
 			console.log(userFile);
-			if (!fn.fileExists(userFile)) {
+			if (!lib.fileExists(userFile)) {
 				this.fileMiss++;
 		    	this.getQuote(channel, username, args, prefix);
 		    	return false;
@@ -59,7 +60,7 @@ export default class Randomquote
 		        while (true) {
 					if (!(typeof quote == 'undefined')) {
 						var filters = this.bot.filters.evaluate(quote)
-						if (filters.length < 200 && !filters.ascii && !filters.links) {
+						if (filters.length < 200 && filters.danger < 20) {
 							break;
 						}
 					}
