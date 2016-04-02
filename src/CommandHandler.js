@@ -78,13 +78,14 @@ export default class CommandHandler {
                         this.bot.loadChannels();
                         this.bot.loadBttvEmotes();
                         break;
+                    case "!bp":
                     case '!banphrase':
                         try {
-                            var banphrase = '';
-                            for (var i = 1; i < args.length; i++) {
-                                banphrase += args[i] + ' ';
-                            }
-                            switch(args[0]) {
+                            var action = args[0];
+                            args.splice(0,1);
+                            var banphrase = args.join(' ').toLowerCase();
+                            console.log(action)
+                            switch(action) {
                                 case 'add':
                                     this.bot.redis.hset(channel + ':banphrases', banphrase, 1, (err) => {
                                         if (err) {
