@@ -60,7 +60,7 @@ export default class Randomquote
 		        while (true) {
 					if (!(typeof quote == 'undefined')) {
 						var filters = this.bot.filters.evaluate(quote)
-						if (filters.length < 200 && filters.danger < 20) {
+						if (filters.length < 200 && filters.danger < 5) {
 							break;
 						}
 					}
