@@ -7,8 +7,12 @@ export default class Timeout {
         this.timeouts = {};
     }
 
-    spam(channel, username, reason)
+    spam(channel, user, reason)
     {
+        if (user['user-type'] == 'mod' || user['user-type'] == 'staff' || user['user-type'] == 'admin' ) {
+            return;
+        }
+        var username = user.username;
         var stage = this.timeouts[username];
         if (typeof stage == "undefined") {
             var stage = 0;

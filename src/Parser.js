@@ -30,6 +30,10 @@ export default class Parser {
         }
         var message = this.getMessage(data);
 
+        if (this.bot.admins.indexOf(user.username) > -1) {
+            user['user-type'] = 'admin';
+        }
+
         // handle always
         this.bot.handler.handleDefault(channel, user, message);
 

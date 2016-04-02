@@ -32,7 +32,7 @@ export default class Handler {
         }
 
         if (ascii || length || links) {
-            this.bot.timeout.spam(channel, user.username, reason);
+            this.bot.timeout.spam(channel, user, reason);
         }
     }
 
