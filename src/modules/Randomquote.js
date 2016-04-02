@@ -28,7 +28,7 @@ export default class Randomquote
 	getQuote(channel, username, args, prefix)
 	{
 		if (this.fileMiss > 20) {
-			this.fileMIiss = 0;
+			this.fileMiss = 0;
 			console.log("[logs] didn\'t find userfile");
 			return false;
 		}
