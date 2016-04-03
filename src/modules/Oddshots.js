@@ -34,11 +34,11 @@ export default class Oddshots {
     {
         message = ' ' + message;
         console.log("parsing Oddshots: ", channel, username, message);
-        var file = this.logs + channel.substr(1) + '/oddshots.txt';
         var messageSplit = message.split(' ');
 
         for (var i = 0; i < (messageSplit.length -1); i++) {
             if (messageSplit[i].indexOf('oddshot.tv/shot/') < 0) {
+                console.log('not the oddshot');
                 continue;
             }
 
