@@ -10,7 +10,7 @@ export default class Logs
         this.bot       = bot;
     }
 
-    getRandomquote(channel, username, prefix)
+    getRandomquoteForUsername(channel, username, prefix)
     {
         this.bot.mysql.query('SELECT message FROM chatlogs WHERE username = ? ORDER BY RAND() LIMIT 50', [username], (err, results) => {
             if (err || results.length == 0) {
@@ -26,6 +26,26 @@ export default class Logs
                     continue;
                 }
                 this.bot.say(channel, prefix + username + ': ' + quote);
+                break;
+            }
+        });
+    }
+
+    getRandomquote(channel, prefix)
+    {
+        this.bot.mysql.query('SELECT username, message FROM chatlogs ORDER BY RAND() LIMIT 50', [], (err, results) => {
+            if (err || results.length == 0) {
+                console.log(err, results);
+                return;
+            }
+            for (var i = 0; i < results.length; i++) {
+                var quote = results[i].message;
+                var filters = this.bot.filters.evaluate(channel, quote)
+                if (filters.length > 200 || filters.danger > 5 || filters.banphrase) {
+                    console.log('[log] skipping quote');
+                    continue;
+                }
+                this.bot.say(channel, prefix + results[i].username + ': ' + quote);
                 break;
             }
         });

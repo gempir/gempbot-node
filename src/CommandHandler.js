@@ -214,8 +214,11 @@ export default class CommandHandler {
                         case 'rquote':
                         case 'rndquote':
                         case 'randomquote':
-                            var userToQuote = args[0] || user.username;
-                            this.bot.modules.logs.getRandomquote(channel, userToQuote, prefix);
+                            if (args.length == 0) {
+                                this.bot.modules.logs.getRandomquote(channel, prefix);
+                            } else {
+                                this.bot.modules.logs.getRandomquoteForUsername(channel, args[0], prefix);
+                            }
                             break;
                         case null:
                         default:
