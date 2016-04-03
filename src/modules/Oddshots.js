@@ -39,18 +39,19 @@ export default class Oddshots {
             if (!isLink) {
                 continue;
             }
-            console.log('[oddshots] found oddshot ' + messageSplit[i]);
-            if (messageSplit[i].indexOf('http://') < 0 || messageSplit[i].indexOf('https://') < 0) {
-                messageSplit[i] = 'https://' + messageSplit[i];
+            var url = messageSplit[i];
+            console.log('[oddshots] found oddshot ' + url);
+            if (url.indexOf('http://') < 0 || url.indexOf('https://') < 0) {
+                url = 'https://' + url;
             }
-            request(messageSplit[i], (error, response, body) => {
+            request(url, (error, response, body) => {
                 if (error || response.statusCode != 200) {
                     console.log('[oddshots]', error, response);
                     return;
                 }
                 console.log('[oddshots] inserting oddshot ' + messageSplit[i]);
                 var timestamp =  moment.utc().format("YYYY-MM-DD HH:mm:ss");
-                this.bot.mysql.query("INSERT INTO oddshots (channel, timestamp, url) VALUES (?, ?, ?)", [channel, timestamp, messageSplit[i]], function(err, results) {
+                this.bot.mysql.query("INSERT INTO oddshots (channel, timestamp, url) VALUES (?, ?, ?)", [channel, timestamp, url], function(err, results) {
                     if (err) {
                         console.log('[mysql] '+ err);
                     }
