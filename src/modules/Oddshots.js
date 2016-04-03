@@ -49,7 +49,7 @@ export default class Oddshots {
                     console.log('[oddshots]', error, response);
                     return;
                 }
-                console.log('[oddshots] inserting oddshot ' + messageSplit[i]);
+                console.log('[oddshots] inserting oddshot ' + url);
                 var timestamp =  moment.utc().format("YYYY-MM-DD HH:mm:ss");
                 this.bot.mysql.query("INSERT INTO oddshots (channel, timestamp, url) VALUES (?, ?, ?)", [channel, timestamp, url], function(err, results) {
                     if (err) {
