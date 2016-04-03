@@ -170,7 +170,8 @@ export default class CommandHandler {
                             this.bot.modules.followage.followageCommandHandler(channel, user.username, args, prefix);
                             break;
                         case 'lastmessage':
-                            this.bot.modules.lastmessage.lastMessage(channel, user.username, args[0], prefix);
+                            var lastMessageUser = args[0] || username;
+                            this.bot.modules.logs.getLastMessage(channel, lastMessageUser);
                             break;
                         case 'lines':
                             this.bot.modules.lines.lineCount(channel, user.username, args, prefix);

@@ -30,6 +30,18 @@ export default class Logs
         }
     }
 
+
+    getLastMessage(channel, username)
+    {
+        this.bot.mysql.query("SELECT message FROM chatlogs WHERE username = ? ORDER BY timestamp LIMIT 1", [username], (err, results) => {
+            if (err || results.length == 0) {
+                console.log(err, results);
+                return;
+            }
+            this.bot.say(channel, username + ': ' + results[0].message);
+        });
+    }
+
     createFolder(channel) {
         if (!fs.existsSync(this.logs + channel.substr(1))){
           fs.mkdirSync(this.logs + channel.substr(1));
@@ -55,7 +67,7 @@ export default class Logs
         this.bot.mysql.query("INSERT INTO `chatlogs` (channel, timestamp, username, message) VALUES (?, ?, ?, ?)", [channel, timestamp, username, message], function(err, results) {
             if (err) {
                 console.log(err);
-            } 
+            }
         });
     }
 
