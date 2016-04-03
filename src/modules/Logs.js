@@ -101,6 +101,60 @@ export default class Logs
         });
     }
 
+    getLogs(channel, username, logsFor, prefix)
+    {
+        this.bot.mysql.query("SELECT DATE_FORMAT(timestamp,'%Y-%m-%d %T') as timestamp, message FROM chatlogs WHERE username = ? AND channel = ? ORDER BY timestamp DESC LIMIT 500", [logsFor, channel], (err, results) => {
+            if (err || results.length == 0) {
+                console.log(err, results);
+                return;
+            }
+            var log = '';
+            for (var i = 0; i < results.length; i++) {
+                log += '[' + results[i].timestamp + '] ' + logsFor + ': ' + results[i].message + '\r\n';
+            }
+
+            try {
+                cfg.pastebin.createPaste(log, 'last 500 messages for ' +  logsFor + ' in ' + channel,null,3, '10M')
+                    .then((data) => {
+                        console.log('Pastebin created: ' + data);
+                        this.bot.whisper(username, prefix + 'last 500 messages for '+ logsFor + ' in ' + channel + ' pastebin.com/' + data);
+                    })
+                    .fail(function (err) {
+                        console.log(channel, err);
+                    });
+            } catch (err) {
+                console.log(err);
+            }
+        });
+    }
+
+    getLogsAll(username, logsFor, prefix)
+    {
+        this.bot.mysql.query("SELECT DATE_FORMAT(timestamp,'%Y-%m-%d %T') as timestamp, message, channel FROM chatlogs WHERE username = ? ORDER BY timestamp DESC LIMIT 500", [logsFor], (err, results) => {
+            if (err || results.length == 0) {
+                console.log(err, results);
+                return;
+            }
+            var log = '';
+            for (var i = 0; i < results.length; i++) {
+                log += '[' + results[i].timestamp + '] ' + results[i].channel + ' | ' + logsFor + ': ' + results[i].message + '\r\n';
+            }
+
+            try {
+                cfg.pastebin.createPaste(log, 'last 500 messages for ' +  logsFor,null,3, '10M')
+                    .then((data) => {
+                        console.log('Pastebin created: ' + data);
+                        this.bot.whisper(username, prefix + 'last 500 messages for '+ logsFor + ' pastebin.com/' + data);
+                    })
+                    .fail(function (err) {
+                        console.log(channel, err);
+                    });
+            } catch (err) {
+                console.log(err);
+            }
+        });
+    }
+
     uploadLogs(channel, username, args, prefix)
     {
         var logsFor = username;
