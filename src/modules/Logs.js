@@ -37,11 +37,12 @@ export default class Logs
                 console.log(err, results);
                 return;
             }
-            
+            console.log(results);
             for (var i = 0; i < results.length; i++) {
                 var quote = results[i].message;
                 var filters = this.bot.filters.evaluate(channel, quote)
                 if (filters.length < 200 && filters.danger < 5 && !filters.banphrase) {
+                    console.log('[log] skipping quote');
                     continue;
                 }
                 this.bot.say(channel, prefix + username + ' ' + quote);
