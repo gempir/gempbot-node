@@ -40,9 +40,12 @@ export default class Oddshots {
                 continue;
             }
             console.log('[oddshots] found oddshot ' + messageSplit[i]);
+            if (messageSplit[i].indexOf('http://') < 0 || messageSplit[i].indexOf('https://') < 0) {
+                messageSplit[i] = 'https://' + messageSplit[i];
+            }
             request(messageSplit[i], function (error, response, body) {
-                if (error) {
-                    console.log('[oddshots]', error);
+                if (error || response.statusCode != 200) {
+                    console.log('[oddshots]', error, response);
                     return;
                 }
                 console.log('[oddshots] inserting oddshot ' + messageSplit[i]);
