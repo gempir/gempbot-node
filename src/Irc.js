@@ -104,6 +104,7 @@ export default class Irc {
             }
             this.bot.setConfigForChannel(channel);
             this.bot.loadBttvChannelEmotes(channel);
+            this.bot.loadBanphrases(channel);
             this.bot.loadChannel(channel, response);
         });
     }
