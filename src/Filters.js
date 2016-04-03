@@ -46,6 +46,7 @@ export default class Filters {
 
     evaluateLink(message)
     {
+        message = message + ' ';
         var danger = 0;
         if (message.indexOf('.') > -1) {
             danger += 1;
@@ -54,7 +55,7 @@ export default class Filters {
             danger += 5;
         }
         for (var i = 0; i < this.tlds.length; i++) {
-            if (message.indexOf(this.tlds[i]) > -1) {
+            if (message.indexOf(this.tlds[i] + ' ') > -1) {
                 danger += 5;
                 break;
             }
