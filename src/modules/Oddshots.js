@@ -42,7 +42,7 @@ export default class Oddshots {
             var url = messageSplit[i];
             console.log('[oddshots] found oddshot ' + url);
             if (url.indexOf('http://') < 0 || url.indexOf('https://') < 0) {
-                url = 'https://' + url;
+                url = 'http://' + url;
             }
             request(url, (error, response, body) => {
                 if (error || response.statusCode != 200) {
