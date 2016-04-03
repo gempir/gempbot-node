@@ -207,7 +207,7 @@ export default class CommandHandler {
                             break;
                         case 'oddshot':
                         case 'oddshots':
-                            this.bot.modules.oddshots.getOddshots(channel, user.username);
+                            this.bot.modules.oddshots.getOddshots(channel, user.username, prefix);
                             break;
                         case 'rq':
                         case 'quote':

@@ -29,7 +29,6 @@ export default class Facts {
 
     sayFact(channel)
     {
-
         this.bot.mysql.query('SELECT fact FROM facts WHERE channel = ? ORDER BY RAND() LIMIT 1', [channel], (err, results) => {
             if (err || results.length == 0) {
                 console.log(err, results);

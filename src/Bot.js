@@ -17,8 +17,6 @@ import Logs         from './modules/Logs';
 import Combo        from './modules/Combo';
 import Nuke         from './modules/Nuke';
 import Lines        from './modules/Lines';
-import Randomquote  from './modules/Randomquote';
-import LastMessage  from './modules/LastMessage';
 import Voting       from './modules/Voting';
 import Followage    from './modules/Followage';
 import Chatters     from './modules/Chatters';
@@ -46,9 +44,7 @@ export default class Bot {
             logs:        new Logs(this),
             combo:       new Combo(this),
             lines:       new Lines(this),
-            randomquote: new Randomquote(this),
             nuke:        new Nuke(this),
-            lastmessage: new LastMessage(this),
             voting:      new Voting(this),
             followage:   new Followage(this),
             chatters:    new Chatters(this),
@@ -137,7 +133,6 @@ export default class Bot {
     }
 
     loadChannel(channel, response) {
-        this.modules.logs.createFolder(channel);
         this.channels[channel] = {};
         this.channels[channel]['config'] = {};
         this.channels[channel].config['response'] = response;

@@ -12,8 +12,7 @@ export default class Eventhub {
             case 'resub':
                 break;
             case 'timeout':
-                this.bot.modules.logs.userLogs(channel, 'timeouts', data);
-                this.bot.redis.hset(channel + ":timeouts", new Date().getTime(), data);
+                this.bot.modules.logs.saveMessage(channel, 'timeout', data);
                 break;
             case 'ban':
                 break;

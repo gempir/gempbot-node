@@ -88,11 +88,6 @@ export default class Irc {
             }
         }
 
-        if (!fs.existsSync(this.logs + channel.substr(1))){
-          fs.mkdirSync(this.logs + channel.substr(1));
-          console.log('[LOG] created folder: ' + channel.substr(1));
-        }
-
         this.socket.write('JOIN ' + channel + '\r\n');
         console.log('[redis] ' + channel + ' ' + response);
         this.bot.redis.hset('channels', channel, response, (err) => {

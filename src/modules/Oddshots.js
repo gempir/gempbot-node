@@ -1,7 +1,8 @@
-import fs     from 'fs';
-import moment from 'moment';
+import fs      from 'fs';
+import moment  from 'moment';
 import lib     from './../lib';
-import cfg    from './../../cfg';
+import cfg     from './../../cfg';
+import request from 'request';
 
 
 
@@ -9,12 +10,10 @@ export default class Oddshots {
     constructor(bot)
     {
         this.bot  = bot;
-        this.logs = __dirname +'/../../../logs/';
     }
 
     saveChannelOddshots(channel, username, message)
     {
-        var file = this.logs + channel.substr(1) + '/oddshots.txt';
         var oddshotChannel = channel.substr(1);
 
         if (channel.indexOf('_') > -1) {
@@ -22,12 +21,12 @@ export default class Oddshots {
             oddshotChannel = channelSplit[0] + '-' + channelSplit[1];
         }
 
-        if (!lib.fileExists(file)) {
-           fs.appendFile(file, '\r\n', function(){});
-       }
-
         if (message.indexOf('oddshot.tv/shot/' + oddshotChannel) > -1) {
-            this.parseOddshots(channel, username, message);
+            try {
+                this.parseOddshots(channel, username, message);
+            } catch (err) {
+                console.log(err);
+            }
         }
     }
 
@@ -38,53 +37,51 @@ export default class Oddshots {
         var file = this.logs + channel.substr(1) + '/oddshots.txt';
         var messageSplit = message.split(' ');
 
-        fs.readFile(file, function(err, data) {
-            if (err) {
-                console.log(err);
-                return;
+        for (var i = 0; i < (messageSplit.length -1); i++) {
+            if (messageSplit[i].indexOf('oddshot.tv/shot/') < 0) {
+                continue;
             }
-            (function(data) {
-                for (var i = 0; i < (messageSplit.length -1); i++) {
-                    if (messageSplit[i].indexOf('oddshot.tv/shot/') < 0) {
-                        continue;
-                    }
-                    if (data.indexOf(messageSplit[i]) < 0) {
-                        fs.appendFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + username + ': ' + message + '\r\n', function(){})
-                        return true;
-                    }
-                }
-            })(data);
-        });
-    }
 
-    getOddshots(channel, username)
-    {
-        var logFile = this.logs + channel.substr(1) + '/' + 'oddshots.txt';
-        console.log(logFile);
-        if (lib.fileExists(logFile)) {
-            fs.readFile(logFile, (err,data) => {
-                var logs = data.toString()
-                var logsShort = '';
-                var lsplit = logs.split('\r\n');
-                for (var i = lsplit.length; i > (lsplit.length - 1000); i--) {
-                    if (lsplit[i] == '' || typeof lsplit[i] === 'undefined') {
-                        continue;
-                    }
-                    logsShort += lsplit[i] + "\r\n";
+            request(messageSplit[i], function (error, response, body) {
+                if (error || response.statusCode != 200) {
+                    console.log('[oddshots]', error, response);
+                    return;
                 }
-
-                cfg.pastebin.createPaste(logsShort, 'oddshots in ' + channel,null,3, '10M')
-                        .then((data) => {
-                            console.log('Pastebin created: ' + data);
-                            this.bot.whisper(username, 'oddshots in ' + channel + ' pastebin.com/' + data);
-                        })
-                        .fail(function (err) {
-                            console.log(channel, err);
-                        });
+                var timestamp =  moment.utc().format("YYYY-MM-DD HH:mm:ss");
+                this.bot.mysql.query("INSERT INTO oddshots (channel, timestamp, url) VALUES (?, ?, ?)", [channel, timestamp, messageSplit[i]], function(err, results) {
+                    if (err) {
+                        console.log('[mysql] '+ err);
+                    }
+                });
             });
         }
-        else {
-            console.log('[logs] no oddshot file');
-        }
+
+    }
+
+    getOddshots(channel, username, prefix)
+    {
+        this.bot.mysql.query("SELECT DATE_FORMAT(timestamp,'%Y-%m-%d %T') as timestamp, url FROM oddshots WHERE channel = ? ORDER BY timestamp DESC LIMIT 50", [channel], (err, results) => {
+            if (err || results.length == 0) {
+                console.log(err, results);
+                return;
+            }
+            var log = '';
+            for (var i = 0; i < results.length; i++) {
+                log += '[' + results[i].timestamp + '] ' + results[i].url + '\r\n';
+            }
+
+            try {
+                cfg.pastebin.createPaste(log, 'last 50 oddshots found in ' +  channel,null,3, '10M')
+                    .then((data) => {
+                        console.log('Pastebin created: ' + data);
+                        this.bot.whisper(username, prefix + 'last 50 oddshots found in ' + channel + ' pastebin.com/' + data);
+                    })
+                    .fail(function (err) {
+                        console.log(channel, err);
+                    });
+            } catch (err) {
+                console.log(err);
+            }
+        });
     }
 }
