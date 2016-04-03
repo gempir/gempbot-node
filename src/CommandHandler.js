@@ -355,6 +355,7 @@ export default class CommandHandler {
                                 this.bot.whisper(user.username, 'config ' + config + ' set to ' + value);
                                 this.bot.setConfigForChannel(channel);
                             });
+                            break;
                         case 'rm':
                         case 'remove':
                             var config = args[1].toLowerCase();
