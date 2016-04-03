@@ -38,7 +38,15 @@ export default class Logs
                 console.log(err, results);
                 return;
             }
-            this.bot.say(channel, results[0].channel + ' | ' + username + ': ' + results[0].message);
+            var message = results[0].message;
+            var filters = this.bot.filters.evaluate(channel, message);
+            if (filters.length > 200 || filters.danger >= 20 || filters.banphrase) {
+                return false;
+            }
+            if (message.length > 120) {
+                message = message.substring(0, 120) + ' [...]';
+            }
+            this.bot.say(channel, results[0].channel + ' | ' + username + ': ' + message);
         });
     }
 
