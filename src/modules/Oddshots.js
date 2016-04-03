@@ -37,7 +37,7 @@ export default class Oddshots {
         var messageSplit = message.split(' ');
 
         for (var i = 0; i < (messageSplit.length -1); i++) {
-            if (messageSplit[i].indexOf('oddshot.tv/shot/') < 0) {
+            if (!this.bot.filters.isLink(messageSplit[i])) {
                 console.log('not the oddshot');
                 continue;
             }
