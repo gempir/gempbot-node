@@ -71,6 +71,7 @@ export default class Handler {
         this.bot.modules.oddshots.saveChannelOddshots(channel, username, message);
         this.bot.modules.combo.count(channel, user, message);
         this.bot.modules.logs.userLogs(channel, username, message);
+        this.bot.modules.logs.saveMessage(channel, username, message);
         this.bot.modules.chatters.recordChatters(channel, username);
         this.bot.modules.nuke.recordToNuke(channel, user, message);
     }

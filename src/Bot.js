@@ -1,8 +1,11 @@
 import request      from 'request';
 
 import cfg          from './../cfg';
-import Irc          from './Irc';
+
 import redis        from './redis';
+import mysql        from './mysql';
+
+import Irc          from './Irc';
 import Filters      from './Filters';
 import Parser       from './Parser';
 import Handler      from './Handler';
@@ -31,6 +34,7 @@ export default class Bot {
         this.admins   = cfg.admins;
         this.name     = cfg.irc.username;
         this.redis    = redis;
+        this.mysql    = mysql;
         this.irc      = new Irc(this);
         this.parser   = new Parser(this);
         this.handler  = new Handler(this);

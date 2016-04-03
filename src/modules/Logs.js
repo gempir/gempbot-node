@@ -49,6 +49,16 @@ export default class Logs
         fs.appendFile(file, '[GMT+1 ' + moment().utcOffset(60).format('D.M.YYYY H:mm:ss')  + '] ' + username + ': ' + message + '\r\n', function(){});
     }
 
+    saveMessage(channel, username, message)
+    {
+        var timestamp =  moment.utc().format("YYYY-MM-DD HH:mm:ss");
+        this.bot.mysql.query("INSERT INTO `chatlogs` (channel, timestamp, username, message) VALUES (?, ?, ?, ?)", [channel, timestamp, username, message], function(err, results) {
+            if (err) {
+                console.log(err);
+            } 
+        });
+    }
+
     uploadLogs(channel, username, args, prefix)
     {
         var logsFor = username;
