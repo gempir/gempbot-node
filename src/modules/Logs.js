@@ -33,12 +33,12 @@ export default class Logs
 
     getLastMessage(channel, username)
     {
-        this.bot.mysql.query("SELECT message FROM chatlogs WHERE username = ? ORDER BY timestamp LIMIT 1", [username], (err, results) => {
+        this.bot.mysql.query("SELECT channel, message FROM chatlogs WHERE username = ? ORDER BY timestamp DESC LIMIT 1", [username], (err, results) => {
             if (err || results.length == 0) {
                 console.log(err, results);
                 return;
             }
-            this.bot.say(channel, username + ': ' + results[0].message);
+            this.bot.say(channel, results[0].channel + ' | ' + username + ': ' + results[0].message);
         });
     }
 
