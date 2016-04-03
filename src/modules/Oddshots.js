@@ -34,7 +34,7 @@ export default class Oddshots {
     {
         var messageSplit = message.split(' ');
 
-        for (var i = 0; i < (messageSplit.length -1); i++) {
+        for (var i = 0; i < messageSplit.length; i++) {
             var isLink = this.bot.filters.isLink(messageSplit[i]);
             if (!isLink) {
                 continue;
