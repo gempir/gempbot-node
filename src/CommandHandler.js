@@ -399,7 +399,7 @@ export default class CommandHandler {
                     this.bot.Irc.partChannel(args);
                     break;
                 case '!say':
-                    var toSay = message.substr(5);
+                    var toSay = args.join(' ');
                     this.bot.say(channel, toSay);
                     break;
             }

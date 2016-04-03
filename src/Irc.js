@@ -1,7 +1,6 @@
 import cfg   from './../../cfg';
 import net   from 'net';
 import fs    from 'fs';
-import Parser from "./Parser";
 
 
 export default class Irc {
@@ -9,7 +8,6 @@ export default class Irc {
     constructor(bot) {
         this.bot         = bot;
         this.socket      = new net.Socket();
-        this.parser      = new Parser(bot);
         this.logs        = this.logs = __dirname +'/../../../logs/';
 
         this.setupConnection();
@@ -50,7 +48,7 @@ export default class Irc {
             }
 
             lines.forEach((line) => {
-                this.parser.parseData(line);
+                this.bot.parser.parseData(line);
             })
         });
     }

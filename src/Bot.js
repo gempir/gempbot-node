@@ -4,8 +4,10 @@ import cfg          from './../cfg';
 import Irc          from './Irc';
 import redis        from './redis';
 import Filters      from './Filters';
+import Parser       from './Parser';
 import Handler      from './Handler';
 import Timeout      from './Timeout';
+import Eventhub     from './Eventhub';
 
 // modules
 import Logs         from './modules/Logs';
@@ -21,18 +23,21 @@ import Oddshots     from './modules/Oddshots';
 import Emotecount   from './modules/Emotecount';
 
 
+
 export default class Bot {
 
     constructor() {
-        this.cfg     = cfg;
-        this.admins  = cfg.admins;
-        this.name    = cfg.irc.username;
-        this.redis   = redis;
-        this.Irc     = new Irc(this);
-        this.handler = new Handler(this);
-        this.filters = new Filters(this);
-        this.timeout = new Timeout(this);
-        this.modules = {
+        this.cfg      = cfg;
+        this.admins   = cfg.admins;
+        this.name     = cfg.irc.username;
+        this.redis    = redis;
+        this.irc      = new Irc(this);
+        this.parser   = new Parser(this);
+        this.handler  = new Handler(this);
+        this.filters  = new Filters(this);
+        this.timeout  = new Timeout(this);
+        this.eventhub = new Eventhub(this);
+        this.modules  = {
             logs:        new Logs(this),
             combo:       new Combo(this),
             lines:       new Lines(this),
@@ -140,7 +145,7 @@ export default class Bot {
     }
 
     whisper(username, message) {
-        this.Irc.output('#jtv', '/w ' + username + ' ' + message);
+        this.irc.output('#jtv', '/w ' + username + ' ' + message);
     }
 
     say(channel, message)
@@ -154,7 +159,7 @@ export default class Bot {
         if (response == 0) {
             return;
         }
-        this.Irc.output(channel, message);
+        this.irc.output(channel, message);
     }
 
     getConfig(channel, configName)

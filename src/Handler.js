@@ -7,6 +7,28 @@ export default class Handler {
         this.commandHandler = new CommandHandler(bot);
     }
 
+    handle(channel, user, message)
+    {
+        // handle always
+        this.handleDefault(channel, user, message);
+
+        // check if bot active
+        var response = this.bot.getConfig(channel, 'response')
+        if (response == 0 || response == false || user.username == this.bot.cfg.irc.username.toLowerCase()) {
+            return;
+        }
+
+        // filter
+        this.filterMessage(channel, user, message);
+
+        // handle commands
+        if (message.substring(0,1) === "!") {
+            var parsed = this.bot.parser.getCommandAndArgs(message);
+            this.handleCommand(channel, user, parsed.command, parsed.args);
+        }
+    }
+
+
     filterMessage(channel, user, message) {
         var cfgLength = this.bot.getConfig(channel, 'maxlength');
         var cfgASCII  = this.bot.getConfig(channel, 'ascii');

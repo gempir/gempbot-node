@@ -12,10 +12,19 @@ export default class Parser {
             case 'PRIVMSG':
                 this.parseMessage(data);
                 break;
+            case 'CLEARCHAT':
+                this.parseTimeout(data);
+                break;
             default:
                 break;
         }
     }
+
+    parseTimeout(data)
+    {
+        this.bot.eventhub.addEvent(data.params[0], 'timeout', data.command + ' ' + data.params[1]);
+    }
+
 
     parseMessage(data) {
         var channel = this.getChannel(data);
@@ -33,24 +42,7 @@ export default class Parser {
         if (this.bot.admins.indexOf(user.username) > -1) {
             user['user-type'] = 'admin';
         }
-
-        // handle always
-        this.bot.handler.handleDefault(channel, user, message);
-
-        // check if bot active
-        var response = this.bot.getConfig(channel, 'response')
-        if (response == 0 || response == false) {
-            return;
-        }
-
-        // filter
-        this.bot.handler.filterMessage(channel, user, message);
-
-        // handle commands
-        if (message.substring(0,1) === "!") {
-            var parsed = this.getCommandAndArgs(message);
-            this.bot.handler.handleCommand(channel, user, parsed.command, parsed.args);
-        }
+        this.bot.handler.handle(channel, user, message);
     }
 
 
