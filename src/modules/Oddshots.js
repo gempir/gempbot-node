@@ -32,15 +32,14 @@ export default class Oddshots {
 
     parseOddshots(channel, username, message)
     {
-        message = ' ' + message;
-        console.log("parsing Oddshots: ", channel, username, message);
         var messageSplit = message.split(' ');
 
         for (var i = 0; i < (messageSplit.length -1); i++) {
-            if (!this.bot.filters.isLink(messageSplit[i])) {
-                console.log('[oddshots] not the oddshot ' + messageSplit[i] + ' ' + this.bot.filters.isLink(messageSplit[i]));
+            var isLink = this.bot.filters.isLink(messageSplit[i]);
+            if (!isLink) {
                 continue;
             }
+            console.log('[oddshots] found oddshot ' + messageSplit[i]);
             request(messageSplit[i], function (error, response, body) {
                 if (error || response.statusCode == 404) {
                     console.log('[oddshots]', error, response);
