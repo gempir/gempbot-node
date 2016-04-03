@@ -2,6 +2,7 @@ export default class Eventhub {
     constructor(bot)
     {
         this.bot = bot;
+        this.date = new Date();
     }
 
     addEvent(channel, type, data)
@@ -12,7 +13,8 @@ export default class Eventhub {
             case 'resub':
                 break;
             case 'timeout':
-                this.bot.modules.logs.userLogs(channel, 'timeout', data);
+                this.bot.modules.logs.userLogs(channel, 'timeouts', data);
+                this.bot.redis.hset(channel + ":timeouts", this.date.getTime(), data);
                 break;
             case 'ban':
                 break;
