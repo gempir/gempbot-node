@@ -41,8 +41,8 @@ export default class Oddshots {
             }
             console.log('[oddshots] found oddshot ' + messageSplit[i]);
             request(messageSplit[i], function (error, response, body) {
-                if (error || response.statusCode == 404) {
-                    console.log('[oddshots]', error, response);
+                if (error) {
+                    console.log('[oddshots]', error);
                     return;
                 }
                 console.log('[oddshots] inserting oddshot ' + messageSplit[i]);
