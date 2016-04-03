@@ -78,6 +78,23 @@ export default class CommandHandler {
                         this.bot.loadChannels();
                         this.bot.loadBttvEmotes();
                         break;
+                    case '!fact':
+                        try {
+                            switch(args[0]) {
+                                case 'add':
+                                    args.splice(0,1);
+                                    this.bot.modules.facts.addFact(channel, user.username, args.join(' ').trim());
+                                    break;
+                                case 'rm':
+                                case 'remove':
+                                    args.splice(0,1);
+                                    this.bot.modules.facts.removeFact(channel, user.username, args.join(' ').trim());
+                                    break;
+                            }
+                        } catch (err) {
+                            console.log(err);
+                        }
+                        break;
                     case "!bp":
                     case '!banphrase':
                         try {

@@ -24,6 +24,7 @@ import Followage    from './modules/Followage';
 import Chatters     from './modules/Chatters';
 import Oddshots     from './modules/Oddshots';
 import Emotecount   from './modules/Emotecount';
+import Facts        from './modules/Facts';
 
 
 
@@ -52,9 +53,11 @@ export default class Bot {
             followage:   new Followage(this),
             chatters:    new Chatters(this),
             emotecount:  new Emotecount(this),
-            oddshots:    new Oddshots(this)
+            oddshots:    new Oddshots(this),
+            facts:       new Facts(this)
         };
         this.channels  = {};
+        this.intervals = {};
         this.cmdcds    = [];
         this.usercds   = [];
         this.bttv      = {
@@ -65,7 +68,8 @@ export default class Bot {
             'filterlinks',
             'filterlength',
             'filterascii',
-            'combos'
+            'combos',
+            'facts'
         ];
         this.loadChannels();
         this.loadBttvEmotes();
@@ -145,7 +149,32 @@ export default class Bot {
             for (var cfg in results) {
                 this.channels[channel].config[cfg.toLowerCase()] = results[cfg].toLowerCase();
             }
+            this.setTimedOutputs(channel);
         });
+    }
+
+    setTimedOutputs(channel) {
+        if (typeof this.channels[channel].config.facts == 'undefined') {
+            return;
+        }
+        if (typeof this.intervals[channel] == 'undefined') {
+            this.intervals[channel] = {};
+        }
+        try {
+            var factsConf = this.channels[channel].config.facts;
+            if (factsConf != null || factsConf != false || factsConf != 0 || factsConf > 10) {
+                try {
+                    clearInterval(this.intervals[channel].facts);
+                } catch (err) {
+                }
+                this.intervals[channel]['facts'] = setInterval(() => {
+                    console.log('interval');
+                    this.modules.facts.sayFact(channel);
+                }, factsConf * 1000);
+            }
+        } catch (err) {
+        }
+
     }
 
     whisper(username, message) {
