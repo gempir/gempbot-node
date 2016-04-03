@@ -44,18 +44,12 @@ export default class Oddshots {
             if (url.indexOf('http://') < 0 || url.indexOf('https://') < 0) {
                 url = 'http://' + url;
             }
-            request(url, (error, response, body) => {
-                if (error || response.statusCode != 200) {
-                    console.log('[oddshots]', error, response);
-                    return;
+            console.log('[oddshots] inserting oddshot ' + url);
+            var timestamp =  moment.utc().format("YYYY-MM-DD HH:mm:ss");
+            this.bot.mysql.query("INSERT INTO oddshots (channel, timestamp, url) VALUES (?, ?, ?)", [channel, timestamp, url], function(err, results) {
+                if (err) {
+                    console.log('[mysql] '+ err);
                 }
-                console.log('[oddshots] inserting oddshot ' + url);
-                var timestamp =  moment.utc().format("YYYY-MM-DD HH:mm:ss");
-                this.bot.mysql.query("INSERT INTO oddshots (channel, timestamp, url) VALUES (?, ?, ?)", [channel, timestamp, url], function(err, results) {
-                    if (err) {
-                        console.log('[mysql] '+ err);
-                    }
-                });
             });
         }
 
