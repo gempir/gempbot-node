@@ -38,25 +38,22 @@ export default class Oddshots {
 
         for (var i = 0; i < (messageSplit.length -1); i++) {
             if (!this.bot.filters.isLink(messageSplit[i])) {
-                console.log('not the oddshot');
+                console.log('[oddshots] not the oddshot ' + messageSplit[i] + ' ' + this.bot.filters.isLink(messageSplit[i]));
                 continue;
             }
-
-            var timestamp =  moment.utc().format("YYYY-MM-DD HH:mm:ss");
-            this.bot.mysql.query("INSERT INTO oddshots (channel, timestamp, url) VALUES (?, ?, ?)", [channel, timestamp, messageSplit[i]], function(err, results) {
-                if (err) {
-                    console.log('[mysql] '+ err);
+            request(messageSplit[i], function (error, response, body) {
+                if (error || response.statusCode == 404) {
+                    console.log('[oddshots]', error, response);
+                    return;
                 }
+                console.log('[oddshots] inserting oddshot ' + messageSplit[i]);
+                var timestamp =  moment.utc().format("YYYY-MM-DD HH:mm:ss");
+                this.bot.mysql.query("INSERT INTO oddshots (channel, timestamp, url) VALUES (?, ?, ?)", [channel, timestamp, messageSplit[i]], function(err, results) {
+                    if (err) {
+                        console.log('[mysql] '+ err);
+                    }
+                });
             });
-
-            // request(messageSplit[i], function (error, response, body) {
-            //     if (error || response.statusCode != 200) {
-            //         console.log('[oddshots]', error, response);
-            //         return;
-            //     }
-            //     console.log('[oddshots] inserting oddshot ' + messageSplit[i]);
-            //
-            // });
         }
 
     }
