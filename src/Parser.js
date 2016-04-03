@@ -22,7 +22,7 @@ export default class Parser {
 
     parseTimeout(data)
     {
-        this.bot.eventhub.addEvent(data.params[0], 'timeout', data.command + ' ' + data.params[1]);
+        this.bot.eventhub.addEvent(data.params[0], 'timeout', data.params[1]);
     }
 
 
