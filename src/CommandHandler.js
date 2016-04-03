@@ -208,7 +208,8 @@ export default class CommandHandler {
                         case 'rquote':
                         case 'rndquote':
                         case 'randomquote':
-                            this.bot.modules.randomquote.getQuote(channel, user.username, args, prefix);
+                            var userToQuote = args[0] || user.username;
+                            this.bot.modules.logs.getRandomquote(channel, userToQuote, prefix);
                             break;
                         case null:
                         default:
@@ -368,9 +369,10 @@ export default class CommandHandler {
                                     this.bot.whisper(user.username, 'config isn\'t set, nothing to delete');
                                     return;
                                 }
-                                this.bot.redis.hdel(channel + ':config', args[0]);
-                                this.bot.whisper(user.username, 'config ' + args[0] + ' deleted');
+                                this.bot.redis.hdel(channel + ':config', args[1]);
+                                this.bot.whisper(user.username, 'config ' + args[1] + ' deleted');
                                 this.bot.setConfigForChannel(channel);
+                                this.bot.channels[channel].config[args[1]] = null;
                             });
                             break;
                     }

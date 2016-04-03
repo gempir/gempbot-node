@@ -154,21 +154,22 @@ export default class Bot {
     }
 
     setTimedOutputs(channel) {
-        if (typeof this.channels[channel].config.facts == 'undefined') {
-            return;
-        }
         if (typeof this.intervals[channel] == 'undefined') {
             this.intervals[channel] = {};
+        }
+        if (typeof this.channels[channel].config.facts == 'undefined' || this.channels[channel].config.facts == null) {
+            try {
+                clearInterval(this.intervals[channel]['facts']);
+            } catch (err) {};
+            return;
         }
         try {
             var factsConf = this.channels[channel].config.facts;
             if (factsConf != null || factsConf != false || factsConf != 0 || factsConf > 10) {
                 try {
-                    clearInterval(this.intervals[channel].facts);
-                } catch (err) {
-                }
+                    clearInterval(this.intervals[channel]['facts']);
+                } catch (err) {};
                 this.intervals[channel]['facts'] = setInterval(() => {
-                    console.log('interval');
                     this.modules.facts.sayFact(channel);
                 }, factsConf * 1000);
             }
