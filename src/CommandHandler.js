@@ -423,10 +423,10 @@ export default class CommandHandler {
                     );
                     break;
                 case '!join':
-                    this.bot.Irc.joinChannel(args);
+                    this.bot.irc.joinChannel(args);
                     break;
                 case '!part':
-                    this.bot.Irc.partChannel(args);
+                    this.bot.irc.partChannel(args);
                     break;
                 case '!say':
                     var toSay = args.join(' ');

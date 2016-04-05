@@ -4,12 +4,16 @@ export default class Eventhub {
         this.bot = bot;
     }
 
-    addEvent(channel, type, data)
+    emitEvent(channel, type, data)
     {
         switch (type) {
-            case 'sub':
+            case 'subcription':
+                this.bot.db.insertSub(channel, data.username, null);
+                this.subAlert(channel, data.username, null);
                 break;
-            case 'resub':
+            case 'subanniversary':
+                this.bot.db.insertSub(channel, data.username, data.months);
+                this.subAlert(channel, data.username, data.months);
                 break;
             case 'timeout':
                 this.bot.modules.logs.saveMessage(channel, 'timeout', data);
@@ -23,13 +27,12 @@ export default class Eventhub {
         }
     }
 
-    subalert(username, months)
+    subAlert(channel, username, months)
     {
-        months = months || null
         if (months) {
-
+            // resub
         } else {
-
+            // sub
         }
     }
 

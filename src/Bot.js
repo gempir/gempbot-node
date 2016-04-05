@@ -6,6 +6,7 @@ import redis        from './redis';
 import mysql        from './mysql';
 
 import Irc          from './Irc';
+import Database     from './Database';
 import Filters      from './Filters';
 import Parser       from './Parser';
 import Handler      from './Handler';
@@ -40,6 +41,7 @@ export default class Bot {
         this.filters  = new Filters(this);
         this.timeout  = new Timeout(this);
         this.eventhub = new Eventhub(this);
+        this.db       = new Database(this);
         this.modules  = {
             logs:        new Logs(this),
             combo:       new Combo(this),
@@ -88,6 +90,9 @@ export default class Bot {
     }
 
     loadBanphrases(channel) {
+        if (typeof this.channels[channel] == 'undefined') {
+            this.channels[channel] = {};
+        }
         if (typeof this.channels[channel]['banphrases'] == 'undefined') {
             this.channels[channel]['banphrases'] = [];
         }
