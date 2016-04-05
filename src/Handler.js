@@ -12,12 +12,6 @@ export default class Handler {
         // handle always
         this.handleDefault(channel, user, message);
 
-        // check if bot active
-        var response = this.bot.getConfig(channel, 'response')
-        if (response == 0 || response == false || user.username == this.bot.cfg.irc.username.toLowerCase()) {
-            return;
-        }
-
         // filter
         this.filterMessage(channel, user, message);
 
