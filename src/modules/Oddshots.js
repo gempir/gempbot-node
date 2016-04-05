@@ -40,10 +40,6 @@ export default class Oddshots {
                 continue;
             }
             var url = messageSplit[i];
-            console.log('[oddshots] found oddshot ' + url);
-            if (url.indexOf('http://') < 0 || url.indexOf('https://') < 0) {
-                url = 'http://' + url;
-            }
             console.log('[oddshots] inserting oddshot ' + url);
             var timestamp =  moment.utc().format("YYYY-MM-DD HH:mm:ss");
             this.bot.mysql.query("INSERT INTO oddshots (channel, timestamp, url) VALUES (?, ?, ?)", [channel, timestamp, url], function(err, results) {
