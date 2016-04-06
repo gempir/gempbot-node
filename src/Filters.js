@@ -62,7 +62,6 @@ export default class Filters {
     {
         var danger = this.evaluateLink(message);
         var ascii  = this.isASCII(message);
-        var banphrase = this.isBanphrased(channel, message);
         var links  = false;
         var length = message.length;
 
@@ -72,15 +71,11 @@ export default class Filters {
         if (ascii) {
             danger += 10;
         }
-        if (banphrase) {
-            danger += 10;
-        }
 
         return {
             length: length,
             ascii: ascii,
             links: links,
-            banphrase: banphrase,
             danger: danger
         }
     }
