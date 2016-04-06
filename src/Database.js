@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export default class Database {
     constructor(bot)
     {
@@ -14,6 +16,16 @@ export default class Database {
             }
             if (callback) {
                 callback(err, results);
+            }
+        });
+    }
+
+    insertLogEntry(channel, username, message)
+    {
+        var timestamp =  moment.utc().format("YYYY-MM-DD HH:mm:ss");
+        this.bot.mysql.query("INSERT INTO `chatlogs` (channel, timestamp, username, message) VALUES (?, ?, ?, ?)", [channel, timestamp, username, message], function(err, results) {
+            if (err) {
+                console.log(err);
             }
         });
     }

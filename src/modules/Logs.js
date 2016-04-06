@@ -72,16 +72,6 @@ export default class Logs
         });
     }
 
-    saveMessage(channel, username, message)
-    {
-        var timestamp =  moment.utc().format("YYYY-MM-DD HH:mm:ss");
-        this.bot.mysql.query("INSERT INTO `chatlogs` (channel, timestamp, username, message) VALUES (?, ?, ?, ?)", [channel, timestamp, username, message], function(err, results) {
-            if (err) {
-                console.log(err);
-            }
-        });
-    }
-
     getLogs(channel, username, logsFor, prefix)
     {
         this.bot.mysql.query("SELECT DATE_FORMAT(timestamp,'%Y-%m-%d %T') as timestamp, message FROM chatlogs WHERE username = ? AND channel = ? ORDER BY timestamp DESC LIMIT 500", [logsFor, channel], (err, results) => {
