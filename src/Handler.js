@@ -30,29 +30,24 @@ export default class Handler {
         var ascii  = false;
         var length = false;
         var links  = false;
-        var banphrase = false;
         var reason = '';
 
-        banphrase = this.bot.filters.isBanphrased(channel, message);
-        if (banphrase) {
-            reason = 'using a banphrased word';
-        }
-        if ((cfgASCII == true || cfgASCII == 1) && cfgASCII != null && !banphrase) {
+        if ((cfgASCII == true || cfgASCII == 1) && cfgASCII != null) {
             links = this.bot.filters.isASCII(message);
             reason = 'ASCII';
         }
-        if ((!isNaN(cfgLength) && cfgLength != 0 && cfgLength != null) && !ascii && !banphrase) {
+        if ((!isNaN(cfgLength) && cfgLength != 0 && cfgLength != null) && !ascii) {
             if (message.length > cfgLength) {
                 length = true;
                 reason = 'a message over the length limit';
             }
         }
-        if ((cfgLinks == true || cfgLinks == 1) && cfgLinks != null && !ascii && !length && !banphrase) {
+        if ((cfgLinks == true || cfgLinks == 1) && cfgLinks != null && !ascii && !length) {
             ascii = this.bot.filters.evaluateLink(message);
             reason = 'a link in your message';
         }
 
-        if (ascii || length || links || banphrase) {
+        if (ascii || length || links) {
             this.bot.timeout.spam(channel, user, reason);
         }
     }
@@ -64,7 +59,7 @@ export default class Handler {
         this.bot.modules.emotecount.incrementEmotes(channel, user, message);
         this.bot.modules.oddshots.saveChannelOddshots(channel, username, message);
         this.bot.modules.combo.count(channel, user, message);
-        this.bot.modules.db.insertLogEntry(channel, username, message);
+        this.bot.db.insertLogEntry(channel, username, message);
         this.bot.modules.chatters.recordChatters(channel, username);
         this.bot.modules.nuke.recordToNuke(channel, user, message);
     }

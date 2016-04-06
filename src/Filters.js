@@ -27,23 +27,6 @@ export default class Filters {
         }
     }
 
-    isBanphrased(channel, message)
-    {
-        message = ' ' + message + ' ';
-        var banphrases = this.bot.channels[channel].banphrases;
-        try {
-            for (var i = 0; i < banphrases.length; i++) {
-                if (message.toLowerCase().indexOf(banphrases[i].toLowerCase()) > -1) {
-                    return true;
-                }
-            }
-            return false;
-        } catch (err) {
-            console.log(err);
-            return false;
-        }
-    }
-
     evaluateLink(message)
     {
         message = message + ' ';

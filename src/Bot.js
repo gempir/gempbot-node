@@ -82,30 +82,10 @@ export default class Bot {
                 for (var channel in results) {
                     this.loadChannel(channel, results[channel]);
                     this.setConfigForChannel(channel);
-                    this.loadBanphrases(channel);
                     this.loadBttvChannelEmotes(channel);
                 }
            }
        });
-    }
-
-    loadBanphrases(channel) {
-        if (typeof this.channels[channel] == 'undefined') {
-            this.channels[channel] = {};
-        }
-        if (typeof this.channels[channel]['banphrases'] == 'undefined') {
-            this.channels[channel]['banphrases'] = [];
-        }
-        this.redis.hgetall(channel + ':banphrases', (err, results) => {
-            if (err) {
-                console.log(err);
-                return;
-            }
-            if (results == null) results = {};
-            for (var phrase in results) {
-                this.channels[channel].banphrases.push(phrase.toLowerCase());
-            }
-        });
     }
 
     loadBttvEmotes() {
