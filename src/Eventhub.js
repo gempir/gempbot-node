@@ -8,11 +8,11 @@ export default class Eventhub {
     {
         switch (type) {
             case 'subcription':
-                this.bot.db.insertSub(channel, timestamp, data.username, null);
+                this.bot.db.insertSub(channel, data.username, null);
                 this.subAlert(channel, data.username, null);
                 break;
             case 'subanniversary':
-                this.bot.db.insertSub(channel, timestamp, data.username, data.months);
+                this.bot.db.insertSub(channel, data.username, data.months);
                 this.subAlert(channel, data.username, data.months);
                 break;
             case 'timeout':
