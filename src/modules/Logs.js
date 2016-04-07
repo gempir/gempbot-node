@@ -12,11 +12,30 @@ export default class Logs
 
     getRandomquoteForUsername(channel, username, prefix)
     {
-        this.bot.mysql.query("SELECT message FROM chatlogs WHERE username = ? AND channel = ? AND LENGTH(message) < 200 ORDER BY RAND() LIMIT 100", [channel, username], (err, results) => {
+        this.bot.mysql.query("\
+        SELECT  * \
+        FROM    (\
+                SELECT  @cnt := COUNT(*) + 1,\
+                        @lim := 10\
+                FROM    chatlogs\
+            ) vars\
+        STRAIGHT_JOIN\
+                (\
+                SELECT  r.*,\
+                        @lim := @lim - 1\
+                FROM    chatlogs r\
+                WHERE   (@cnt := @cnt - 1)\
+                        AND LENGTH(message) < 200\
+                        AND RAND() < @lim / @cnt\
+                        AND channel = ?\
+                        AND username = ?\
+                ) i\
+        ", [channel, username], (err, results) => {
             if (err || results.length == 0) {
                 console.log(err, results);
                 return;
             }
+
             for (var i = 0; i < results.length; i++) {
                 var quote = results[i].message;
                 var filters = this.bot.filters.evaluate(channel, quote)
@@ -36,7 +55,7 @@ export default class Logs
         SELECT  * \
         FROM    (\
                 SELECT  @cnt := COUNT(*) + 1,\
-                        @lim := 200\
+                        @lim := 10\
                 FROM    chatlogs\
             ) vars\
         STRAIGHT_JOIN\
@@ -45,6 +64,7 @@ export default class Logs
                         @lim := @lim - 1\
                 FROM    chatlogs r\
                 WHERE   (@cnt := @cnt - 1)\
+                        AND LENGTH(message) < 200\
                         AND RAND() < @lim / @cnt\
                         AND channel = ?\
                 ) i\
@@ -56,7 +76,7 @@ export default class Logs
             for (var i = 0; i < results.length; i++) {
                 var quote = results[i].message;
                 var filters = this.bot.filters.evaluate(channel, quote)
-                if (filters.length > 250 || filters.danger > 5 || filters.banphrase) {
+                if (filters.length > 200 || filters.danger > 5 || filters.banphrase) {
                     console.log('[log] skipping quote');
                     continue;
                 }
