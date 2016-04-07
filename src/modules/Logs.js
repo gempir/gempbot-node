@@ -26,7 +26,8 @@ export default class Logs
                 FROM    chatlogs r\
                 WHERE   (@cnt := @cnt - 1)\
                         AND RAND() < @lim / @cnt\
-                        AND username = ?\
+                        AND channel = ?\
+                        AND LENGTH(message) < 200\
                 ) i\
         ", [username], (err, results) => {
             if (err || results.length == 0) {
