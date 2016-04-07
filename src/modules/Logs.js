@@ -12,7 +12,7 @@ export default class Logs
 
     getRandomquoteForUsername(channel, username, prefix)
     {
-        this.bot.mysql.query("SELECT message FROM chatlogs WHERE username = ? AND channel = ? ORDER BY RAND() LIMIT 200", [channel, username], (err, results) => {
+        this.bot.mysql.query("SELECT message FROM chatlogs WHERE username = ? AND channel = ? AND LENGTH(message) < 200 ORDER BY RAND() LIMIT 100", [channel, username], (err, results) => {
             if (err || results.length == 0) {
                 console.log(err, results);
                 return;
