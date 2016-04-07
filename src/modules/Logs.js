@@ -12,29 +12,11 @@ export default class Logs
 
     getRandomquoteForUsername(channel, username, prefix)
     {
-        this.bot.mysql.query("\
-        SELECT  * \
-        FROM    (\
-                SELECT  @cnt := COUNT(*) + 1,\
-                        @lim := 200\
-                FROM    chatlogs\
-            ) vars\
-        STRAIGHT_JOIN\
-                (\
-                SELECT  r.*,\
-                        @lim := @lim - 1\
-                FROM    chatlogs r\
-                WHERE   (@cnt := @cnt - 1)\
-                        AND RAND() < @lim / @cnt\
-                        AND channel = ?\
-                        AND username = ?\
-                ) i\
-        ", [channel, username], (err, results) => {
+        this.bot.mysql.query("SELECT message FROM chatlogs WHERE username = ? AND channel = ? ORDER BY RAND() LIMIT 200", [channel, username], (err, results) => {
             if (err || results.length == 0) {
                 console.log(err, results);
                 return;
             }
-            console.log(results);
             for (var i = 0; i < results.length; i++) {
                 var quote = results[i].message;
                 var filters = this.bot.filters.evaluate(channel, quote)
