@@ -25,7 +25,6 @@ export default class Logs
                         @lim := @lim - 1\
                 FROM    chatlogs r\
                 WHERE   (@cnt := @cnt - 1)\
-                        AND LENGTH(message) < 200\
                         AND RAND() < @lim / @cnt\
                         AND channel = ?\
                         AND username = ?\
