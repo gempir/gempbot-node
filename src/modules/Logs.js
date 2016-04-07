@@ -34,7 +34,7 @@ export default class Logs
                 console.log(err, results);
                 return;
             }
-
+            console.log(results);
             for (var i = 0; i < results.length; i++) {
                 var quote = results[i].message;
                 var filters = this.bot.filters.evaluate(channel, quote)
