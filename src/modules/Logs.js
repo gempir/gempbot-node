@@ -12,7 +12,25 @@ export default class Logs
 
     getRandomquoteForUsername(channel, username, prefix)
     {
-        this.bot.mysql.query('SELECT message FROM chatlogs WHERE username = ? AND channel = ? AND LENGTH(message) < 200 ORDER BY RAND() LIMIT 100', [username, channel], (err, results) => {
+        this.bot.mysql.query("\
+        SELECT  * \
+        FROM    (\
+                SELECT  @cnt := COUNT(*) + 1,\
+                        @lim := 10\
+                FROM    chatlogs\
+            ) vars\
+        STRAIGHT_JOIN\
+                (\
+                SELECT  r.*,\
+                        @lim := @lim - 1\
+                FROM    chatlogs r\
+                WHERE   (@cnt := @cnt - 1)\
+                        AND RAND() < @lim / @cnt\
+                        AND username = ?\
+                        AND channel = ?\
+                        AND LENGTH(message) < 200\
+                ) i\
+        ", [username, channel], (err, results) => {
             if (err || results.length == 0) {
                 console.log(err, results);
                 return;
@@ -33,7 +51,24 @@ export default class Logs
 
     getRandomquote(channel, prefix)
     {
-        this.bot.mysql.query('SELECT username, message FROM chatlogs WHERE channel = ? AND LENGTH(message) < 200 ORDER BY RAND() LIMIT 100', [channel], (err, results) => {
+        this.bot.mysql.query("\
+        SELECT  * \
+        FROM    (\
+                SELECT  @cnt := COUNT(*) + 1,\
+                        @lim := 10\
+                FROM    chatlogs\
+            ) vars\
+        STRAIGHT_JOIN\
+                (\
+                SELECT  r.*,\
+                        @lim := @lim - 1\
+                FROM    chatlogs r\
+                WHERE   (@cnt := @cnt - 1)\
+                        AND RAND() < @lim / @cnt\
+                        AND channel = ?\
+                        AND LENGTH(message) < 200\
+                ) i\
+        ", [channel], (err, results) => {
             if (err || results.length == 0) {
                 console.log(err, results);
                 return;
