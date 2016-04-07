@@ -16,7 +16,7 @@ export default class Logs
         SELECT  * \
         FROM    (\
                 SELECT  @cnt := COUNT(*) + 1,\
-                        @lim := 10\
+                        @lim := 250\
                 FROM    chatlogs\
             ) vars\
         STRAIGHT_JOIN\
@@ -55,7 +55,7 @@ export default class Logs
         SELECT  * \
         FROM    (\
                 SELECT  @cnt := COUNT(*) + 1,\
-                        @lim := 10\
+                        @lim := 250\
                 FROM    chatlogs\
             ) vars\
         STRAIGHT_JOIN\
