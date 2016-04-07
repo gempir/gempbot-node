@@ -26,10 +26,9 @@ export default class Logs
                 FROM    chatlogs r\
                 WHERE   (@cnt := @cnt - 1)\
                         AND RAND() < @lim / @cnt\
-                        AND channel = ?\
                         AND username = ?\
                 ) i\
-        ", [channel, username], (err, results) => {
+        ", [username], (err, results) => {
             if (err || results.length == 0) {
                 console.log(err, results);
                 return;
