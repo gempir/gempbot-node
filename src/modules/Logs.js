@@ -16,7 +16,7 @@ export default class Logs
         SELECT  * \
         FROM    (\
                 SELECT  @cnt := COUNT(*) + 1,\
-                        @lim := 500\
+                        @lim := 200\
                 FROM    chatlogs\
             ) vars\
         STRAIGHT_JOIN\
@@ -28,7 +28,6 @@ export default class Logs
                         AND RAND() < @lim / @cnt\
                         AND channel = ?\
                         AND username = ?\
-                        AND LENGTH(message) < 250\
                 ) i\
         ", [channel, username], (err, results) => {
             if (err || results.length == 0) {
@@ -55,7 +54,7 @@ export default class Logs
         SELECT  * \
         FROM    (\
                 SELECT  @cnt := COUNT(*) + 1,\
-                        @lim := 500\
+                        @lim := 200\
                 FROM    chatlogs\
             ) vars\
         STRAIGHT_JOIN\
@@ -66,7 +65,6 @@ export default class Logs
                 WHERE   (@cnt := @cnt - 1)\
                         AND RAND() < @lim / @cnt\
                         AND channel = ?\
-                        AND LENGTH(message) < 250\
                 ) i\
         ", [channel], (err, results) => {
             if (err || results.length == 0) {
