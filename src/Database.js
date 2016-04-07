@@ -9,8 +9,9 @@ export default class Database {
 
     insertSub(channel, username, months, callback)
     {
-        var values = [channel, username, months];
-        this.bot.mysql.query("INSERT INTO subscriptions (channel, username, months) VALUES (?, ?, ?)", values, (err, results) => {
+        var timestamp =  moment.utc().format("YYYY-MM-DD HH:mm:ss");
+        var values = [channel, timestamp, username, months];
+        this.bot.mysql.query("INSERT INTO subscriptions (channel, timestamp, username, months) VALUES (?, ?, ?, ?)", values, (err, results) => {
             if (err) {
                 console.log(err);
             }
