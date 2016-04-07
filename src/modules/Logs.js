@@ -25,12 +25,12 @@ export default class Logs
                         @lim := @lim - 1\
                 FROM    chatlogs r\
                 WHERE   (@cnt := @cnt - 1)\
-                        AND RAND() < @lim / @cnt\
-                        AND username = ?\
-                        AND channel = ?\
                         AND LENGTH(message) < 200\
+                        AND RAND() < @lim / @cnt\
+                        AND channel = ?\
+                        AND username = ?\
                 ) i\
-        ", [username, channel], (err, results) => {
+        ", [channel, username], (err, results) => {
             if (err || results.length == 0) {
                 console.log(err, results);
                 return;
