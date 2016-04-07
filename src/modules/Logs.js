@@ -16,7 +16,7 @@ export default class Logs
         SELECT  * \
         FROM    (\
                 SELECT  @cnt := COUNT(*) + 1,\
-                        @lim := 250\
+                        @lim := 500\
                 FROM    chatlogs\
             ) vars\
         STRAIGHT_JOIN\
@@ -28,7 +28,7 @@ export default class Logs
                         AND RAND() < @lim / @cnt\
                         AND channel = ?\
                         AND username = ?\
-                        AND LENGTH(message) < 200\
+                        AND LENGTH(message) < 250\
                 ) i\
         ", [channel, username], (err, results) => {
             if (err || results.length == 0) {
@@ -55,7 +55,7 @@ export default class Logs
         SELECT  * \
         FROM    (\
                 SELECT  @cnt := COUNT(*) + 1,\
-                        @lim := 250\
+                        @lim := 500\
                 FROM    chatlogs\
             ) vars\
         STRAIGHT_JOIN\
@@ -66,7 +66,7 @@ export default class Logs
                 WHERE   (@cnt := @cnt - 1)\
                         AND RAND() < @lim / @cnt\
                         AND channel = ?\
-                        AND LENGTH(message) < 200\
+                        AND LENGTH(message) < 250\
                 ) i\
         ", [channel], (err, results) => {
             if (err || results.length == 0) {
@@ -76,7 +76,7 @@ export default class Logs
             for (var i = 0; i < results.length; i++) {
                 var quote = results[i].message;
                 var filters = this.bot.filters.evaluate(channel, quote)
-                if (filters.length > 200 || filters.danger > 5 || filters.banphrase) {
+                if (filters.length > 250 || filters.danger > 5 || filters.banphrase) {
                     console.log('[log] skipping quote');
                     continue;
                 }
