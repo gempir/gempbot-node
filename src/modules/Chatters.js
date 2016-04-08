@@ -13,8 +13,8 @@ export default class Chatters {
 		if (typeof this.chatters[channel] === 'undefined') {
 			this.chatters[channel] = [];
 		}
-		if (this.chatters[channel].indexOf(username) > -1) {
-			return false;
+		if (this.chatters[channel].indexOf(username) > -1 || this.bot.name === username) {
+			return;
 		};
 
 		this.chatters[channel].push(username);

@@ -46,6 +46,7 @@ export default class Emotecount
                 emoteEnd++;
                 var emoteCode        = message.substring(emoteStart, emoteEnd);
                 if (emoteCode.indexOf(' ') > -1) {
+                    console.log('[emote] skipped weird emote');
                     continue;
                 }
                 this.bot.redis.hincrby(channel + ':emotecount:' + emoteCode, user.username, currentEmotes.length);
@@ -56,23 +57,27 @@ export default class Emotecount
     }
 
     countBTTVEmotes(channel, user, message) {
+        var emotes = {};
         try {
             var messageArr = message.split(' ');
 
             for (var i = 0; i < messageArr.length; i++) {
 
-                var currentEmote = messageArr[i];
+                var emoteCode = messageArr[i];
                 var channelBttvEmotes = this.bot.bttv.channels[channel];
                 var globalBttvEmotes = this.bot.bttv.global;
 
-                if (globalBttvEmotes.indexOf(messageArr[i]) > -1 || channelBttvEmotes.indexOf(messageArr[i]) > -1) {
-                    if (messageArr[i].indexOf(' ') > -1) {
-                        continue;
+                if (globalBttvEmotes.indexOf(emoteCode) > -1 || channelBttvEmotes.indexOf(emoteCode) > -1) {
+                    if (typeof emotes[emoteCode] === 'undefined') {
+                        emotes[emoteCode] = 0;
                     }
-                    this.bot.redis.hincrby(channel + ':emotecount:' + messageArr[i], user.username, 1);
-                    this.bot.redis.hincrby(channel + ':emotecount:' + currentEmote, 'channel', 1);
+                    emotes[emoteCode]++;
                 }
 
+            }
+            for (var emote in emotes) {
+                this.bot.redis.hincrby(channel + ':emotecount:' + emote, user.username, emotes[emote]);
+                this.bot.redis.hincrby(channel + ':emotecount:' + emote, 'channel', emotes[emote]);
             }
         } catch (err) {
             console.log(err);
