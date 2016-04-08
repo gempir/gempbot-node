@@ -24,7 +24,7 @@ export default class Logs
          AND username = ?\
          AND LENGTH(message) < 200\
          ORDER BY r1.id ASC\
-         LIMIT 1000\
+         LIMIT 100\
          ", [channel, username], (err, results) => {
             if (err || results.length == 0) {
                 console.log(err, results);
@@ -47,22 +47,17 @@ export default class Logs
     getRandomquote(channel, prefix)
     {
         this.bot.mysql.query("\
-        SELECT  * \
-        FROM    (\
-                SELECT  @cnt := COUNT(*) + 1,\
-                        @lim := 250\
-                FROM    chatlogs\
-            ) vars\
-        STRAIGHT_JOIN\
-                (\
-                SELECT  r.*,\
-                        @lim := @lim - 1\
-                FROM    chatlogs r\
-                WHERE   (@cnt := @cnt - 1)\
-                        AND LENGTH(message) < 200\
-                        AND RAND() < @lim / @cnt\
-                        AND channel = ?\
-                ) i\
+        SELECT message, username\
+          FROM chatlogs AS r1 JOIN\
+               (SELECT CEIL(RAND() *\
+                             (SELECT MAX(id)\
+                                FROM chatlogs)) AS id)\
+                AS r2\
+         WHERE r1.id >= r2.id\
+         AND channel = ?\
+         AND LENGTH(message) < 200\
+         ORDER BY r1.id ASC\
+         LIMIT 100\
         ", [channel], (err, results) => {
             if (err || results.length == 0) {
                 console.log(err, results);

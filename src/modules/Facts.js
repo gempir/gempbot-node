@@ -29,7 +29,18 @@ export default class Facts {
 
     sayFact(channel)
     {
-        this.bot.mysql.query('SELECT fact FROM facts WHERE channel = ? ORDER BY RAND() LIMIT 1', [channel], (err, results) => {
+        this.bot.mysql.query("\
+            SELECT fact\
+              FROM facts AS r1 JOIN\
+                   (SELECT CEIL(RAND() *\
+                                 (SELECT MAX(id)\
+                                    FROM facts)) AS id)\
+                    AS r2\
+            WHERE r1.id >= r2.id\
+            AND channel = ?\
+            ORDER BY r1.id ASC\
+            LIMIT 1\
+        ", [channel], (err, results) => {
             if (err || results.length == 0) {
                 console.log(err, results);
                 return;
