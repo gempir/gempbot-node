@@ -9,24 +9,22 @@ export default class Combo {
     count(channel, user, message)
     {
         message = ' ' + message + ' ';
-
         if (typeof this.combos[channel] === 'undefined') {
             this.combos[channel] = {};
             this.combos[channel]['combo'] = 1;
             this.combos[channel]['comboStarter'] = 1;
         }
-
         var currentMessage = message;
 
         if (this.combos[channel]['comboStarter'] < 2) {
             this.combos[channel]['emote'] = this.combos[channel]['lastEmote'];
         }
 
-        if (currentMessage.indexOf(this.combos[channel]['lastEmote']) > -1) {
+        if (currentMessage.includes(this.combos[channel]['lastEmote'])) {
             this.combos[channel]['comboStarter']++;
         }
 
-        if (currentMessage.indexOf(' ' + this.combos[channel]['emote'] + ' ') > -1) {
+        if (currentMessage.includes(' ' + this.combos[channel]['emote'] + ' ')) {
             this.combos[channel]['combo']++;
         }
         else if (this.combos[channel]['lastEmote'] === '' && !this.getEmoteFromMessage(channel, user, currentMessage)) {
@@ -62,7 +60,6 @@ export default class Combo {
             }
             else {
                 for (var emote in user.emotes) {
-
                     var currentEmotes = user.emotes[emote];
                     var emotePosition    = currentEmotes[0];
                     var emotePositionArr = emotePosition.split('-');

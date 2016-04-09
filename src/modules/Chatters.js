@@ -26,7 +26,6 @@ export default class Chatters {
 		} catch (err) {
 			console.log(err);
 		}
-
 	}
 
 	getChatters(channel, prefix)

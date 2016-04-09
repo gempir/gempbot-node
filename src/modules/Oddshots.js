@@ -15,13 +15,12 @@ export default class Oddshots {
     saveChannelOddshots(channel, username, message)
     {
         var oddshotChannel = channel.substr(1);
-
-        if (channel.indexOf('_') > -1) {
+        if (channel.includes('_')) {
             var channelSplit = channel.substr(1).split('_');
             oddshotChannel = channelSplit[0] + '-' + channelSplit[1];
         }
 
-        if (message.indexOf('oddshot.tv/shot/' + oddshotChannel) > -1) {
+        if (message.includes('oddshot.tv/shot/' + oddshotChannel)) {
             try {
                 this.parseOddshots(channel, username, message);
             } catch (err) {

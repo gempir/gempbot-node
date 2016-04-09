@@ -97,6 +97,8 @@ export default class Bot {
                 for (var i = 0; i < emotes.length; i++) {
                     this.bttv.global.push(emotes[i].code);
                 }
+            } else {
+                console.log(error, response);
             }
         })
     }
@@ -110,6 +112,8 @@ export default class Bot {
                 for (var j = 0; j < emotes.length; j++) {
                     this.bttv.channels[channel].push(emotes[j].code);
                 }
+            } else {
+                console.log(error, response);
             }
         });
 
@@ -152,8 +156,8 @@ export default class Bot {
                 }, factsConf * 1000);
             }
         } catch (err) {
+            console.log('[timers] ' + err);
         }
-
     }
 
     whisper(username, message) {

@@ -309,9 +309,9 @@ export default class CommandHandler {
                 level: level,
                 description: description
             };
-            console.log("set", commObj.name, commObj);
+            console.log("set", commObj.name);
             this.bot.redis.hset(channel + ':commands', commObj.name, JSON.stringify(commObj));
-            this.bot.whisper(user.username, 'command ' + commObj.name + ' set');
+            this.bot.whisper(user.username, 'command ' + commObj.name + ' set | cd: ' + commObj.cd + ' | lvl: ' + commObj.level);
         });
     }
 

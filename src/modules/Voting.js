@@ -15,11 +15,9 @@ export default class Voting {
 	startVoting(channel, username, arg, prefix)
 	{
 		this.votings[channel] = {};
-		console.log(channel, username, arg)
 		if (this.activeVotings.indexOf(channel) > -1) {
-			return false;
+			return;
 		}
-
 		if (arg === 'rate') {
 			overlay.emit(channel.substr(1) + ':startRate',{ channel: channel});
 			this.activeVotings.push(channel);
@@ -35,14 +33,14 @@ export default class Voting {
 			this.votingSkipController(channel, username, prefix);
 		}
 		else {
-			return false;
+			return;
 		}
 
 	}
 
 	vote(channel, username, arg)
 	{
-		if (this.activeVotings.indexOf(channel) === -1) {
+		if (this.activeVotings.indexOf(channel) < 0) {
 			return;
 		}
 		try {

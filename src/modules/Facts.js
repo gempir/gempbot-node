@@ -6,7 +6,6 @@ export default class Facts {
 
     addFact(channel, username, fact)
     {
-
         this.bot.mysql.query('INSERT INTO facts (channel, fact) VALUES (?, ?)', [channel, fact], (err, results) => {
             if (err) {
                 console.log(err);
