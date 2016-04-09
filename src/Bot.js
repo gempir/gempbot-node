@@ -98,7 +98,7 @@ export default class Bot {
                     this.bttv.global.push(emotes[i].code);
                 }
             } else {
-                console.log(error, response);
+                console.log('[bttv]', response.statusCode, error);
             }
         })
     }
@@ -113,7 +113,7 @@ export default class Bot {
                     this.bttv.channels[channel].push(emotes[j].code);
                 }
             } else {
-                console.log(error, response);
+                console.log('[bttv]', channel, response.statusCode, error);
             }
         });
 
