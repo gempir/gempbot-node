@@ -29,7 +29,7 @@ export default class Filters {
 
     evaluateLink(message)
     {
-        message = message + ' ';
+        message = ' ' + message + ' ';
         var danger = 0;
         if (message.indexOf('.') > -1) {
             danger += 1;
