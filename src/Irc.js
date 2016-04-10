@@ -13,6 +13,7 @@ export default class Irc {
         this.setupConnection();
         this.readConnection();
 
+
         this.socket.on('connect', () => {
             this.startUpJoin();
         });
