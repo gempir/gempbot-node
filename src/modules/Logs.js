@@ -1,7 +1,8 @@
-import cfg    from './../../cfg.js';
-import fs     from 'fs';
-import moment from 'moment';
+import cfg     from './../../cfg.js';
+import fs      from 'fs';
+import moment  from 'moment';
 import lib     from './../lib';
+import request from 'request';
 
 export default class Logs
 {
@@ -80,21 +81,26 @@ export default class Logs
 
     getLastMessage(channel, username)
     {
-        this.bot.mysql.query("SELECT channel, message FROM chatlogs WHERE username = ? ORDER BY timestamp DESC LIMIT 1", [username], (err, results) => {
-            if (err || results.length == 0) {
-                console.log(err, results);
-                return;
-            }
-            var message = results[0].message;
-            var filters = this.bot.filters.evaluate(channel, message);
-            if (filters.length > 200 || filters.danger >= 20 || filters.banphrase) {
-                return false;
-            }
-            if (message.length > 120) {
-                message = message.substring(0, 120) + ' [...]';
-            }
-            this.bot.say(channel, results[0].channel + ' | ' + username + ': ' + message);
-        });
+        var lastmessageURL = `https://api.gempir.com/v1/user/${username}/messages/last`
+        request(lastmessageURL, (error, response, body) => {
+			console.log('[GET] ' + lastmessageURL);
+			if (!error && response.statusCode == 200) {
+				var json = JSON.parse(body.toString());
+				var duration = json.duration;
+                var message  = json.message;
+                var lastchannel = json.channel;
+
+                var filters = this.bot.filters.evaluate(channel, message);
+                if (filters.length > 200 || filters.danger >= 20 || filters.banphrase) {
+                    return false;
+                }
+                if (message.length > 120) {
+                    message = message.substring(0, 120) + ' [...]';
+                }
+
+				this.bot.say(channel, lastchannel + ' | ' + username + ': ' + message + ' | ' + duration + ' ago');
+			}
+		});
     }
 
     getLogs(channel, username, logsFor, prefix)
