@@ -16,7 +16,6 @@ export default class Eventhub {
                 this.subAlert(channel, data.username, data.months);
                 break;
             case 'timeout':
-                this.bot.db.insertLogEntry(channel, 'timeout', data);
                 break;
             case 'ban':
                 break;
