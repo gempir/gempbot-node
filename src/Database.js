@@ -20,14 +20,4 @@ export default class Database {
             }
         });
     }
-
-    insertLogEntry(channel, username, message)
-    {
-        var timestamp =  moment.utc().format("YYYY-MM-DD HH:mm:ss");
-        this.bot.mysql.query("INSERT INTO `chatlogs` (channel, timestamp, username, message) VALUES (?, ?, ?, ?)", [channel, timestamp, username, message], function(err, results) {
-            if (err) {
-                console.log(err);
-            }
-        });
-    }
 }

@@ -15,10 +15,10 @@ export default class Logs
     {
         this.bot.mysql.query("\
         SELECT message\
-          FROM chatlogs AS r1 JOIN\
+          FROM gempLog AS r1 JOIN\
                (SELECT CEIL(RAND() *\
                              (SELECT MAX(id)\
-                                FROM chatlogs)) AS id)\
+                                FROM gempLog)) AS id)\
                 AS r2\
          WHERE r1.id >= r2.id\
          AND channel = ?\
@@ -49,10 +49,10 @@ export default class Logs
     {
         this.bot.mysql.query("\
         SELECT message, username\
-          FROM chatlogs AS r1 JOIN\
+          FROM gempLog AS r1 JOIN\
                (SELECT CEIL(RAND() *\
                              (SELECT MAX(id)\
-                                FROM chatlogs)) AS id)\
+                                FROM gempLog)) AS id)\
                 AS r2\
          WHERE r1.id >= r2.id\
          AND channel = ?\
@@ -105,7 +105,7 @@ export default class Logs
 
     getLogs(channel, username, logsFor, prefix)
     {
-        this.bot.mysql.query("SELECT DATE_FORMAT(timestamp,'%Y-%m-%d %T') as timestamp, message FROM chatlogs WHERE username = ? AND channel = ? ORDER BY timestamp DESC LIMIT 500", [logsFor, channel], (err, results) => {
+        this.bot.mysql.query("SELECT DATE_FORMAT(timestamp,'%Y-%m-%d %T') as timestamp, message FROM gempLog WHERE username = ? AND channel = ? ORDER BY timestamp DESC LIMIT 500", [logsFor, channel], (err, results) => {
             if (err || results.length == 0) {
                 console.log(err, results);
                 return;
@@ -132,7 +132,7 @@ export default class Logs
 
     getLogsAll(username, logsFor, prefix)
     {
-        this.bot.mysql.query("SELECT DATE_FORMAT(timestamp,'%Y-%m-%d %T') as timestamp, message, channel FROM chatlogs WHERE username = ? ORDER BY timestamp DESC LIMIT 500", [logsFor], (err, results) => {
+        this.bot.mysql.query("SELECT DATE_FORMAT(timestamp,'%Y-%m-%d %T') as timestamp, message, channel FROM gempLog WHERE username = ? ORDER BY timestamp DESC LIMIT 500", [logsFor], (err, results) => {
             if (err || results.length == 0) {
                 console.log(err, results);
                 return;
