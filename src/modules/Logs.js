@@ -9,93 +9,55 @@ export default class Logs
     constructor(bot)
     {
         this.bot       = bot;
+        this.counter   = 0;
     }
 
     getRandomquoteForUsername(channel, username, prefix)
     {
-        this.bot.mysql.query("\
-        SELECT message\
-          FROM gempLog AS r1 JOIN\
-               (SELECT CEIL(RAND() *\
-                             (SELECT MAX(id)\
-                                FROM gempLog)) AS id)\
-                AS r2\
-         WHERE r1.id >= r2.id\
-         AND channel = ?\
-         AND username = ?\
-         AND LENGTH(message) < 200\
-         ORDER BY r1.id ASC\
-         LIMIT 100\
-         ", [channel, username], (err, results) => {
-            if (err || results.length == 0) {
-                console.log(err, results);
-                return;
-            }
-            console.log(results.length);
-            for (var i = 0; i < results.length; i++) {
-                var quote = results[i].message;
-                var filters = this.bot.filters.evaluate(channel, quote)
-                if (filters.length > 200 || filters.danger > 5 || filters.banphrase) {
-                    console.log('[log] skipping quote');
-                    continue;
+        if (this.counter > 10) {
+            return;
+        }
+        username = username.toLowerCase();
+        var randomquoteURL = `https://api.gempir.com/v1/user/${username}/messages/random`
+        request(randomquoteURL, (error, response, body) => {
+			console.log('[GET] ' + randomquoteURL);
+			if (!error && response.statusCode == 200) {
+				var json = JSON.parse(body.toString());
+                var message  = json.messages[0].message;
+
+                if (this.bot.filters.isLink(message) || this.bot.filters.isASCII(message)) {
+                    this.getRandomquoteForUsername(channel, username, prefix);
+                    this.counter++;
+                    return;
                 }
-                this.bot.say(channel, prefix + username + ': ' + quote);
-                break;
-            }
-        });
-    }
-
-    getRandomquote(channel, prefix)
-    {
-        this.bot.mysql.query("\
-        SELECT message, username\
-          FROM gempLog AS r1 JOIN\
-               (SELECT CEIL(RAND() *\
-                             (SELECT MAX(id)\
-                                FROM gempLog)) AS id)\
-                AS r2\
-         WHERE r1.id >= r2.id\
-         AND channel = ?\
-         AND LENGTH(message) < 200\
-         ORDER BY r1.id ASC\
-         LIMIT 100\
-        ", [channel], (err, results) => {
-            if (err || results.length == 0) {
-                console.log(err, results);
-                return;
-            }
-            for (var i = 0; i < results.length; i++) {
-                var quote = results[i].message;
-                var filters = this.bot.filters.evaluate(channel, quote)
-                if (filters.length > 200 || filters.danger > 5 || filters.banphrase) {
-                    console.log('[log] skipping quote');
-                    continue;
+                if (message.length > 120) {
+                    message = message.substring(0, 120) + ' [...]';
                 }
-                this.bot.say(channel, prefix + results[i].username + ': ' + quote);
-                break;
-            }
-        });
-
-
+                this.counter = 0;
+				this.bot.say(channel, username + ': ' + message);
+			}
+		});
     }
 
     getLastMessage(channel, username)
     {
-        var lastmessageURL = `https://api.gempir.com/v1/user/${username}/messages/last`
+        var lastmessageURL = `https://api.gempir.com/v1/user/${username}/messages/last/1`
         request(lastmessageURL, (error, response, body) => {
 			console.log('[GET] ' + lastmessageURL);
 			if (!error && response.statusCode == 200) {
 				var json = JSON.parse(body.toString());
-				var duration = json.duration;
-                var message  = json.message;
-                var lastchannel = json.channel;
+				var duration = json.messages[0].duration;
+                var message  = json.messages[0].message;
+                var lastchannel = json.messages[0].channel;
 
-                var filters = this.bot.filters.evaluate(channel, message);
-                if (filters.length > 200 || filters.danger >= 20 || filters.banphrase) {
+                if (this.bot.filters.isLink(message) || this.bot.filters.isASCII(message)) {
                     return false;
                 }
                 if (message.length > 120) {
                     message = message.substring(0, 120) + ' [...]';
+                }
+                if (duration == "") {
+                    duration = "0 secs ";
                 }
 
 				this.bot.say(channel, lastchannel + ' | ' + username + ': ' + message + ' | ' + duration + ' ago');
@@ -105,56 +67,69 @@ export default class Logs
 
     getLogs(channel, username, logsFor, prefix)
     {
-        this.bot.mysql.query("SELECT DATE_FORMAT(timestamp,'%Y-%m-%d %T') as timestamp, message FROM gempLog WHERE username = ? AND channel = ? ORDER BY timestamp DESC LIMIT 500", [logsFor, channel], (err, results) => {
-            if (err || results.length == 0) {
-                console.log(err, results);
-                return;
-            }
-            var log = '';
-            for (var i = 0; i < results.length; i++) {
-                log += '[' + results[i].timestamp + '] ' + logsFor + ': ' + results[i].message + '\r\n';
-            }
+        logsFor = logsFor.toLowerCase();
+        channel = channel.substr(1);
+        var logsURL = `https://api.gempir.com/v1/channel/${channel}/user/${logsFor}/messages/last/500`
+        request(logsURL, (error, response, body) => {
+			console.log('[GET] ' + logsURL);
+			if (!error && response.statusCode == 200) {
+				var json = JSON.parse(body.toString());
 
-            try {
-                cfg.pastebin.createPaste(log, 'last 500 messages for ' +  logsFor + ' in ' + channel,null,3, '10M')
-                    .then((data) => {
-                        console.log('Pastebin created: ' + data);
-                        this.bot.whisper(username, prefix + 'last 500 messages for '+ logsFor + ' in ' + channel + ' pastebin.com/' + data);
-                    })
-                    .fail(function (err) {
-                        console.log(channel, err);
-                    });
-            } catch (err) {
-                console.log(err);
+                var uploadContent = "";
+
+                json.messages.forEach((msg) => {
+                    uploadContent += `[${msg.timestamp}] ${msg.username}: ${msg.message}\r\n`;
+                });
+
+                try {
+                    cfg.pastebin.createPaste(uploadContent, 'last 500 messages for ' +  logsFor + ' in ' + channel + ' (UTC)',null,3, '10M')
+                        .then((data) => {
+                            console.log('Pastebin created: ' + data);
+                            this.bot.whisper(username, prefix + 'last 500 messages for '+ logsFor + ' in ' + channel + ' pastebin.com/' + data  + ' (UTC)');
+                        })
+                        .fail(function (err) {
+                            console.log(channel, err);
+                        });
+                } catch (err) {
+                    console.log(err);
+                }
+			} else {
+                console.log(error, response.statusCode);
             }
-        });
+		});
     }
 
     getLogsAll(username, logsFor, prefix)
     {
-        this.bot.mysql.query("SELECT DATE_FORMAT(timestamp,'%Y-%m-%d %T') as timestamp, message, channel FROM gempLog WHERE username = ? ORDER BY timestamp DESC LIMIT 500", [logsFor], (err, results) => {
-            if (err || results.length == 0) {
-                console.log(err, results);
-                return;
-            }
-            var log = '';
-            for (var i = 0; i < results.length; i++) {
-                log += '[' + results[i].timestamp + '] ' + results[i].channel + ' | ' + logsFor + ': ' + results[i].message + '\r\n';
-            }
+        logsFor = logsFor.toLowerCase();
+        var logsURL = `https://api.gempir.com/v1/user/${logsFor}/messages/last/500`
+        request(logsURL, (error, response, body) => {
+			console.log('[GET] ' + logsURL);
+			if (!error && response.statusCode == 200) {
+				var json = JSON.parse(body.toString());
 
-            try {
-                cfg.pastebin.createPaste(log, 'last 500 messages for ' +  logsFor,null,3, '10M')
-                    .then((data) => {
-                        console.log('Pastebin created: ' + data);
-                        this.bot.whisper(username, prefix + 'last 500 messages for '+ logsFor + ' pastebin.com/' + data);
-                    })
-                    .fail(function (err) {
-                        console.log(channel, err);
-                    });
-            } catch (err) {
-                console.log(err);
+                var uploadContent = "";
+
+                json.messages.forEach((msg) => {
+                    uploadContent += `[${msg.timestamp}] [${msg.channel}] ${msg.username}: ${msg.message}\r\n`;
+                });
+
+                try {
+                    cfg.pastebin.createPaste(uploadContent, 'last 500 messages for ' +  logsFor + ' (UTC)',null,3, '10M')
+                        .then((data) => {
+                            console.log('Pastebin created: ' + data);
+                            this.bot.whisper(username, prefix + 'last 500 messages for '+ logsFor + ' pastebin.com/' + data + ' (UTC)');
+                        })
+                        .fail(function (err) {
+                            console.log(channel, err);
+                        });
+                } catch (err) {
+                    console.log(err);
+                }
+			} else {
+                console.log(error, response.statusCode);
             }
-        });
+		});
     }
 
 

@@ -242,7 +242,7 @@ export default class CommandHandler {
                     case 'rndquote':
                     case 'randomquote':
                         if (args.length == 0) {
-                            this.bot.modules.logs.getRandomquote(channel, prefix);
+                            this.bot.modules.logs.getRandomquoteForUsername(channel, user.username, prefix);   
                         } else {
                             this.bot.modules.logs.getRandomquoteForUsername(channel, args[0], prefix);
                         }
