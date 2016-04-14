@@ -55,13 +55,13 @@ export default class Oddshots {
             }
             var log = '';
             for (var shot in results) {
-                log += `${moment.unix(shot).format("YYYY-MM-DD HH:mm:ss")} ${results[shot]}`
+                log += `[${moment.unix(shot).format("YYYY-MM-DD HH:mm:ss")}] ${results[shot]}`
             }
             try {
                 cfg.pastebin.createPaste(log, `last oddshots found in ${channel}`,null,3, '10M')
                     .then((data) => {
                         console.log('Pastebin created: ' + data);
-                        this.bot.whisper(username, `${prefix} last 50 oddshots found in ${channel} pastebin.com/${data}`);
+                        this.bot.whisper(username, `${prefix} last oddshots found in ${channel} pastebin.com/${data}`);
                     })
                     .fail(function (err) {
                         console.log(channel, err);
