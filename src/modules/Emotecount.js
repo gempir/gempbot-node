@@ -46,7 +46,7 @@ export default class Emotecount
                 emoteEnd++;
                 var emoteCode        = message.substring(emoteStart, emoteEnd);
                 if (emoteCode.indexOf(' ') > -1) {
-                    console.log(`[emote] skipped weird emote ${emoteCode}`);
+                    console.log(`[emote] ${channel} skipped weird emote ${emoteCode}`);
                     continue;
                 }
                 this.bot.redis.hincrby(channel + ':emotecount:' + emoteCode, user.username, currentEmotes.length);
