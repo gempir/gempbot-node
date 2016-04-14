@@ -55,7 +55,7 @@ export default class Oddshots {
             }
             var log = '';
             for (var shot in results) {
-                log += `[${results[shot]}] ${moment.unix(shot).format("YYYY-MM-DD HH:mm:ss")}`
+                log += `[${moment.unix(${results[shot]}).format("YYYY-MM-DD HH:mm:ss")}] ${shot}`
             }
             try {
                 cfg.pastebin.createPaste(log, `last oddshots found in ${channel}`,null,3, '10M')
