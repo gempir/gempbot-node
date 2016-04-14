@@ -1,4 +1,5 @@
 import lib from './../lib';
+import unicodeSubstring from 'unicode-substring';
 
 export default class Emotecount
 {
@@ -44,7 +45,7 @@ export default class Emotecount
                 var emoteStart       = emotePositionArr[0];
                 var emoteEnd         = emotePositionArr[1];
                 emoteEnd++;
-                var emoteCode        = message.substring(emoteStart, emoteEnd);
+                var emoteCode        = unicodeSubstring(message, emoteStart, emoteEnd);
                 if (emoteCode.indexOf(' ') > -1) {
                     console.log(`[emote] ${channel} skipped weird emote ${emoteCode}`);
                     continue;

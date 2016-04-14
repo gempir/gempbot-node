@@ -15,7 +15,8 @@
     "pastebin-js": "^0.4.0",
     "redis": "*",
     "request": "*",
-    "socket.io": "*"
+    "socket.io": "*",
+    "unicode-substring": "^0.1.0"
   },
   "devDependencies": {
     "babel-core": "^6.7.2",
