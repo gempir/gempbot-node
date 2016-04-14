@@ -12,18 +12,18 @@ export default class Lines
         if (args.length === 0) {
             var linesFor = username.toLowerCase();
             this.bot.redis.hget(channel + ":linecount", linesFor, (err, obj) => {
-                this.bot.say(channel, prefix + linesFor + ' has written a total of ' + obj + ' lines');
+                this.bot.say(channel, `${prefix}${linesFor} has written a total of ${obj} lines`);
             });
         }
         else if (args.length === 1 && args[0] === 'channel') {
             this.bot.redis.hget(channel + ":linecount", 'channel', (err, obj) => {
-                this.bot.say(channel, prefix + 'chat has written a total of ' + obj + ' lines')
+                this.bot.say(channel, `${prefix} chat has written a total of ${obj} lines`)
             });
         }
         else {
             linesFor = args[0];
             this.bot.redis.hget(channel + ":linecount", linesFor, (err, obj) => {
-                this.bot.say(channel, prefix + linesFor + ' has written a total of ' + obj + ' lines');
+                this.bot.say(channel, `${prefix}${linesFor} has written a total of ${obj} lines`);
             });
         }
     }
@@ -48,7 +48,7 @@ export default class Lines
             for (var channel in this.lines) {
                 for (var username in this.lines[channel]) {
                     var inc = this.lines[channel][username];
-                    this.bot.redis.hincrby(channel + ':linecount', username, inc);
+                    this.bot.redis.hincrby(`${channel}:linecount`, username, inc);
                     this.lines[channel][username] = 0;
                 }
             }

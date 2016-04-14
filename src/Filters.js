@@ -10,7 +10,7 @@ export default class Filters {
 
     loadTLDs()
     {
-        fs.readFile(__dirname + '/../../tlds.txt', 'utf8', (err, data) => {
+        fs.readFile(`${__dirname}/../../tlds.txt`, 'utf8', (err, data) => {
             if (err) {
                 return;
             }
@@ -29,7 +29,7 @@ export default class Filters {
 
     evaluateLink(message)
     {
-        message = ' ' + message + ' ';
+        message = ` ${message} `;
         var danger = 0;
         if (message.indexOf('.') > -1) {
             danger += 1;

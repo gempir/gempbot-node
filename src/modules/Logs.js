@@ -34,7 +34,7 @@ export default class Logs
                     message = message.substring(0, 120) + ' [...]';
                 }
                 this.counter = 0;
-				this.bot.say(channel, username + ': ' + message);
+				this.bot.say(channel, `${username}: ${message}`);
 			}
 		});
     }
@@ -60,8 +60,10 @@ export default class Logs
                     duration = "0 secs ";
                 }
 
-				this.bot.say(channel, lastchannel + ' | ' + username + ': ' + message + ' | ' + duration + ' ago');
-			}
+				this.bot.say(channel, `${lastchannel} | ${username}: ${message} | ${duration} ago`);
+			} else {
+                this.bot.say(channel, `no message found for ${username} or the message contained a link`);
+            }
 		});
     }
 
@@ -82,10 +84,10 @@ export default class Logs
                 });
 
                 try {
-                    cfg.pastebin.createPaste(uploadContent, 'last 500 messages for ' +  logsFor + ' in ' + channel + ' (UTC)',null,3, '10M')
+                    cfg.pastebin.createPaste(uploadContent, `last 500 messages for ${logsFor} in ${channel} (UTC)`,null,3, '10M')
                         .then((data) => {
                             console.log('Pastebin created: ' + data);
-                            this.bot.whisper(username, prefix + 'last 500 messages for '+ logsFor + ' in ' + channel + ' pastebin.com/' + data  + ' (UTC)');
+                            this.bot.whisper(username, `${prefix}last 500 messages for ${logsFor} in ${channel} pastebin.com/${data} (UTC)`);
                         })
                         .fail(function (err) {
                             console.log(channel, err);
@@ -115,10 +117,10 @@ export default class Logs
                 });
 
                 try {
-                    cfg.pastebin.createPaste(uploadContent, 'last 500 messages for ' +  logsFor + ' (UTC)',null,3, '10M')
+                    cfg.pastebin.createPaste(uploadContent, `last 500 messages for ${logsFor} (UTC)`,null,3, '10M')
                         .then((data) => {
                             console.log('Pastebin created: ' + data);
-                            this.bot.whisper(username, prefix + 'last 500 messages for '+ logsFor + ' pastebin.com/' + data + ' (UTC)');
+                            this.bot.whisper(username, `${prefix}last 500 messages for ${logsFor} pastebin.com/${data} (UTC)`);
                         })
                         .fail(function (err) {
                             console.log(channel, err);

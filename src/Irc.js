@@ -8,7 +8,6 @@ export default class Irc {
     constructor(bot) {
         this.bot         = bot;
         this.socket      = new net.Socket();
-        this.logs        = this.logs = __dirname +'/../../../logs/';
 
         this.setupConnection();
         this.readConnection();
@@ -21,15 +20,15 @@ export default class Irc {
 
     output(channel, message) {
         message = message.trim();
-        this.socket.write('PRIVMSG ' + channel + ' :' + message +'\r\n');
-        console.log(channel + ' ' + message);
+        this.socket.write(`PRIVMSG ${channel} :${message}\r\n`);
+        console.log(`${channel} ${message}`);
     }
 
     setupConnection() {
         this.socket.setEncoding('utf-8');
         this.socket.setNoDelay();
         this.socket.connect(cfg.irc.port, cfg.irc.server);
-        console.log('[irc] connected to ' + cfg.irc.server + ':' + cfg.irc.port);
+        console.log(`[irc] connected to ${cfg.irc.server}:${cfg.irc.port}`);
     }
 
     readConnection() {
@@ -60,12 +59,12 @@ export default class Irc {
         this.socket.write('NICK ' + cfg.irc.username + '\r\n');
         this.bot.redis.hgetall('channels', (err, results) => {
            if (err) {
-               console.log('[REDIS] ' + err);
+               console.log(`[REDIS] ${err}`);
            } else {
                 for (var channel in results) {
                   if (results.hasOwnProperty(channel)) {
-                    this.socket.write('JOIN ' + channel + '\r\n');
-                    console.log('JOIN ' + channel);
+                    this.socket.write(`JOIN ${channel}\r\n`);
+                    console.log(`JOIN ${channel}`);
                     this.bot.channels[channel]['response'] = results[channel];
                   }
                 }
@@ -89,8 +88,8 @@ export default class Irc {
             }
         }
 
-        this.socket.write('JOIN ' + channel + '\r\n');
-        console.log('[redis] ' + channel + ' ' + response);
+        this.socket.write(`JOIN ${channel}\r\n`);
+        console.log(`[redis] ${channel} ${response}`);
         this.bot.redis.hset('channels', channel, response, (err) => {
             if (err) {
                 console.log(err);
@@ -109,8 +108,8 @@ export default class Irc {
         }
         var channel  = args[0];
 
-        this.socket.write('PART ' + channel + '\r\n');
-        console.log('[redis] PART ' + channel)
+        this.socket.write(`PART ${channel}\r\n`);
+        console.log(`[redis] PART ${channel}`)
         this.bot.redis.hdel('channels', channel, (err) => {
             if (err) console.log(err);
         });

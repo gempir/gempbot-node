@@ -19,7 +19,7 @@ export default class Voting {
 			return;
 		}
 		if (arg === 'rate') {
-			overlay.emit(channel.substr(1) + ':startRate',{ channel: channel});
+			overlay.emit(`${channel.substr(1)}:startRate`,{ channel: channel});
 			this.activeVotings.push(channel);
 			this.votings[channel]['votesRatings'] = [];
 			this.votings[channel]['voters'] = [];
@@ -72,13 +72,13 @@ export default class Voting {
 	}
 
 	votingSkipController(channel, username, prefix) {
-		this.bot.say(channel, prefix + 'a skip or stay voting has been started type [ !vote skip ] or [ !vote stay ] to vote on the current content (45s)');
+		this.bot.say(channel, `${prefix} a skip or stay voting has been started type [ !vote skip ] or [ !vote stay ] to vote on the current content (45s)`);
 
 		setTimeout(() => {
 			lib.removeFromArray(this.activeVotings, channel);
 			var totalVotes = Number(this.votings[channel]['votesSkipStay']['stay']) + Number(this.votings[channel]['votesSkipStay']['skip']);
-			overlay.emit(channel.substr(1) + ':resultsSkip', { stay: this.votings[channel]['votesSkipStay']['stay'], skip: this.votings[channel]['votesSkipStay']['skip'], channel: channel});
-			this.bot.say(channel, prefix + 'the voting ended, skip: [ ' +  this.votings[channel]['votesSkipStay']['skip'] + ' ] | stay: [ ' +  this.votings[channel]['votesSkipStay']['stay'] + ' ] | votes: [ ' + totalVotes + ' ]');
+			overlay.emit(`${channel.substr(1)}:resultsSkip`, { stay: this.votings[channel]['votesSkipStay']['stay'], skip: this.votings[channel]['votesSkipStay']['skip'], channel: channel});
+			this.bot.say(channel, `${prefix}the voting ended, skip: [${this.votings[channel]['votesSkipStay']['skip']}] | stay: [${this.votings[channel]['votesSkipStay']['stay']}] | votes: [${totalVotes}]`);
 		}, 45000);
 	}
 
@@ -92,7 +92,7 @@ export default class Voting {
 			}
 			var avgRating = (totalRatings / this.votings[channel]['votesRatings'].length).toFixed(1);
 			var avgRatingsRaw = avgRating;
-			console.log('pre-weighted-algorithm: ' + avgRating);
+			console.log(`pre-weighted-algorithm: ${avgRating}`);
 			totalRatings = 0;
 			var count    = 0;
 			for (var i = 0; i < this.votings[channel]['votesRatings'].length; i++) {
@@ -106,8 +106,8 @@ export default class Voting {
 			avgRating = (totalRatings / count).toFixed(1);
 
 			lib.removeFromArray(this.activeVotings, channel);
-			this.bot.say(channel, prefix + 'the voting ended, the average ratings is: [ ' + avgRating + ' ] | votes: [ ' + this.votings[channel]['votesRatings'].length + ' ]' + ' raw rating: [' + avgRatingsRaw + ']');
-			overlay.emit(channel.substr(1) + ':resultsRate', { avgRating: avgRating, votes: this.votings[channel]['votesRatings'].length, channel: channel });
+			overlay.emit(`${channel.substr(1)}:resultsRate`, { avgRating: avgRating, votes: this.votings[channel]['votesRatings'].length, channel: channel });
+			this.bot.say(channel, `${prefix}the voting ended, the average ratings is: [${avgRating}] | votes: [${this.votings[channel]['votesRatings'].length}] | raw rating: [${avgRatingsRaw}]`);
 		}, 45000);
 	}
 

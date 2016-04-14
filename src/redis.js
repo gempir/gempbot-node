@@ -9,7 +9,7 @@ client.on('connect', function() {
 });
 
 client.on("error", function (err) {
-    console.log("[redis] error: " + err);
+    console.log(`[redis] ${err}`);
 });
 
 module.exports = client;

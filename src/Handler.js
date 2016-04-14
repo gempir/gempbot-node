@@ -22,7 +22,6 @@ export default class Handler {
         }
     }
 
-
     filterMessage(channel, user, message) {
         var cfgLength = this.bot.getConfig(channel, 'maxlength');
         var cfgASCII  = this.bot.getConfig(channel, 'ascii');

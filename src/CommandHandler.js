@@ -24,7 +24,7 @@ export default class CommandHandler {
 
     handleNormal(channel, user, command, args) {
         this.handleDefault(channel, user, command, args);
-        this.bot.redis.hget(channel + ':levels', user.username, (err, results) => {
+        this.bot.redis.hget(`${channel}:levels`, user.username, (err, results) => {
             if (err) {
                 console.log(err)
                 return;
@@ -80,17 +80,17 @@ export default class CommandHandler {
                         case 'delete':
                         case 'remove':
                             if (args[1].indexOf('!') === -1) args[1] = '!' + args[1];
-                            this.bot.redis.hexists(channel + ':commands', args[1], (err, results) => {
+                            this.bot.redis.hexists(`${channel}:commands`, args[1], (err, results) => {
                                 if (err) {
                                     console.log(err);
                                     return;
                                 }
                                 if (!results) {
-                                    this.bot.whisper(user.username, 'command ' + args[1] + ' not found');
+                                    this.bot.whisper(user.username, `command ${args[1]} not found`);
                                     return;
                                 }
-                                this.bot.redis.hdel(channel + ":commands", args[1]);
-                                this.bot.whisper(user.username, 'removed command ' + args[1]);
+                                this.bot.redis.hdel(`${channel}:commands`, args[1]);
+                                this.bot.whisper(user.username, `removed command ${args[1]}`);
                             });
                             return;
                     }
@@ -128,27 +128,27 @@ export default class CommandHandler {
                     console.log(action)
                     switch(action) {
                         case 'add':
-                            this.bot.redis.hset(channel + ':banphrases', banphrase, 1, (err) => {
+                            this.bot.redis.hset(`${channel}:banphrases`, banphrase, 1, (err) => {
                                 if (err) {
                                     console.log(err);
                                     return;
                                 }
                                 this.bot.loadBanphrases(channel);
-                                this.bot.whisper(user.username, 'added banphrase ' + banphrase);
+                                this.bot.whisper(user.username, `added banphrase ${banphrase}`);
                             });
                             break;
                         case 'rm':
                         case 'remove':
-                            this.bot.redis.hdel(channel + ':banphrases', banphrase, (err, deleted) => {
+                            this.bot.redis.hdel(`${channel}:banphrases`, banphrase, (err, deleted) => {
                                 if (err) {
                                     console.log(err);
                                     return;
                                 }
                                 if (!deleted) {
-                                    this.bot.whisper(user.username, 'couldn\'t find banphrase ' + banphrase);
+                                    this.bot.whisper(user.username, `couldn't find banphrase ${banphrase}`);
                                 } else {
                                     this.bot.loadBanphrases(channel);
-                                    this.bot.whisper(user.username, 'removed banphrase ' + banphrase);
+                                    this.bot.whisper(user.username, `removed banphrase ${banphrase}`);
                                 }
                             });
                             break;
@@ -163,7 +163,7 @@ export default class CommandHandler {
 
     handleCommand(channel, user, command, args, level)
     {
-        this.bot.redis.hget(channel + ':commands', command, (err, results) => {
+        this.bot.redis.hget(`${channel}:commands`, command, (err, results) => {
             if (err || results === null) {
                 return;
             }
@@ -214,7 +214,10 @@ export default class CommandHandler {
                         this.bot.modules.followage.followageCommandHandler(channel, user.username, args, prefix);
                         break;
                     case 'lastmessage':
-                        var lastMessageUser = args[0] || username;
+                        var lastMessageUser = args[0].toLowerCase();
+                        if (lastMessageUser == user.username) {
+                            return;
+                        }
                         this.bot.modules.logs.getLastMessage(channel, lastMessageUser);
                         break;
                     case 'lines':
@@ -242,7 +245,7 @@ export default class CommandHandler {
                     case 'rndquote':
                     case 'randomquote':
                         if (args.length == 0) {
-                            this.bot.modules.logs.getRandomquoteForUsername(channel, user.username, prefix);   
+                            this.bot.modules.logs.getRandomquoteForUsername(channel, user.username, prefix);
                         } else {
                             this.bot.modules.logs.getRandomquoteForUsername(channel, args[0], prefix);
                         }
@@ -274,13 +277,13 @@ export default class CommandHandler {
             name = '!' + name;
         }
 
-        this.bot.redis.hexists(channel + ':commands', name, (err, results) => {
+        this.bot.redis.hexists(`${channel}:commands`, name, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
             }
             if (!edit && results) {
-                this.bot.whisper(user.username, name + ' already exists, try !cmd edit or chose another name');
+                this.bot.whisper(user.username, `${name} already exists, try !cmd edit or chose another name`);
                 return;
             }
 
@@ -310,8 +313,8 @@ export default class CommandHandler {
                 description: description
             };
             console.log("set", commObj.name);
-            this.bot.redis.hset(channel + ':commands', commObj.name, JSON.stringify(commObj));
-            this.bot.whisper(user.username, 'command ' + commObj.name + ' set | cd: ' + commObj.cd + ' | lvl: ' + commObj.level);
+            this.bot.redis.hset(`${channel}:commands`, commObj.name, JSON.stringify(commObj));
+            this.bot.whisper(user.username, `command ${commObj.name} set | cd: ${commObj.cd} | lvl: ${commObj.level}`);
         });
     }
 
@@ -320,8 +323,8 @@ export default class CommandHandler {
             case '!lvl':
             case '!level':
                 try {
-                    this.bot.redis.hset(channel + ':levels', args[0].toLowerCase(), args[1]);
-                    this.bot.whisper(user.username, args[0].toLowerCase() + ' level set to ' + args[1]);
+                    this.bot.redis.hset(`${channel}:levels`, args[0].toLowerCase(), args[1]);
+                    this.bot.whisper(user.username, `${args[0].toLowerCase()} level set to ${args[1]}`);
                 } catch (err) {
                     console.log(err)
                 }
@@ -333,7 +336,7 @@ export default class CommandHandler {
                         case 'add':
                             var config = args[1].toLowerCase();
                             var value  = args[2].toLowerCase();
-                            this.bot.redis.hexists(channel + ':config', config, (err, results) => {
+                            this.bot.redis.hexists(`${channel}:config`, config, (err, results) => {
                                 if (err) {
                                     console.log(err);
                                     return;
@@ -343,18 +346,18 @@ export default class CommandHandler {
                                     return;
                                 }
                                 if (this.bot.configs.indexOf(config) < 0) {
-                                    this.bot.whisper(user.username, config + ' is not a valid config');
+                                    this.bot.whisper(user.username, `${config} is not a valid config`);
                                     return;
                                 }
-                                this.bot.redis.hset(channel + ':config', config, value);
-                                this.bot.whisper(user.username, 'config ' + config + ' set to ' + value);
+                                this.bot.redis.hset(`${channel}:config`, config, value);
+                                this.bot.whisper(user.username, `config ${config} set to ${value}`);
                                 this.bot.setConfigForChannel(channel);
                             });
                             break;
                         case 'edit':
                             var config = args[1].toLowerCase();
                             var value  = args[2].toLowerCase();
-                            this.bot.redis.hexists(channel + ':config', config, (err, results) => {
+                            this.bot.redis.hexists(`${channel}:config`, config, (err, results) => {
                                 if (err) {
                                     console.log(err);
                                     return;
@@ -364,28 +367,28 @@ export default class CommandHandler {
                                     return;
                                 }
                                 if (this.bot.configs.indexOf(config) < 0) {
-                                    this.bot.whisper(user.username, config + ' is not a valid config');
+                                    this.bot.whisper(user.username, `${config} is not a valid config`);
                                     return;
                                 }
-                                this.bot.redis.hset(channel + ':config', config, value);
-                                this.bot.whisper(user.username, 'config ' + config + ' set to ' + value);
+                                this.bot.redis.hset(`${channel}:config`, config, value);
+                                this.bot.whisper(user.username, `config ${config} set to ${value}`);
                                 this.bot.setConfigForChannel(channel);
                             });
                             break;
                         case 'rm':
                         case 'remove':
                             var config = args[1].toLowerCase();
-                            this.bot.redis.hexists(channel + ':config', config, (err, results) => {
+                            this.bot.redis.hexists(`${channel}:config`, config, (err, results) => {
                                 if (err) {
                                     console.log(err);
                                     return;
                                 }
                                 if (!results) {
-                                    this.bot.whisper(user.username, 'config isn\'t set, nothing to delete');
+                                    this.bot.whisper(user.username, `config isn't set, nothing to delete`);
                                     return;
                                 }
-                                this.bot.redis.hdel(channel + ':config', args[1]);
-                                this.bot.whisper(user.username, 'config ' + args[1] + ' deleted');
+                                this.bot.redis.hdel(`${channel}:config`, args[1]);
+                                this.bot.whisper(user.username, `config ${args[1]} deleted`);
                                 this.bot.setConfigForChannel(channel);
                                 this.bot.channels[channel].config[args[1]] = null;
                             });
@@ -400,13 +403,13 @@ export default class CommandHandler {
                 try {
                     switch (args[0]) {
                         case 'add':
-                            this.bot.redis.hset(channel + ':trusted', args[1], '1');
-                            this.bot.whisper(user.username, 'added ' + args[1] + ' to trusted');
+                            this.bot.redis.hset(`${channel}:trusted`, args[1], '1');
+                            this.bot.whisper(user.username, `added ${args[1]} to trusted`);
                             break;
                         case 'rm':
                         case 'remove':
-                            this.bot.redis.hset(channel + ':trusted', args[1], '0');
-                            this.bot.whisper(user.username, 'removed ' + args[1] + ' from trusted');
+                            this.bot.redis.hset(`${channel}:trusted`, args[1], '0');
+                            this.bot.whisper(user.username, `removed ${args[1]} from trusted`);
                             break;
                     }
                 } catch (err) {
@@ -422,11 +425,7 @@ export default class CommandHandler {
                 case '!status':
                     var time = process.uptime();
                     var uptime = lib.secsToTime((time + ""));
-                    this.bot.say(
-                        channel,
-                        '@' + user.username + ', uptime: ' + uptime
-                        + ' | active in ' + lib.countProperties(this.bot.channels) + ' channels'
-                    );
+                    this.bot.say(channel, `${user.username}, uptime: ${uptime} | active in ${lib.countProperties(this.bot.channels)} channels`);
                     break;
                 case '!join':
                     this.bot.irc.joinChannel(args);

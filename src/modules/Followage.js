@@ -34,10 +34,10 @@ export default class Followage
 				var json = JSON.parse(body.toString());
 				var duration = json.duration;
 
-				this.bot.say(channel, prefix + arg + ' has been following ' + channelSub + ' ' + duration);
+				this.bot.say(channel, `${prefix}${arg} has been following ${channelSub} ${duration}`);
 			}
 			else {
-				this.bot.say(channel, prefix + arg + ' is not following ' + channelSub);
+				this.bot.say(channel, `${prefix}${arg} is not following ${channelSub}`);
 			}
 
 		});
@@ -54,10 +54,10 @@ export default class Followage
 				var json = JSON.parse(body.toString());
 				var duration = json.duration;
 
-				this.bot.say(channel, prefix + username + ' has been following ' + channelSub + ' ' + duration);
+				this.bot.say(channel, `${prefix}${username} has been following ${channelSub} ${duration}`);
 			}
 			else {
-				this.bot.say(channel, prefix + username + ' is not following ' + channelSub);
+				this.bot.say(channel,  `${prefix}${username} is not following ${channelSub}`);
 			}
 		});
 	}
@@ -76,10 +76,10 @@ export default class Followage
 				var json = JSON.parse(body.toString());
 				var duration = json.duration;
 
-				this.bot.say(channel, prefix + arg1 + ' has been following ' + arg2 + ' ' + duration);
+				this.bot.say(channel, `${prefix}${arg1} has been following ${arg2} ${duration}`);
 			}
 			else {
-				this.bot.say(channel, prefix + arg1 + ' is not following ' + arg2);
+				this.bot.say(channel, `${prefix}${arg1} is not following ${arg2}`);
 			}
 
 		});

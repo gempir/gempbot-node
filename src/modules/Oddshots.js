@@ -20,7 +20,7 @@ export default class Oddshots {
             oddshotChannel = channelSplit[0] + '-' + channelSplit[1];
         }
 
-        if (message.includes('oddshot.tv/shot/' + oddshotChannel)) {
+        if (message.includes(`oddshot.tv/shot/${oddshotChannel}`)) {
             try {
                 this.parseOddshots(channel, username, message);
             } catch (err) {
@@ -39,34 +39,29 @@ export default class Oddshots {
                 continue;
             }
             var url = messageSplit[i];
-            console.log('[oddshots] inserting oddshot ' + url);
-            var timestamp =  moment.utc().format("YYYY-MM-DD HH:mm:ss");
-            this.bot.mysql.query("INSERT INTO oddshots (channel, timestamp, url) VALUES (?, ?, ?)", [channel, timestamp, url], function(err, results) {
-                if (err) {
-                    console.log('[mysql] '+ err);
-                }
-            });
+            console.log(`[oddshots] inserting oddshot ${url}`);
+            var timestamp =  moment.utc().format("X");
+            this.bot.redis.hset(`${channel}:oddshots`, timestamp, url)
         }
 
     }
 
     getOddshots(channel, username, prefix)
     {
-        this.bot.mysql.query("SELECT DATE_FORMAT(timestamp,'%Y-%m-%d %T') as timestamp, url FROM oddshots WHERE channel = ? ORDER BY timestamp DESC LIMIT 50", [channel], (err, results) => {
+        this.bot.redis.hgetall(`${channel}:oddshots`, (err, results) => {
             if (err || results.length == 0) {
                 console.log(err, results);
                 return;
             }
             var log = '';
-            for (var i = 0; i < results.length; i++) {
-                log += '[' + results[i].timestamp + '] ' + results[i].url + '\r\n';
+            for (var shot in results) {
+                log += `${moment.unix(shot).format("YYYY-MM-DD HH:mm:ss")} ${results[shot]}`
             }
-
             try {
-                cfg.pastebin.createPaste(log, 'last 50 oddshots found in ' +  channel,null,3, '10M')
+                cfg.pastebin.createPaste(log, `last oddshots found in ${channel}`,null,3, '10M')
                     .then((data) => {
                         console.log('Pastebin created: ' + data);
-                        this.bot.whisper(username, prefix + 'last 50 oddshots found in ' + channel + ' pastebin.com/' + data);
+                        this.bot.whisper(username, `${prefix} last 50 oddshots found in ${channel} pastebin.com/${data}`);
                     })
                     .fail(function (err) {
                         console.log(channel, err);

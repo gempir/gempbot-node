@@ -3,10 +3,8 @@ import request      from 'request';
 import cfg          from './../cfg';
 
 import redis        from './redis';
-import mysql        from './mysql';
 
 import Irc          from './Irc';
-import Database     from './Database';
 import Filters      from './Filters';
 import Parser       from './Parser';
 import Handler      from './Handler';
@@ -34,14 +32,12 @@ export default class Bot {
         this.admins   = cfg.admins;
         this.name     = cfg.irc.username;
         this.redis    = redis;
-        this.mysql    = mysql;
         this.irc      = new Irc(this);
         this.parser   = new Parser(this);
         this.handler  = new Handler(this);
         this.filters  = new Filters(this);
         this.timeout  = new Timeout(this);
         this.eventhub = new Eventhub(this);
-        this.db       = new Database(this);
         this.modules  = {
             logs:        new Logs(this),
             combo:       new Combo(this),
@@ -55,7 +51,6 @@ export default class Bot {
             facts:       new Facts(this)
         };
         this.channels  = {};
-        this.intervals = {};
         this.cmdcds    = [];
         this.usercds   = [];
         this.bttv      = {
@@ -131,37 +126,11 @@ export default class Bot {
             for (var cfg in results) {
                 this.channels[channel].config[cfg.toLowerCase()] = results[cfg].toLowerCase();
             }
-            this.setTimedOutputs(channel);
         });
     }
 
-    setTimedOutputs(channel) {
-        if (typeof this.intervals[channel] == 'undefined') {
-            this.intervals[channel] = {};
-        }
-        if (typeof this.channels[channel].config.facts == 'undefined' || this.channels[channel].config.facts == null) {
-            try {
-                clearInterval(this.intervals[channel]['facts']);
-            } catch (err) {};
-            return;
-        }
-        try {
-            var factsConf = this.channels[channel].config.facts;
-            if (factsConf != null || factsConf != false || factsConf != 0 || factsConf > 10) {
-                try {
-                    clearInterval(this.intervals[channel]['facts']);
-                } catch (err) {};
-                this.intervals[channel]['facts'] = setInterval(() => {
-                    this.modules.facts.sayFact(channel);
-                }, factsConf * 1000);
-            }
-        } catch (err) {
-            console.log('[timers] ' + err);
-        }
-    }
-
     whisper(username, message) {
-        this.irc.output('#jtv', '/w ' + username + ' ' + message);
+        this.irc.output('#jtv', `/w ${username} ${message}`);
     }
 
     say(channel, message)

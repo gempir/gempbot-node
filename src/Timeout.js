@@ -19,8 +19,8 @@ export default class Timeout {
         }
         if (stage <= 0) {
             this.timeouts[username] = 1;
-            this.bot.say(channel, '/timeout ' + username + ' 10');
-            this.bot.whisper(username, 'You have been timed out 10s for ' + reason)
+            this.bot.say(channel, `/timeout ${username} 10`);
+            this.bot.whisper(username, `You have been timed out 10s for ${reason}`)
             setTimeout(() => {
                 this.timeouts[username] -= 1;
             }, 300000);
@@ -28,8 +28,8 @@ export default class Timeout {
         }
         if (stage == 1 ) {
             this.timeouts[username] += 2;
-            this.bot.say(channel, '/timeout ' + username + ' 30');
-            this.bot.whisper(username, 'You have been timed out 30s for ' + reason)
+            this.bot.say(channel, `/timeout ${username} 30`);
+            this.bot.whisper(username, `You have been timed out 30s for ${reason}`)
             setTimeout(() => {
                 this.timeouts[username] -= 2;
             }, 300000);
@@ -37,8 +37,8 @@ export default class Timeout {
         }
         if (stage >= 2) {
             this.timeouts[username] += 3;
-            this.bot.say(channel, '/timeout ' + username + ' 90');
-            this.bot.whisper(username, 'You have been timed out 90s for ' + reason)
+            this.bot.say(channel, `/timeout ${username} 90`);
+            this.bot.whisper(username, `You have been timed out 90s for ${reason}`)
             setTimeout(() => {
                 this.timeouts[username] -= 3;
             }, 300000);

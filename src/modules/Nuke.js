@@ -54,7 +54,7 @@ export default class Nuke
             for (var index = 0; index < this.toNuke[channel].length; index++) {
                 this.bot.say(channel, '/timeout ' + this.toNuke[channel][index] + ' 1');
             }
-            this.bot.say(channel, '/me VaultBoy NUKED ' + this.toNuke[channel].length + ' CHATTERS VaultBoy');
+            this.bot.say(channel, `/me VaultBoy NUKED ${this.toNuke[channel].length} CHATTERS VaultBoy`);
             lib.removeFromArray(this.activeNukes, channel);
             this.toNuke[channel] = [];
         }, this.nukeLength * 1000);

@@ -37,7 +37,7 @@ function secsToTime(sec_num)
     if (hours   < 10) {hours   = "0"+hours;}
     if (minutes < 10) {minutes = "0"+minutes;}
     if (seconds < 10) {seconds = "0"+seconds;}
-    var time    = hours+':'+minutes+':'+seconds;
+    var time    = `${hours}:${minutes}:${seconds}`;
     return time;
 }
 

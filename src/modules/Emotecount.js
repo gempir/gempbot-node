@@ -16,7 +16,7 @@ export default class Emotecount
                 console.log('[emotecount] ', obj, err);
                 return false;
             }
-            this.bot.say(channel, prefix + emote + ' has been used ' + lib.numberFormatted(obj) + ' times by you');
+            this.bot.say(channel, `${prefix}${emote} has been used ${lib.numberFormatted(obj)} times by you`);
         });
     }
 
@@ -29,7 +29,7 @@ export default class Emotecount
                 console.log('[emotecount] ', obj, err);
                 return false;
             }
-            this.bot.say(channel, prefix + emote + ' has been used ' + lib.numberFormatted(obj) + ' times');
+            this.bot.say(channel, `${prefix}${emote} has been used ${lib.numberFormatted(obj)} times`);
         });
 
     }

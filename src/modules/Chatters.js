@@ -30,6 +30,6 @@ export default class Chatters {
 
 	getChatters(channel, prefix)
 	{
-		this.bot.say(channel, prefix + this.chatters[channel].length + ' chatters active in the last 15mins');
+		this.bot.say(channel, `${prefix} ${this.chatters[channel].length} chatters active in the last 15mins`);
 	}
 }

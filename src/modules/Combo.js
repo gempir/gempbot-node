@@ -33,7 +33,7 @@ export default class Combo {
         else if (this.combos[channel]['combo'] > 4){
             try {
                 if (this.bot.channels[channel].config.combos == 1 || this.bot.channels[channel].config.combo == 1) {
-                    this.bot.say(channel, '/me '+  this.combos[channel]['emote'] + ' x ' + this.combos[channel]['combo'] + ' COMBO');
+                    this.bot.say(channel, `/me ${this.combos[channel]['emote']} x ${this.combos[channel]['combo']}  COMBO`);
                 }
                 this.combos[channel]['combo']        = 1;
                 this.combos[channel]['comboStarter'] = 1;
