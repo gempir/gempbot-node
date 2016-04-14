@@ -41,7 +41,7 @@ export default class Oddshots {
             var url = messageSplit[i];
             console.log(`[oddshots] inserting oddshot ${url}`);
             var timestamp =  moment.utc().format("X");
-            this.bot.redis.hset(`${channel}:oddshots`, timestamp, url)
+            this.bot.redis.hset(`${channel}:oddshots`, url, timestamp)
         }
 
     }
@@ -49,13 +49,13 @@ export default class Oddshots {
     getOddshots(channel, username, prefix)
     {
         this.bot.redis.hgetall(`${channel}:oddshots`, (err, results) => {
-            if (err || results.length == 0) {
-                console.log(err, results);
+            if (err) {
+                console.log(err);
                 return;
             }
             var log = '';
             for (var shot in results) {
-                log += `[${moment.unix(shot).format("YYYY-MM-DD HH:mm:ss")}] ${results[shot]}`
+                log += `[${results[shot]}] ${moment.unix(shot).format("YYYY-MM-DD HH:mm:ss")}`
             }
             try {
                 cfg.pastebin.createPaste(log, `last oddshots found in ${channel}`,null,3, '10M')
