@@ -52,12 +52,6 @@ export default class Filters {
         return danger;
     }
 
-    evaluateLinkDeep(message)
-    {
-        // make a request for the link and scan the contents of the site and evaluate danger of texts and links in it
-        // this should be used very rarely, because it's very expensive
-    }
-
     evaluate(channel, message)
     {
         var danger = this.evaluateLink(message);

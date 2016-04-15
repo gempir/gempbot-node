@@ -18,11 +18,8 @@ import Nuke         from './modules/Nuke';
 import Lines        from './modules/Lines';
 import Voting       from './modules/Voting';
 import Followage    from './modules/Followage';
-import Chatters     from './modules/Chatters';
 import Oddshots     from './modules/Oddshots';
 import Emotecount   from './modules/Emotecount';
-import Facts        from './modules/Facts';
-
 
 
 export default class Bot {
@@ -37,7 +34,6 @@ export default class Bot {
         this.handler  = new Handler(this);
         this.filters  = new Filters(this);
         this.timeout  = new Timeout(this);
-        this.eventhub = new Eventhub(this);
         this.modules  = {
             logs:        new Logs(this),
             combo:       new Combo(this),
@@ -45,10 +41,8 @@ export default class Bot {
             nuke:        new Nuke(this),
             voting:      new Voting(this),
             followage:   new Followage(this),
-            chatters:    new Chatters(this),
             emotecount:  new Emotecount(this),
             oddshots:    new Oddshots(this),
-            facts:       new Facts(this)
         };
         this.channels  = {};
         this.cmdcds    = [];
@@ -62,7 +56,6 @@ export default class Bot {
             'filterlength',
             'filterascii',
             'combos',
-            'facts'
         ];
         this.loadChannels();
         this.loadBttvEmotes();
