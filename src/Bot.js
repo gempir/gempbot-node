@@ -34,6 +34,7 @@ export default class Bot {
         this.handler  = new Handler(this);
         this.filters  = new Filters(this);
         this.timeout  = new Timeout(this);
+        this.eventhub = new Eventhub(this);
         this.modules  = {
             logs:        new Logs(this),
             combo:       new Combo(this),

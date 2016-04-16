@@ -19,15 +19,6 @@ function countProperties(obj) {
     return count;
 }
 
-
-function fileExists(filePath)
-{
-    if (fs.existsSync(filePath)){
-        return true;
-    }
-    return false;
-}
-
 function secsToTime(sec_num)
 {
     sec_num     = Math.round(sec_num);
@@ -48,7 +39,6 @@ function numberFormatted(x)
 
 module.exports =
 {
-    fileExists,
     numberFormatted,
     secsToTime,
     removeFromArray,

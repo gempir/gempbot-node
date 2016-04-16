@@ -35,7 +35,23 @@ export default class Parser {
             subscriber: data.tags.subscriber,
         }
         var message = this.getMessage(data);
-        
+
+        if (user.username === "twitchnotify") {
+            if (message.includes("subscribed to")) {
+                // hosted channel got a subscriber
+            }
+            // New subscriber..
+            else if (message.includes("just subscribed")) {
+                this.bot.eventhub.emitEvent(channel, 'subcription', { username: message.split(" ")[0] });
+            }
+            // Subanniversary..
+            else if (message.includes("subscribed") && message.includes("in a row")) {
+                var splitted = message.split(" ");
+                var length = splitted[splitted.length - 5];
+                this.bot.eventhub.emitEvent(channel, 'subanniversary', { username: splitted[0], months: length});
+            }
+        }
+
         if (this.bot.admins.indexOf(user.username) > -1) {
             user['user-type'] = 'admin';
         }
