@@ -19,7 +19,6 @@ import Lines        from './modules/Lines';
 import Voting       from './modules/Voting';
 import Followage    from './modules/Followage';
 import Oddshots     from './modules/Oddshots';
-import Emotecount   from './modules/Emotecount';
 
 
 export default class Bot {
@@ -42,7 +41,6 @@ export default class Bot {
             nuke:        new Nuke(this),
             voting:      new Voting(this),
             followage:   new Followage(this),
-            emotecount:  new Emotecount(this),
             oddshots:    new Oddshots(this),
         };
         this.channels  = {};

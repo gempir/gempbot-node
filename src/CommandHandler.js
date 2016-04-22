@@ -203,12 +203,6 @@ export default class CommandHandler {
                     case 'chatters':
                         this.bot.modules.chatters.getChatters(channel, prefix);
                         break;
-                    case 'count':
-                        this.bot.modules.emotecount.count(channel, user.username, args[0], prefix);
-                        break;
-                    case 'countme':
-                        this.bot.modules.emotecount.countMe(channel, user.username, args[0], prefix);
-                        break;
                     case 'follow':
                     case 'followage':
                         this.bot.modules.followage.followageCommandHandler(channel, user.username, args, prefix);

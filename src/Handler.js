@@ -55,7 +55,6 @@ export default class Handler {
         var username = user.username;
 
         this.bot.modules.lines.recordLines(channel, username, message);
-        this.bot.modules.emotecount.incrementEmotes(channel, user, message);
         this.bot.modules.oddshots.saveChannelOddshots(channel, username, message);
         this.bot.modules.combo.count(channel, user, message);
         this.bot.modules.nuke.recordToNuke(channel, user, message);
