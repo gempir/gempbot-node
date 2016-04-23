@@ -1,3 +1,5 @@
+import request from 'request';
+
 export default class Lines
 {
     constructor(bot)
@@ -11,29 +13,23 @@ export default class Lines
     {
         if (args.length === 0) {
             var linesFor = username.toLowerCase();
-            this.bot.redis.hget(channel + ":linecount", linesFor, (err, obj) => {
-                this.bot.say(channel, `${prefix}${linesFor} has written a total of ${obj} lines`);
-                if (obj == null || err) {
-                    this.bot.say(channel, `${prefix}${linesFor} has written no lines yet`);
-                    return
-                }
-            });
-        }
-        else if (args.length === 1 && args[0] === 'channel') {
-            this.bot.redis.hget(channel + ":linecount", 'channel', (err, obj) => {
-                this.bot.say(channel, `${prefix} chat has written a total of ${obj} lines`)
-            });
+            this.getLinesFor(channel, linesFor, prefix)
         }
         else {
             linesFor = args[0].toLowerCase();
-            this.bot.redis.hget(channel + ":linecount", linesFor, (err, obj) => {
-                if (obj == null || err) {
-                    this.bot.say(channel, `${prefix}${linesFor} has written no lines yet`);
-                    return
-                }
-                this.bot.say(channel, `${prefix}${linesFor} has written a total of ${obj} lines`);
-            });
+            this.getLinesFor(channel, linesFor, prefix)
         }
+    }
+
+    getLinesFor(channel, username, prefix) {
+        var url = `https://api.gempir.com/user/${username}`
+        request(url, (error, response, body) => {
+			console.log('[GET] ' + url);
+			if (!error && response.statusCode == 200) {
+				var json = JSON.parse(body.toString());
+				this.bot.say(channel, `${prefix}${username} has written ${json.lines} lines`);
+            }
+		});
     }
 
     recordLines(channel, username, message)

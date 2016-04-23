@@ -18,7 +18,7 @@ export default class Logs
             return;
         }
         username = username.toLowerCase();
-        var randomquoteURL = `https://api.gempir.com/v1/user/${username}/messages/random`
+        var randomquoteURL = `https://api.gempir.com/user/${username}/messages/random`
         request(randomquoteURL, (error, response, body) => {
 			console.log('[GET] ' + randomquoteURL);
 			if (!error && response.statusCode == 200) {
@@ -41,7 +41,7 @@ export default class Logs
 
     getLastMessage(channel, username)
     {
-        var lastmessageURL = `https://api.gempir.com/v1/user/${username}/messages/last/1`
+        var lastmessageURL = `https://api.gempir.com/user/${username}/messages/last/1`
         request(lastmessageURL, (error, response, body) => {
 			console.log('[GET] ' + lastmessageURL);
 			if (!error && response.statusCode == 200) {
@@ -71,7 +71,7 @@ export default class Logs
     {
         logsFor = logsFor.toLowerCase();
         channel = channel.substr(1);
-        var logsURL = `https://api.gempir.com/v1/channel/${channel}/user/${logsFor}/messages/last/500`
+        var logsURL = `https://api.gempir.com/channel/${channel}/user/${logsFor}/messages/last/500`
         request(logsURL, (error, response, body) => {
 			console.log('[GET] ' + logsURL);
 			if (!error && response.statusCode == 200) {
@@ -104,7 +104,7 @@ export default class Logs
     getLogsAll(username, logsFor, prefix)
     {
         logsFor = logsFor.toLowerCase();
-        var logsURL = `https://api.gempir.com/v1/user/${logsFor}/messages/last/500`
+        var logsURL = `https://api.gempir.com/user/${logsFor}/messages/last/500`
         request(logsURL, (error, response, body) => {
 			console.log('[GET] ' + logsURL);
 			if (!error && response.statusCode == 200) {

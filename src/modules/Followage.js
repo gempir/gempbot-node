@@ -22,7 +22,7 @@ export default class Followage
 	getUserLocalFollowage(channel, username, arg, prefix)
 	{
 		var channelSub = channel.substr(1);
-		var followURL = `https://api.gempir.com/v1/twitch/followage/channel/${channelSub}/user/${arg}`;
+		var followURL = `https://api.gempir.com/twitch/followage/channel/${channelSub}/user/${arg}`;
 
 		if (this.bot.filters.isLink(arg) || arg.length > 30) {
 				return;
@@ -46,7 +46,7 @@ export default class Followage
 	getLocalFollowage(channel, username, prefix)
 	{
 		var channelSub = channel.substr(1);
-		var followURL = `https://api.gempir.com/v1/twitch/followage/channel/${channelSub}/user/${username}`;
+		var followURL = `https://api.gempir.com/twitch/followage/channel/${channelSub}/user/${username}`;
 
 		request(followURL, (error, response, body) => {
 			console.log('[GET] ' + followURL);;
@@ -64,7 +64,7 @@ export default class Followage
 
 	getUserChannelFollowage(channel, username, arg1, arg2, prefix)
 	{
-		var followURL = `https://api.gempir.com/v1/twitch/followage/channel/${arg2}/user/${arg1}`;
+		var followURL = `https://api.gempir.com/twitch/followage/channel/${arg2}/user/${arg1}`;
 
 		if (this.bot.filters.isLink(arg2) || arg2.length > 30 || this.bot.filters.isLink(arg1) || arg1.length > 30) {
 				return;
