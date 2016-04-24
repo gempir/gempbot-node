@@ -67,72 +67,51 @@ export default class Logs
 		});
     }
 
-    getLogs(channel, username, logsFor, prefix)
+    getLogs(channel, username, args, prefix)
     {
-        logsFor = logsFor.toLowerCase();
-        channel = channel.substr(1);
-        var logsURL = `https://api.gempir.com/channel/${channel}/user/${logsFor}/messages/last/500`
-        request(logsURL, (error, response, body) => {
-			console.log('[GET] ' + logsURL);
-			if (!error && response.statusCode == 200) {
-				var json = JSON.parse(body.toString());
+        var logsFor = args[0] || username;
+        var logChannel = channel.substr(1);
+        var global = false;
+        var year   = new Date().getFullYear()
+        var month  = '';
 
-                var uploadContent = "";
-
-                json.messages.forEach((msg) => {
-                    uploadContent += `[${msg.timestamp}] ${msg.username}: ${msg.message}\r\n`;
-                });
-
-                try {
-                    cfg.pastebin.createPaste(uploadContent, `last 500 messages for ${logsFor} in ${channel} (UTC)`,null,3, '10M')
-                        .then((data) => {
-                            console.log('Pastebin created: ' + data);
-                            this.bot.whisper(username, `${prefix}last 500 messages for ${logsFor} in ${channel} pastebin.com/${data} (UTC)`);
-                        })
-                        .fail(function (err) {
-                            console.log(channel, err);
-                        });
-                } catch (err) {
-                    console.log(err);
-                }
-			} else {
-                console.log(error, response.statusCode);
+        args.forEach((arg) => {
+            if (arg.startsWith('--global')) {
+                global = true;
             }
-		});
-    }
-
-    getLogsAll(username, logsFor, prefix)
-    {
-        logsFor = logsFor.toLowerCase();
-        var logsURL = `https://api.gempir.com/user/${logsFor}/messages/last/500`
-        request(logsURL, (error, response, body) => {
-			console.log('[GET] ' + logsURL);
-			if (!error && response.statusCode == 200) {
-				var json = JSON.parse(body.toString());
-
-                var uploadContent = "";
-
-                json.messages.forEach((msg) => {
-                    uploadContent += `[${msg.timestamp}] [${msg.channel}] ${msg.username}: ${msg.message}\r\n`;
-                });
-
-                try {
-                    cfg.pastebin.createPaste(uploadContent, `last 500 messages for ${logsFor} (UTC)`,null,3, '10M')
-                        .then((data) => {
-                            console.log('Pastebin created: ' + data);
-                            this.bot.whisper(username, `${prefix}last 500 messages for ${logsFor} pastebin.com/${data} (UTC)`);
-                        })
-                        .fail(function (err) {
-                            console.log(channel, err);
-                        });
-                } catch (err) {
-                    console.log(err);
-                }
-			} else {
-                console.log(error, response.statusCode);
+            if (arg.startsWith('--month-')) {
+                month = arg.replace('--month-', '');
             }
-		});
+            if (arg.startsWith('--year-')) {
+                year = arg.replace('--year-', '')
+            }
+            if (arg.startsWith('--channel-')) {
+                logChannel = arg.replace('--channel-', '');
+            }
+        });
+
+        if (month === '' && !global) {
+            this.bot.whisper(
+                username,
+                `last 200 messages for ${logsFor} in ${logChannel} https://api.gempir.com/channel/${logChannel}/user/${logsFor}/last/200`
+            )
+        }
+        else if (month === '' && global) {
+            this.bot.whisper(
+                username,
+                `last 200 messages for ${logsFor} https://api.gempir.com/user/${logsFor}/last/200`
+            )
+        } else if (!global){
+            this.bot.whisper(
+                username,
+                `messages for ${logsFor} in ${logChannel} from ${month}, ${year} https://api.gempir.com/channel/${logChannel}/user/${logsFor}/${year}/${month}`
+            )
+        } else if (global){
+            this.bot.whisper(
+                username,
+                `messages for ${logsFor} from ${month}, ${year} https://api.gempir.com/user/${logsFor}/${year}/${month}`
+            )
+        }
+
     }
-
-
 }

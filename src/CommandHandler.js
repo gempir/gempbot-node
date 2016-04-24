@@ -218,13 +218,7 @@ export default class CommandHandler {
                         this.bot.modules.lines.lineCount(channel, user.username, args, prefix);
                         break;
                     case 'logs':
-                        var userFor = args[0] || username;
-                        this.bot.modules.logs.getLogs(channel, user.username, userFor, prefix);
-                        break;
-                    case 'alllogs':
-                    case 'logsall':
-                        var userFor = args[0] || username;
-                        this.bot.modules.logs.getLogsAll(user.username, userFor, prefix);
+                        this.bot.modules.logs.getLogs(channel, user.username, args, prefix);
                         break;
                     case 'nuke':
                         this.bot.modules.nuke.nuke(channel, user.username);
