@@ -5,8 +5,6 @@ export default class Lines
     constructor(bot)
     {
         this.bot          = bot;
-        this.lines        = {};
-        this.saveLines();
     }
 
     lineCount(channel, username, args, prefix)
@@ -30,32 +28,5 @@ export default class Lines
 				this.bot.say(channel, `${prefix}${username} has written ${json.lines} lines`);
             }
 		});
-    }
-
-    recordLines(channel, username, message)
-    {
-        if (typeof this.lines[channel] === 'undefined') {
-            this.lines[channel] = {};
-        }
-        if (typeof this.lines[channel][username] === 'undefined') {
-            this.lines[channel][username] = 0;
-        }
-        if (typeof this.lines[channel]['channel'] === 'undefined') {
-            this.lines[channel]['channel'] = 0;
-        }
-        this.lines[channel]['channel']++;
-        this.lines[channel][username]++;
-    }
-
-    saveLines() {
-        setInterval(() => {
-            for (var channel in this.lines) {
-                for (var username in this.lines[channel]) {
-                    var inc = this.lines[channel][username];
-                    this.bot.redis.hincrby(`${channel}:linecount`, username, inc);
-                    this.lines[channel][username] = 0;
-                }
-            }
-        }, 3000);
     }
 }
