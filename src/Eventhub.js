@@ -8,10 +8,8 @@ export default class Eventhub {
     {
         switch (type) {
             case 'subcription':
-                this.subAlert(channel, data.username, null);
                 break;
             case 'subanniversary':
-                this.subAlert(channel, data.username, data.months);
                 break;
             case 'timeout':
                 break;
@@ -24,25 +22,5 @@ export default class Eventhub {
         }
     }
 
-    subAlert(channel, username, months)
-    {
-        if (months) {
-            var obj = {
-                username: username,
-                months: months
-            };
-            this.bot.redis.publish(`${channel}:subs`, JSON.stringify(obj))
-            this.bot.redis.hset(`${channel}:subs`, username, months);
-            console.log(`[sub] ${channel} ${username} ${months}`)
-        } else {
-            var obj = {
-                username: username,
-                months: 1
-            };
-            this.bot.redis.publish(`${channel}:subs`, JSON.stringify(obj))
-            this.bot.redis.hset(`${channel}:subs`, username, 1);
-            console.log(`[sub] ${channel} ${username}`)
-        }
-    }
 
 }
