@@ -41,7 +41,7 @@ export default class Logs
 
     getLastMessage(channel, username)
     {
-        var lastmessageURL = `https://api.gempir.com/user/${username}/messages/last/1`
+        var lastmessageURL = `https://api.gempir.com/user/${username}/last`
         request(lastmessageURL, (error, response, body) => {
 			console.log('[GET] ' + lastmessageURL);
 			if (!error && response.statusCode == 200) {
