@@ -46,9 +46,9 @@ export default class Logs
 			console.log('[GET] ' + lastmessageURL);
 			if (!error && response.statusCode == 200) {
 				var json = JSON.parse(body.toString());
-				var duration = json.messages[0].duration;
-                var message  = json.messages[0].message;
-                var lastchannel = json.messages[0].channel;
+				var duration = json.duration;
+                var message  = json.message;
+                var lastchannel = json.channel;
 
                 if (this.bot.filters.isLink(message) || this.bot.filters.isASCII(message)) {
                     return false;
