@@ -17,24 +17,24 @@ export default class Logs
         if (this.counter > 10) {
             return;
         }
+        var apiChannel = channel.substr(1);
         username = username.toLowerCase();
-        var randomquoteURL = `https://api.gempir.com/user/${username}/messages/random`
+        var randomquoteURL = `https://api.gempir.com/channel/${apiChannel}/user/${username}/random`
         request(randomquoteURL, (error, response, body) => {
 			console.log('[GET] ' + randomquoteURL);
 			if (!error && response.statusCode == 200) {
-				var json = JSON.parse(body.toString());
-                var message  = json.messages[0].message;
-
-                if (this.bot.filters.isLink(message) || this.bot.filters.isASCII(message)) {
+				var quote = body.toString();
+              
+                if (this.bot.filters.isLink(quote) || this.bot.filters.isASCII(quote)) {
                     this.getRandomquoteForUsername(channel, username, prefix);
                     this.counter++;
                     return;
                 }
-                if (message.length > 120) {
-                    message = message.substring(0, 120) + ' [...]';
+                if (quote.length > 120) {
+                    quote = quote.substring(0, 120) + ' [...]';
                 }
                 this.counter = 0;
-				this.bot.say(channel, `${username}: ${message}`);
+				this.bot.say(channel, `${quote}`);
 			}
 		});
     }
@@ -71,14 +71,10 @@ export default class Logs
     {
         var logsFor = args[0] || username;
         var logChannel = channel.substr(1);
-        var global = false;
         var year   = new Date().getFullYear()
         var month  = '';
 
         args.forEach((arg) => {
-            if (arg.startsWith('--global')) {
-                global = true;
-            }
             if (arg.startsWith('--month-')) {
                 month = arg.replace('--month-', '');
             }
@@ -90,28 +86,17 @@ export default class Logs
             }
         });
 
-        if (month === '' && !global) {
+        if (month === '') {
             this.bot.whisper(
                 username,
                 `last 200 messages for ${logsFor} in ${logChannel} https://api.gempir.com/channel/${logChannel}/user/${logsFor}/last/200`
             )
         }
-        else if (month === '' && global) {
-            this.bot.whisper(
-                username,
-                `last 200 messages for ${logsFor} https://api.gempir.com/user/${logsFor}/last/200`
-            )
-        } else if (!global){
+        else {
             this.bot.whisper(
                 username,
                 `messages for ${logsFor} in ${logChannel} from ${month}, ${year} https://api.gempir.com/channel/${logChannel}/user/${logsFor}/${year}/${month}`
             )
-        } else if (global){
-            this.bot.whisper(
-                username,
-                `messages for ${logsFor} from ${month}, ${year} https://api.gempir.com/user/${logsFor}/${year}/${month}`
-            )
         }
-
     }
 }
