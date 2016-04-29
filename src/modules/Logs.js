@@ -24,7 +24,7 @@ export default class Logs
 			console.log('[GET] ' + randomquoteURL);
 			if (!error && response.statusCode == 200) {
 				var quote = body.toString();
-              
+
                 if (this.bot.filters.isLink(quote) || this.bot.filters.isASCII(quote)) {
                     this.getRandomquoteForUsername(channel, username, prefix);
                     this.counter++;
@@ -89,7 +89,7 @@ export default class Logs
         if (month === '') {
             this.bot.whisper(
                 username,
-                `last 200 messages for ${logsFor} in ${logChannel} https://api.gempir.com/channel/${logChannel}/user/${logsFor}/last/200`
+                `messages for ${logsFor} in ${logChannel} for this month https://api.gempir.com/channel/${logChannel}/user/${logsFor}`
             )
         }
         else {
