@@ -54,9 +54,11 @@ export default class Oddshots {
                 return;
             }
             var log = '';
-            for (var shot in results) {
-                log += `[${moment.unix(results[shot]).format("YYYY-MM-DD HH:mm:ss")}] ${shot}\r\n`
-            }
+            Object.keys(results)
+                .sort()
+                .forEach(function(v, i) {
+                    log += `[${moment.unix(v).format("YYYY-MM-DD HH:mm:ss")}] ${results[v]}\r\n`
+                });
             try {
                 cfg.pastebin.createPaste(log, `last oddshots found in ${channel}`,null,3, '10M')
                     .then((data) => {
