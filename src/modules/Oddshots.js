@@ -49,8 +49,8 @@ export default class Oddshots {
     getOddshots(channel, username, prefix)
     {
         this.bot.redis.hgetall(`${channel}:oddshots`, (err, results) => {
-            if (err) {
-                console.log(err);
+            if (err || results == null) {
+                console.log(err, results);
                 return;
             }
             var log = '';
