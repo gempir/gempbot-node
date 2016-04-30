@@ -55,10 +55,10 @@ export default class Oddshots {
             }
             var log = '';
 
-            var keysSorted = Object.keys(results).sort(function(a,b){return results[a] + results[b]})
-            keysSorted.forEach((shot) => {
-                log += `[${moment.unix(results[shot]).format("YYYY-MM-DD HH:mm:ss")}] ${shot}\r\n`
-            });
+            var keysSorted = Object.keys(results).sort(function(a,b){return results[a] - results[b]})
+            for (var i = keysSorted.length - 1; i > 0; i--) {
+                log += `[${moment.unix(results[keysSorted[i]]).format("YYYY-MM-DD HH:mm:ss")}] ${keysSorted[i]}\r\n`
+            }
 
             try {
                 cfg.pastebin.createPaste(log, `last oddshots found in ${channel}`,null,3, '10M')
