@@ -54,13 +54,12 @@ export default class Oddshots {
                 return;
             }
             var log = '';
-            Object.keys(results)
-                .sort(function(x, y){
-                    return x - y;
-                })
-                .forEach(function(v, i) {
-                    log += `[${moment.unix(results[v]).format("YYYY-MM-DD HH:mm:ss")}] ${v}\r\n`
-                });
+
+            var keysSorted = Object.keys(results).sort(function(a,b){return results[a]-results[b]})
+            keysSorted.forEach((shot) => {
+                log += `[${moment.unix(results[shot]).format("YYYY-MM-DD HH:mm:ss")}] ${shot}\r\n`
+            });
+
             try {
                 cfg.pastebin.createPaste(log, `last oddshots found in ${channel}`,null,3, '10M')
                     .then((data) => {
