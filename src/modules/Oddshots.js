@@ -55,7 +55,7 @@ export default class Oddshots {
             }
             var log = '';
 
-            var keysSorted = Object.keys(results).sort(function(a,b){return results[a]-results[b]})
+            var keysSorted = Object.keys(results).sort(function(a,b){return results[a] + results[b]})
             keysSorted.forEach((shot) => {
                 log += `[${moment.unix(results[shot]).format("YYYY-MM-DD HH:mm:ss")}] ${shot}\r\n`
             });
