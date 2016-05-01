@@ -39,9 +39,17 @@ export default class Oddshots {
                 continue;
             }
             var url = messageSplit[i];
-            console.log(`[oddshots] inserting oddshot ${url}`);
+            console.log(`[oddshots] requesting oddshot ${url}`);
             var timestamp =  moment.utc().format("X");
-            this.bot.redis.hset(`${channel}:oddshots`, url, timestamp)
+
+            request(url, (error, response, body) => {
+    			if (!error && response.statusCode == 200) {
+                    console.log(`[oddshots] inserting oddshot ${url}`);
+    				this.bot.redis.hset(`${channel}:oddshots`, url, timestamp);
+    			} else {
+                    console.log(`[oddshots] not adding oddshot > returned ${response.statusCode}`);
+                }
+    		});
         }
 
     }
