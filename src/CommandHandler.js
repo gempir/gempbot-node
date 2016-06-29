@@ -223,6 +223,13 @@ export default class CommandHandler {
                     case 'nuke':
                         this.bot.modules.nuke.nuke(channel, user.username);
                         break;
+                    case 'owstats':
+                        if (args.length == 0) {
+                            this.bot.modules.overwatchstats.getChannelStats(channel, user.username, args, prefix);
+                        } else {
+                            this.bot.modules.overwatchstats.getChannelStats(channel, user.username, prefix, args[0]);
+                        }
+                        break;
                     case 'oddshot':
                     case 'oddshots':
                         this.bot.modules.oddshots.getOddshots(channel, user.username, prefix);
@@ -323,7 +330,7 @@ export default class CommandHandler {
                     switch(args[0]) {
                         case 'add':
                             var config = args[1].toLowerCase();
-                            var value  = args[2].toLowerCase();
+                            var value  = args[2];
                             this.bot.redis.hexists(`${channel}:config`, config, (err, results) => {
                                 if (err) {
                                     console.log(err);
@@ -344,7 +351,7 @@ export default class CommandHandler {
                             break;
                         case 'edit':
                             var config = args[1].toLowerCase();
-                            var value  = args[2].toLowerCase();
+                            var value  = args[2];
                             this.bot.redis.hexists(`${channel}:config`, config, (err, results) => {
                                 if (err) {
                                     console.log(err);

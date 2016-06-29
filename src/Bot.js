@@ -13,13 +13,14 @@ import Eventhub     from './Eventhub';
 import overlay      from './overlay/overlay';
 
 // modules
-import Logs         from './modules/Logs';
-import Combo        from './modules/Combo';
-import Nuke         from './modules/Nuke';
-import Lines        from './modules/Lines';
-import Voting       from './modules/Voting';
-import Followage    from './modules/Followage';
-import Oddshots     from './modules/Oddshots';
+import Logs           from './modules/Logs';
+import Combo          from './modules/Combo';
+import Nuke           from './modules/Nuke';
+import Lines          from './modules/Lines';
+import Voting         from './modules/Voting';
+import Followage      from './modules/Followage';
+import Oddshots       from './modules/Oddshots';
+import OverwatchStats from './modules/OverwatchStats';
 
 
 export default class Bot {
@@ -37,13 +38,14 @@ export default class Bot {
         this.timeout  = new Timeout(this);
         this.eventhub = new Eventhub(this);
         this.modules  = {
-            logs:        new Logs(this),
-            combo:       new Combo(this),
-            lines:       new Lines(this),
-            nuke:        new Nuke(this),
-            voting:      new Voting(this),
-            followage:   new Followage(this),
-            oddshots:    new Oddshots(this),
+            logs:           new Logs(this),
+            combo:          new Combo(this),
+            lines:          new Lines(this),
+            nuke:           new Nuke(this),
+            voting:         new Voting(this),
+            followage:      new Followage(this),
+            oddshots:       new Oddshots(this),
+            overwatchstats: new OverwatchStats(this),
         };
         this.channels  = {};
         this.cmdcds    = [];
@@ -57,6 +59,7 @@ export default class Bot {
             'filterlength',
             'filterascii',
             'combos',
+            'btag'
         ];
         this.loadChannels();
         this.loadBttvEmotes();
