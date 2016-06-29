@@ -227,7 +227,7 @@ export default class CommandHandler {
                         if (args.length == 0) {
                             this.bot.modules.overwatchstats.getChannelStats(channel, user.username, args, prefix);
                         } else {
-                            this.bot.modules.overwatchstats.getChannelStats(channel, user.username, prefix, args[0]);
+                            this.bot.modules.overwatchstats.getOverwatchStatsFor(channel, user.username, prefix, args[0]);
                         }
                         break;
                     case 'oddshot':
