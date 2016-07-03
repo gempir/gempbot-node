@@ -36,7 +36,7 @@ export default class OverwatchStats
                         return;
                     }
                     var btagshort = btag.split("-")[0]
-    				this.bot.say(channel, `${prefix}${btagshort} is level ${json.data.level} | won: ${json.data.games.wins} | lost: ${json.data.games.lost} | win/loss ${json.data.games.win_percentage}%`);
+    				this.bot.say(channel, `${prefix}${btagshort} is rank ${json.data.competitive.rank} | won: ${json.data.games.competitive.wins} | lost: ${json.data.games.competitive.lost}`);
                 }
             } catch (err) {
                 console.log(err);
