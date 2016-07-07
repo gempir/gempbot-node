@@ -1,17 +1,16 @@
 import cfg   from './../../cfg';
 import net   from 'net';
 import fs    from 'fs';
-
+import DurableConnection from 'net-reconnect';
 
 export default class Irc {
 
     constructor(bot) {
         this.bot         = bot;
-        this.socket      = new net.Socket();
+        this.dcon        = new DurableConnection(cfg.irc.port, cfg.irc.server)
+        this.socket      = this.dcon.connect();
 
-        this.setupConnection();
         this.readConnection();
-
 
         this.socket.on('connect', () => {
             this.startUpJoin();
@@ -22,13 +21,6 @@ export default class Irc {
         message = message.trim();
         this.socket.write(`PRIVMSG ${channel} :${message}\r\n`);
         console.log(`${channel} ${message}`);
-    }
-
-    setupConnection() {
-        this.socket.setEncoding('utf-8');
-        this.socket.setNoDelay();
-        this.socket.connect(cfg.irc.port, cfg.irc.server);
-        console.log(`[irc] connected to ${cfg.irc.server}:${cfg.irc.port}`);
     }
 
     readConnection() {
