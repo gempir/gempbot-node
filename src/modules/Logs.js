@@ -51,7 +51,8 @@ export default class Logs
                 var lastchannel = json.channel;
 
                 if (this.bot.filters.isLink(message) || this.bot.filters.isASCII(message)) {
-                    return false;
+                    this.bot.say(channel, `no message found for ${username} or the message contained a link or ASCII`);
+                    return;
                 }
                 if (message.length > 120) {
                     message = message.substring(0, 120) + ' [...]';
@@ -62,7 +63,7 @@ export default class Logs
 
 				this.bot.say(channel, `${lastchannel} | ${username}: ${message} | ${duration} ago`);
 			} else {
-                this.bot.say(channel, `no message found for ${username} or the message contained a link`);
+                this.bot.say(channel, `no message found for ${username} or the message contained a link or ASCII`);
             }
 		});
     }
