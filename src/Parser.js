@@ -51,7 +51,6 @@ export default class Parser {
                 this.bot.eventhub.emitEvent(channel, 'subanniversary', { username: splitted[0], months: length});
             }
         }
-
         if (this.bot.admins.indexOf(user.username) > -1) {
             user['user-type'] = 'admin';
         }
