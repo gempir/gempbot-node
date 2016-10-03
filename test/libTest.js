@@ -26,5 +26,21 @@ describe('lib', function() {
         });
     });
 
+    describe('numberFormatted()', function() {
+        it('pretty formats numbers', function() {
+            var number = 10000;
+            var result = lib.numberFormatted(number);
+            assert.equal('10,000', result);
+        });
+    });
+
+    describe('secsToTime()', function() {
+        it('converts seconds to pretty timestamp', function() {
+            var number = 10000;
+            var result = lib.secsToTime(number);
+            assert.equal('02:46:40', result);
+        });
+    });
+
 
 });
