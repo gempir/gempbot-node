@@ -1,5 +1,4 @@
 import request from 'request';
-import lib from './../lib';
 
 export default class Lines
 {
@@ -26,7 +25,7 @@ export default class Lines
 			console.log('[GET] ' + url);
 			if (!error && response.statusCode == 200) {
 				var json = JSON.parse(body.toString());
-				this.bot.say(channel, `${prefix}${username} has written ${lib.numberFormatted(json.lines)} lines`);
+				this.bot.say(channel, `${prefix}${username} has written ${json.lines} lines`);
             }
 		});
     }
