@@ -34,7 +34,7 @@ export default class Nuke
             return;
         }
         this.activeNukes.push(channel);
-        this.bot.say(channel, '/me VaultBoy THIS CHAT WILL BE NUKED IN 30 SECONDS VaultBoy');
+        this.bot.say(channel, '/me ANELE THIS CHAT WILL BE NUKED IN 30 SECONDS ANELE');
 
         for (var x = 0; x < (this.nukeLength - 1) ; x++) {
             ((index) => {
