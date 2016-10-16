@@ -45,10 +45,6 @@ export default class Handler {
             ascii = this.bot.filters.evaluateLink(message);
             reason = 'a link in your message';
         }
-
-        if (ascii || length || links) {
-            this.bot.timeout.spam(channel, user, reason);
-        }
     }
 
     handleDefault(channel, user, message) {

@@ -8,7 +8,6 @@ import Irc          from './Irc';
 import Filters      from './Filters';
 import Parser       from './Parser';
 import Handler      from './Handler';
-import Timeout      from './Timeout';
 import Eventhub     from './Eventhub';
 import overlay      from './overlay/overlay';
 
@@ -35,7 +34,6 @@ export default class Bot {
         this.parser   = new Parser(this);
         this.handler  = new Handler(this);
         this.filters  = new Filters(this);
-        this.timeout  = new Timeout(this);
         this.eventhub = new Eventhub(this);
         this.modules  = {
             logs:           new Logs(this),

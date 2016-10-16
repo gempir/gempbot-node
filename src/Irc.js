@@ -58,6 +58,7 @@ export default class Irc {
                     this.socket.write(`JOIN ${channel}\r\n`);
                     console.log(`JOIN ${channel}`);
                     this.bot.channels[channel]['response'] = results[channel];
+                    this.bot.say(channel, "🤖 gempbot starting up");
                   }
                 }
            }

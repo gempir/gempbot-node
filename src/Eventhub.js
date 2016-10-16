@@ -8,8 +8,10 @@ export default class Eventhub {
     {
         switch (type) {
             case 'subcription':
+                console.log(channel, data);
                 break;
             case 'subanniversary':
+                console.log(channel, data);
                 break;
             case 'timeout':
                 break;
