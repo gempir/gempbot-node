@@ -5,6 +5,7 @@
   "main": "gempbot.js",
   "dependencies": {
     "async": "*",
+    "babel-cli": "^6.16.0",
     "express": "*",
     "irc": "^0.4.1",
     "irc-message": "^3.0.2",
@@ -20,15 +21,16 @@
     "unicode-substring": "^0.1.0"
   },
   "devDependencies": {
-    "babel-core": "^6.7.2",
-    "babel-preset-es2015": "^6.6.0",
+    "babel": "^6.5.2",
+    "babel-core": "^6.17.0",
+    "babel-preset-es2015": "^6.16.0",
     "babel-register": "^6.7.2",
     "chai": "^3.5.0",
     "graceful-fs": "^4.1.3",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-shell": "^0.5.2",
-    "mocha": "^2.4.5"
+    "mocha": "^2.5.3"
   },
   "scripts": {
     "test": "mocha"
