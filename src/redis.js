@@ -1,4 +1,4 @@
-var cfg    = require('./../../cfg');
+var cfg    = require('./../cfg');
 var redis  = require('redis'),
     client = redis.createClient(cfg.redis);
 

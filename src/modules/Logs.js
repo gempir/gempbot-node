@@ -1,4 +1,4 @@
-import cfg     from './../../cfg.js';
+import cfg     from './../../cfg';
 import moment  from 'moment';
 import lib     from './../lib';
 import request from 'request';

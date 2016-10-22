@@ -1,4 +1,4 @@
-import cfg   from './../../cfg';
+import cfg   from './../cfg';
 import DurableConnection from 'net-reconnect';
 
 export default class Irc {
