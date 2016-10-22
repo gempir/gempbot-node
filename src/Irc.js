@@ -1,6 +1,4 @@
 import cfg   from './../../cfg';
-import net   from 'net';
-import fs    from 'fs';
 import DurableConnection from 'net-reconnect';
 
 export default class Irc {

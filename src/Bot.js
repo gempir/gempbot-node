@@ -18,7 +18,6 @@ import Nuke           from './modules/Nuke';
 import Lines          from './modules/Lines';
 import Voting         from './modules/Voting';
 import Followage      from './modules/Followage';
-import Oddshots       from './modules/Oddshots';
 import OverwatchStats from './modules/OverwatchStats';
 
 
@@ -42,7 +41,6 @@ export default class Bot {
             nuke:           new Nuke(this),
             voting:         new Voting(this),
             followage:      new Followage(this),
-            oddshots:       new Oddshots(this),
             overwatchstats: new OverwatchStats(this),
         };
         this.channels  = {};

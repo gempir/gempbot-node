@@ -1,26 +1,12 @@
-import fs from 'fs';
-
 export default class Filters {
     constructor(bot)
     {
         this.bot        = bot;
-        this.tlds       = [];
-        this.loadTLDs();
-    }
-
-    loadTLDs()
-    {
-        fs.readFile(`${__dirname}/../../tlds.txt`, 'utf8', (err, data) => {
-            if (err) {
-                return;
-            }
-            this.tlds = data.split('\r\n');
-        });
     }
 
     isLink(message)
     {
-        if (this.evaluateLink(message) > 5) {
+        if (this.evaluateLink(message) >= 5) {
             return true;
         } else {
             return false;
@@ -36,15 +22,6 @@ export default class Filters {
         }
         if (message.indexOf('(dot)') > -1 || message.indexOf('dot') > -1) {
             danger += 5;
-        }
-        for (var i = 0; i < this.tlds.length; i++) {
-            if (message.indexOf(this.tlds[i] + ' ') > -1) {
-                danger += 5;
-                break;
-            }
-        }
-        if (danger === 0) {
-            return danger;
         }
         if (message.match(/((?:http:\/\/)?)((?:www\.?)?)([\w\.-_]+)(?:\.|\s*\(dot\)\s*)(\w+)((?:\/[^\s]+)*)/i)) {
             danger += 5;

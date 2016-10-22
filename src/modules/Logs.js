@@ -1,5 +1,4 @@
 import cfg     from './../../cfg.js';
-import fs      from 'fs';
 import moment  from 'moment';
 import lib     from './../lib';
 import request from 'request';

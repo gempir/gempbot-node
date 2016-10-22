@@ -52,3 +52,4 @@ chromedriver.exe
 
 # build
 build/
+release.tar.gz

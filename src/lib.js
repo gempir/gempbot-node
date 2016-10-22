@@ -1,5 +1,3 @@
-var fs = require('fs');
-
 function removeFromArray(arr, what) {
     var found = arr.indexOf(what);
 
