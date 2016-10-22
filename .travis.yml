@@ -4,4 +4,7 @@ node_js:
     - "5.3"
 before_script:
   - npm install -g gulp
-script: gulp
+script:
+ - npm install 
+ - npm test
+ - gulp build
