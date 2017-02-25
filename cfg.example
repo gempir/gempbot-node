@@ -15,17 +15,10 @@ var redis = {
     password: ''
 }
 
-var PastebinAPI = require('pastebin-js'),
-    pastebin = new PastebinAPI({
-      'api_dev_key' : '',
-      'api_user_name' : '',
-      'api_user_password' : ''
-    });
 
 module.exports =
 {
     admins,
     irc,
-    redis,
-    pastebin
+    redis
 };
