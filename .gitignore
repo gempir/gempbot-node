@@ -2,6 +2,7 @@ logs/
 junk.js
 node_modules/
 cfg.js
+.idea/
 
 # Windows image file caches
 Thumbs.db

@@ -1,10 +1,11 @@
 language: node_js
 node_js:
-    - "4.2.2"
-    - "5.3"
+  - "4.2.2"
+  - "5.3"
+  - "6.0"
 before_script:
   - npm install -g gulp
 script:
- - npm install 
- - npm test
- - gulp build
+  - npm install
+  - npm test
+  - gulp build

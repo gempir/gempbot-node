@@ -18,14 +18,12 @@ export default class Voting {
 			return;
 		}
 		if (arg === 'rate') {
-			this.bot.overlay.emit(`${channel.substr(1)}:startRate`,{ channel: channel});
 			this.activeVotings.push(channel);
 			this.votings[channel]['votesRatings'] = [];
 			this.votings[channel]['voters'] = [];
 			this.votingRateController(channel, username, prefix);
 		}
 		if (arg === 'skip') {
-			this.bot.overlay.emit(channel.substr(1) + ':startSkip',{ channel: channel});
 			this.activeVotings.push(channel);
 			this.votings[channel]['voters'] = [];
 			this.votings[channel]['votesSkipStay']  = { skip: 0, stay: 0};
@@ -76,7 +74,6 @@ export default class Voting {
 		setTimeout(() => {
 			lib.removeFromArray(this.activeVotings, channel);
 			var totalVotes = Number(this.votings[channel]['votesSkipStay']['stay']) + Number(this.votings[channel]['votesSkipStay']['skip']);
-			this.bot.overlay.emit(`${channel.substr(1)}:resultsSkip`, { stay: this.votings[channel]['votesSkipStay']['stay'], skip: this.votings[channel]['votesSkipStay']['skip'], channel: channel});
 			this.bot.say(channel, `${prefix}the voting ended, skip: [${this.votings[channel]['votesSkipStay']['skip']}] | stay: [${this.votings[channel]['votesSkipStay']['stay']}] | votes: [${totalVotes}]`);
 		}, 45000);
 	}
@@ -105,7 +102,6 @@ export default class Voting {
 			avgRating = (totalRatings / count).toFixed(1);
 
 			lib.removeFromArray(this.activeVotings, channel);
-			this.bot.overlay.emit(`${channel.substr(1)}:resultsRate`, { avgRating: avgRating, votes: this.votings[channel]['votesRatings'].length, channel: channel });
 			this.bot.say(channel, `${prefix}the voting ended, the average ratings is: [${avgRating}] | votes: [${this.votings[channel]['votesRatings'].length}] | raw rating: [${avgRatingsRaw}]`);
 		}, 45000);
 	}

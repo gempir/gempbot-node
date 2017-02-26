@@ -4,8 +4,5 @@ process.on('uncaughtException', function (err) {
     console.log("ERR", err);
 });
 
-require('./src/overlay/overlay');
-
 var Bot = require('./src/Bot');
 new Bot.default();
-

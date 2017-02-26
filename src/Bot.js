@@ -9,7 +9,6 @@ import Filters      from './Filters';
 import Parser       from './Parser';
 import Handler      from './Handler';
 import Eventhub     from './Eventhub';
-import overlay      from './overlay/overlay';
 
 // modules
 import Logs           from './modules/Logs';
@@ -28,7 +27,6 @@ export default class Bot {
         this.admins   = cfg.admins;
         this.name     = cfg.irc.username;
         this.redis    = redis;
-        this.overlay  = overlay;
         this.irc      = new Irc(this);
         this.parser   = new Parser(this);
         this.handler  = new Handler(this);
