@@ -25,15 +25,9 @@ gulp.task('transpile', ['clean'], () => {
 		.pipe(gulp.dest('build/src'));
 
 	var root = gulp.src(['gempbot','cfg.js', 'package.json'])
-		.pipe(gulp.dest('build'));	
+		.pipe(gulp.dest('build'));
 
-	var jade = gulp.src('src/overlay/views/**/*.jade')
-		.pipe(gulp.dest('build/src/overlay/views'));
-
-	var css = gulp.src('src/overlay/public/**/*.css')
-		.pipe(gulp.dest('build/src/overlay/public'));
-
-	return merge(js, root, jade, css);
+	return merge(js, root);
 });
 
 gulp.task('archive', ['transpile'], () =>

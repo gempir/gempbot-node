@@ -135,7 +135,6 @@ export default class Bot {
         if (response == 0) {
             return;
         }
-        this.overlay.emit("botmessage", { channel: channel, message: message });
         this.irc.output(channel, message);
     }
 
