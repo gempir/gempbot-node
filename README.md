@@ -1,3 +1,7 @@
+## Abandoned
+
+This project is now abandoned, checkout my twitch bot in go https://github.com/gempir/gempbotgo
+
 # gempbot
 [![Build Status](https://travis-ci.org/gempir/gempbot.svg?branch=master)](https://travis-ci.org/gempir/gempbot)
 
